@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="homeFragmentViewModel"
+            type="com.example.musicdownload.viewmodel.HomeFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundPrimary">
+
+                <TextView
+                    android:id="@+id/tvLogoMusic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="MUSIC"
+                    android:textColor="@color/color_btnPlay"
+                    android:textFontWeight="700"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="DOWNLOADER"
+                    android:textColor="@color/white"
+                    android:textFontWeight="700"
+                    app:layout_constraintLeft_toRightOf="@+id/tvLogoMusic"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/viewChangeRegon"
+                    android:layout_width="75dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/regon_logo"
+                    app:layout_constraintEnd_toStartOf="@+id/imgSearchHome"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_marginLeft="6dp"
+                    android:src="@drawable/globe_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/viewChangeRegon"
+                    app:layout_constraintStart_toStartOf="@+id/viewChangeRegon"
+                    app:layout_constraintTop_toTopOf="@+id/viewChangeRegon" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginEnd="6dp"
+                    android:src="@drawable/polygon_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/viewChangeRegon"
+                    app:layout_constraintEnd_toEndOf="@+id/viewChangeRegon"
+                    app:layout_constraintTop_toTopOf="@+id/viewChangeRegon" />
+
+                <TextView
+                    android:id="@+id/tvRegionHome"
+                    android:layout_width="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:maxWidth="24dp"
+                    android:maxLines="1"
+                    android:text="@string/default_time_language"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/viewChangeRegon"
+                    app:layout_constraintEnd_toEndOf="@+id/viewChangeRegon"
+                    app:layout_constraintStart_toStartOf="@+id/viewChangeRegon"
+                    app:layout_constraintTop_toTopOf="@+id/viewChangeRegon" />
+
+                <ImageView
+                    android:id="@+id/imgSearchHome"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/background_cirle"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_baseline_search_24"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager2"
+                    android:layout_width="0dp"
+                    android:layout_height="265dp"
+                    android:paddingEnd="160dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLogoMusic" />
+
+                <TextView
+                    android:id="@+id/tvLogoTopRanking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Top Ranking"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
+
+                <TextView
+                    android:id="@+id/tvMoreTopRanking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="More"
+                    android:textColor="@color/color_btnPlay"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recItemRanking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLogoTopRanking" />
+
+                <TextView
+                    android:id="@+id/tvLogoToplistened"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Top listened"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recItemRanking" />
+
+                <TextView
+                    android:id="@+id/tvMoreTopListened"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="16dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="More"
+                    android:textColor="@color/color_btnPlay"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recItemRanking" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginStart="8dp"
+                    android:id="@+id/recToplistened"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLogoToplistened" />
+
+                <TextView
+                    android:id="@+id/tvLogoTopDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Top Download"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recToplistened" />
+
+                <TextView
+                    android:id="@+id/tvMoreTopDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="16dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="More"
+                    android:textColor="@color/color_btnPlay"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recToplistened" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recTopDownload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLogoTopDownload" />
+
+                <TextView
+                    android:id="@+id/tvLogoGenres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Genres"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recTopDownload" />
+
+                <TextView
+                    android:id="@+id/tvMoreGenres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="16dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="More"
+                    android:textColor="@color/color_btnPlay"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recTopDownload" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLogoGenres" />
+                <View
+                    android:id="@+id/viewOnTopPlayHome"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recGenres"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:id="@+id/shimmerLayout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <include layout="@layout/item_shimmer_download_home"/>
+                <include layout="@layout/item_shimmer"/>
+                <include layout="@layout/item_shimmer"/>
+                <include layout="@layout/item_shimmer"/>
+                <include layout="@layout/item_shimmer"/>
+                <include layout="@layout/item_shimmer" />
+            </LinearLayout>
+
+
+        </io.supercharge.shimmerlayout.ShimmerLayout>
+<!--     play bottom-->
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/layoutPlayHomeBottom"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="70dp"-->
+<!--            android:background="#000000"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent">-->
+
+<!--            <SeekBar-->
+<!--                android:id="@+id/seekBarHome"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="3dp"-->
+<!--                android:layout_margin="0dp"-->
+<!--                android:padding="0dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvNameSongPlayHome"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="16dp"-->
+<!--                android:layout_marginTop="17dp"-->
+<!--                android:fontFamily="@font/roboto"-->
+<!--                android:maxLines="1"-->
+<!--                android:text="Love the way you lie"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textFontWeight="400"-->
+<!--                android:textSize="14dp"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvSingerSongPlayHome"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="16dp"-->
+<!--                android:layout_marginTop="18dp"-->
+<!--                android:fontFamily="@font/roboto"-->
+<!--                android:maxLines="1"-->
+<!--                android:text="Alex Matlac"-->
+<!--                android:textColor="#919191"-->
+<!--                android:textFontWeight="400"-->
+<!--                android:textSize="10dp"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/tvNameSongPlayHome" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imgPlayBtnHome"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:src="@drawable/playbutton"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imgFavoriteHome"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:src="@drawable/ic_baseline_favorite_border_24"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintRight_toLeftOf="@+id/imgPlayBtnHome"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imgAddPlayListHome"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:src="@drawable/ic_baseline_playlist_add_24"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintRight_toLeftOf="@+id/imgFavoriteHome"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutNotConnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backgroundPrimary"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/not_connect_internet"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/btnReload"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="164dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

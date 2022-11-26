@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundPrimary">
+
+    <View
+        android:id="@+id/viewImgPlaylist"
+        android:layout_margin="6dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/background_radius_all_41"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imgItemPlaylist"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/playlistmusic"
+        app:layout_constraintBottom_toBottomOf="@+id/viewImgPlaylist"
+        app:layout_constraintEnd_toEndOf="@+id/viewImgPlaylist"
+        app:layout_constraintStart_toStartOf="@+id/viewImgPlaylist"
+        app:layout_constraintTop_toTopOf="@+id/viewImgPlaylist" />
+
+    <TextView
+        android:id="@+id/tvNamePlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:fontFamily="@font/roboto"
+        android:maxLines="2"
+        android:maxWidth="200dp"
+        android:text="@string/FavoriteSongs"
+        android:textColor="@color/white"
+        android:textFontWeight="400"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/viewImgPlaylist"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imgMorePlayList"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title=""
+        android:id="@+id/downloadedFragment2"
+        />
+    <item
+        android:title="@string/downloaded"
+        android:id="@+id/downloadedFragment"
+        />
+    <item
+        android:title=""
+        android:id="@+id/downloadedFragment3"
+        />
+    <item
+        android:title="@string/downloading"
+        android:id="@+id/downloadingFragment"
+        />
+    <item
+        android:title=""
+        android:id="@+id/downloadedFragment4"
+        />
+</menu>

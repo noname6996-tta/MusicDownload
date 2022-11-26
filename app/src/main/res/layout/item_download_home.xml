@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutCardHomeDownload"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="@dimen/radius_corner"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToOutline="true">
+
+        <ImageView
+            android:id="@+id/imageViewHomeDownload"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/demo_img_download"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:background="#80000000"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewHomeDownload"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNameSongHomeDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto"
+            android:maxWidth="100dp"
+            android:maxLines="1"
+            android:text="Jungle Vibe"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view2" />
+
+        <TextView
+            android:id="@+id/tvSingerSongHomeDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/roboto"
+            android:maxWidth="150dp"
+            android:maxLines="1"
+            android:text="LUCY"
+            android:textColor="#CCFFFFFF"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNameSongHomeDownload" />
+        <!--            </eightbitlab.com.blurview.BlurView>-->
+
+        <View
+            android:id="@+id/viewPlayHomeDownload"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="27dp"
+            android:background="@drawable/backgroundplay2"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewHomeDownload"
+            app:layout_constraintRight_toRightOf="parent"></View>
+
+        <ImageView
+            android:id="@+id/imgPlayButtonHomeDownload"
+            android:layout_width="15dp"
+            android:layout_height="17dp"
+            android:layout_marginLeft="3dp"
+            android:src="@drawable/playbutton"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPlayHomeDownload"
+            app:layout_constraintEnd_toEndOf="@+id/viewPlayHomeDownload"
+            app:layout_constraintStart_toStartOf="@+id/viewPlayHomeDownload"
+            app:layout_constraintTop_toTopOf="@+id/viewPlayHomeDownload"></ImageView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

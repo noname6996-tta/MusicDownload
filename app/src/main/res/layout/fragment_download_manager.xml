@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundPrimary">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/download_logo"
+        android:textColor="#FFFFFF"
+        android:textFontWeight="600"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view16"
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/background_radius_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <View
+        android:id="@+id/view7"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:background="@drawable/bgr_radius_bottom_download"
+        app:layout_constraintBottom_toBottomOf="@+id/view16" />
+
+    <TextView
+        android:id="@+id/btnDemo1"
+        android:layout_width="wrap_content"
+        android:layout_height="61dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:text="Downloaded"
+        android:layout_marginEnd="4dp"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@+id/view7"
+        app:layout_constraintEnd_toStartOf="@+id/btnDemo2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view16" />
+
+    <View
+        android:id="@+id/viewSlideBtn1"
+        android:layout_width="34dp"
+        android:layout_height="4dp"
+        android:background="@drawable/background_radius_top_color_btnplay"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDemo1"
+        app:layout_constraintEnd_toEndOf="@+id/btnDemo1"
+        app:layout_constraintStart_toStartOf="@+id/btnDemo1" />
+
+
+    <TextView
+        android:id="@+id/btnDemo2"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_height="61dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:text="Downloading"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@+id/view7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnDemo1"
+        app:layout_constraintTop_toTopOf="@+id/view16" />
+
+    <View
+        android:id="@+id/viewSlideBtn2"
+        android:visibility="gone"
+        android:layout_width="34dp"
+        android:layout_height="4dp"
+        android:background="@drawable/background_radius_top_color_btnplay"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDemo2"
+        app:layout_constraintEnd_toEndOf="@+id/btnDemo2"
+        app:layout_constraintStart_toStartOf="@+id/btnDemo2" />
+
+    <FrameLayout
+        android:id="@+id/viewPagerDownloadFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bgr_radius_bottom_download"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view7" />
+</androidx.constraintlayout.widget.ConstraintLayout>

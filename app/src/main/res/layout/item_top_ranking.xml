@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTopRanking"
+        android:layout_width="150dp"
+        android:layout_height="240dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/background_radius_corner_topranking"
+        android:elevation="16dp">
+
+        <FrameLayout
+            android:id="@+id/frameLayoutHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/radius_corner">
+
+                <ImageView
+                    android:id="@+id/imgTopRanking"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/demo_img_download"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/imgTagRanking"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/topranking1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNumberRanking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgTagRanking"
+            app:layout_constraintEnd_toEndOf="@+id/imgTagRanking"
+            app:layout_constraintStart_toStartOf="@+id/imgTagRanking"
+            app:layout_constraintTop_toTopOf="@+id/imgTagRanking" />
+
+        <TextView
+            android:id="@+id/tvTopRankingNameSong"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/roboto"
+            android:text="Into The Illusion"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayoutHome" />
+
+        <TextView
+            android:id="@+id/tvTopRankingArtisSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/roboto"
+            android:text="Jack Daniel"
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTopRankingNameSong" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#252B30"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTopRankingArtisSong" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="22dp"
+            android:fontFamily="@font/roboto"
+            android:text="Play Now"
+            android:textColor="@color/color_btnPlay"
+            android:textFontWeight="400"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTopRankingArtisSong" />
+
+        <View
+            android:id="@+id/viewPlayHomeDownload"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/backgroundplay2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"></View>
+
+        <ImageView
+            android:id="@+id/imgPlayButtonHomeDownload"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="1dp"
+            android:src="@drawable/playbutton"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPlayHomeDownload"
+            app:layout_constraintEnd_toEndOf="@+id/viewPlayHomeDownload"
+            app:layout_constraintStart_toStartOf="@+id/viewPlayHomeDownload"
+            app:layout_constraintTop_toTopOf="@+id/viewPlayHomeDownload"></ImageView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

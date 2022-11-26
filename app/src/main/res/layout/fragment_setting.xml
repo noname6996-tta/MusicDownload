@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundPrimary">
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/updatepremium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnUpdateNow"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btnupdatepre"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <View
+        android:id="@+id/viewRattingApp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_radius_play_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="34dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_baseline_star_24"
+        app:layout_constraintBottom_toBottomOf="@+id/viewRattingApp"
+        app:layout_constraintStart_toStartOf="@+id/viewRattingApp"
+        app:layout_constraintTop_toTopOf="@+id/viewRattingApp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/rating_app"
+        android:textColor="@color/white"
+        android:textFontWeight="400"
+        android:textSize="14sp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewRattingApp"
+        app:layout_constraintStart_toEndOf="@+id/imageView10"
+        app:layout_constraintTop_toTopOf="@+id/viewRattingApp" />
+    <View
+        android:id="@+id/viewFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_radius_play_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewRattingApp" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="28dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="14dp"
+        android:src="@drawable/ic_baseline_email_24"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFeedback"
+        app:layout_constraintStart_toStartOf="@+id/viewFeedback"
+        app:layout_constraintTop_toTopOf="@+id/viewFeedback" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/feedback"
+        android:textColor="@color/white"
+        android:textFontWeight="400"
+        android:textSize="14sp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFeedback"
+        app:layout_constraintStart_toEndOf="@+id/imageView11"
+        app:layout_constraintTop_toTopOf="@+id/viewFeedback" />
+    <View
+        android:id="@+id/viewPrivacyTerm"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_radius_play_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewFeedback" />
+
+    <ImageView
+        android:id="@+id/imageviewRattingApp"
+        android:layout_width="28dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="14dp"
+        android:src="@drawable/ic_baseline_privacy_tip_24"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPrivacyTerm"
+        app:layout_constraintStart_toStartOf="@+id/viewPrivacyTerm"
+        app:layout_constraintTop_toTopOf="@+id/viewPrivacyTerm" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/privacy_terms"
+        android:textColor="@color/white"
+        android:textFontWeight="400"
+        android:textSize="14sp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPrivacyTerm"
+        app:layout_constraintStart_toEndOf="@+id/imageviewRattingApp"
+        app:layout_constraintTop_toTopOf="@+id/viewPrivacyTerm" />
+    <View
+        android:id="@+id/viewShareWithF"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_radius_play_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPrivacyTerm" />
+
+    <ImageView
+        android:id="@+id/imageviewFeedback"
+        android:layout_width="24dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="18dp"
+        android:src="@drawable/share_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/viewShareWithF"
+        app:layout_constraintStart_toStartOf="@+id/viewShareWithF"
+        app:layout_constraintTop_toTopOf="@+id/viewShareWithF" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/share_with_friend"
+        android:textColor="@color/white"
+        android:textFontWeight="400"
+        android:textSize="14sp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewShareWithF"
+        app:layout_constraintStart_toEndOf="@+id/imageviewFeedback"
+        app:layout_constraintTop_toTopOf="@+id/viewShareWithF" />
+</androidx.constraintlayout.widget.ConstraintLayout>

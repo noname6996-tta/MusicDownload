@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="580dp"
+    android:background="@color/backgroundPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:cardCornerRadius="@dimen/radius_corner"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#1B1A21">
+
+            <ImageView
+                android:id="@+id/imgChangeRegionIcon"
+                android:layout_width="170dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/changeregion_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/border_search_change_region"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgChangeRegionIcon" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="36dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/roboto"
+                android:hint="@string/default_hint_search"
+                android:textColor="@color/text_gray"
+                android:textColorHint="@color/text_gray"
+                android:textFontWeight="400"
+                app:layout_constraintBottom_toBottomOf="@+id/view4"
+                app:layout_constraintStart_toStartOf="@+id/view4"
+                app:layout_constraintTop_toTopOf="@+id/view4" />
+
+            <View
+                android:layout_marginTop="10dp"
+                android:id="@+id/view7Region"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/background_radius_corner_topranking"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+            <ImageView
+                android:id="@+id/imgCountry"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="6dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/vn_flag"
+                app:layout_constraintBottom_toBottomOf="@+id/view7Region"
+                app:layout_constraintStart_toStartOf="@+id/view7Region"
+                app:layout_constraintTop_toTopOf="@+id/view7Region" />
+
+            <TextView
+                android:id="@+id/tvNameCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/country"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view7Region"
+                app:layout_constraintStart_toEndOf="@+id/imgCountry"
+                app:layout_constraintTop_toTopOf="@+id/view7Region" />
+
+            <View
+                android:layout_marginTop="10dp"
+                android:id="@+id/view8Region"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/background_radius_corner_topranking"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view7Region" />
+
+            <ImageView
+                android:id="@+id/imgCountry2"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="6dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/vn_flag"
+                app:layout_constraintBottom_toBottomOf="@+id/view8Region"
+                app:layout_constraintStart_toStartOf="@+id/view8Region"
+                app:layout_constraintTop_toTopOf="@+id/view8Region" />
+
+            <TextView
+                android:id="@+id/tvNameCountry2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/country2"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view8Region"
+                app:layout_constraintStart_toEndOf="@+id/imgCountry2"
+                app:layout_constraintTop_toTopOf="@+id/view8Region" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

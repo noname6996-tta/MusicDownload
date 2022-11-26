@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.musicdownload.view.fragment.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_moreFragment"
+            app:destination="@id/moreFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_genresMusicListFragment"
+            app:destination="@id/genresMusicListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_playActivity"
+            app:destination="@id/playActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.example.musicdownload.view.fragment.MoreFragment"
+        android:label="MoreFragment"
+        tools:layout="@layout/fragment_more">
+        <argument
+            android:name="indexOF"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_moreFragment_to_genresMusicListFragment"
+            app:destination="@id/genresMusicListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playListFragment"
+        android:name="com.example.musicdownload.view.fragment.PlayListFragment"
+        tools:layout="@layout/fragment_playlist"
+        android:label="PlayListFragment" >
+        <action
+            android:id="@+id/action_playListFragment_to_musicPlaylistFragment"
+            app:destination="@id/musicPlaylistFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_search"
+        android:id="@+id/searchFragment"
+        android:name="com.example.musicdownload.view.fragment.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_playActivity"
+            app:destination="@id/playActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/downloadManagerFragment"
+        android:name="com.example.musicdownload.view.fragment.DownloadManagerFragment"
+        android:label="DownloadedFragment"
+        tools:layout="@layout/fragment_download_manager">
+        <action
+            android:id="@+id/action_downloadManagerFragment_to_playActivity"
+            app:destination="@id/playActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/genresMusicListFragment"
+        tools:layout="@layout/fragment_music_genres"
+        android:name="com.example.musicdownload.view.fragment.GenresMusicListFragment"
+        android:label="GenresMusicListFragment">
+        <action
+            android:id="@+id/action_genresMusicListFragment_to_moreFragment"
+            app:destination="@id/moreFragment" />
+        <argument android:name="genresName"
+            app:argType="string" />
+        <argument
+            android:name="genresImage"
+            app:argType="string" />
+        <argument android:name="genresKeySearch"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_genresMusicListFragment_to_playActivity"
+            app:destination="@id/playActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        tools:layout="@layout/fragment_setting"
+        android:name="com.example.musicdownload.view.fragment.SettingFragment"
+        android:label="SettingFragment" />
+    <fragment
+        android:id="@+id/playActivity"
+        android:name="com.example.musicdownload.view.fragment.PlayActivity"
+        android:label="activity_play"
+        tools:layout="@layout/activity_play" >
+        <action
+            android:id="@+id/action_playActivity_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="positionMusic"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_playActivity_to_musicPlaylistFragment"
+            app:destination="@id/musicPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/musicPlaylistFragment"
+        tools:layout="@layout/list_playlist_layout"
+        android:name="com.example.musicdownload.view.fragment.MusicPlaylistFragment"
+        android:label="MusicPlaylistFragment" >
+        <action
+            android:id="@+id/action_musicPlaylistFragment_to_playActivity"
+            app:destination="@id/playActivity" />
+        <action
+            android:id="@+id/action_musicPlaylistFragment_to_playListFragment"
+            app:destination="@id/playListFragment" />
+        <argument
+            android:name="playlist"
+            app:argType="com.example.musicdownload.data.model.PlayList" />
+    </fragment>
+    <fragment
+        android:id="@+id/downloadedFragment"
+        tools:layout="@layout/fragment_downloaded"
+        android:name="com.example.musicdownload.view.fragment.DownloadedFragment"
+        android:label="DownloadedFragment" >
+        <action
+            android:id="@+id/action_downloadedFragment_to_playActivity"
+            app:destination="@id/playActivity" />
+    </fragment>
+</navigation>
