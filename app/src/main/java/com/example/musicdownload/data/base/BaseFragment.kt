@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,8 @@ import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.data.model.PlayList
+import com.example.musicdownload.view.fragment.DownloadManagerFragment
+import com.example.musicdownload.view.fragment.DownloadedFragment
 import com.example.musicdownload.view.fragment.DownloadingFragment
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.PlayListViewModel
@@ -109,16 +112,15 @@ open class BaseFragment : Fragment() {
         val favorite = bottomSheetDialogSong.findViewById<ImageView>(R.id.imgFavoriteMusic)
         val musicPlayListViewModel = ViewModelProvider(this)[MusicPlayListViewModel::class.java]
         var isFavorite: Boolean = false
-        var musicPlaylistid : Int = 0
+        var musicPlaylistid: Int = 0
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
             Observer { musicplaylist ->
-                for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].name.equals(music.name.toString())&& musicplaylist[item].favorite){
+                for (item: Int in 0..musicplaylist.size - 1) {
+                    if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
                         favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
                         musicPlaylistid = musicplaylist[item].id
                         isFavorite = true
-                    }
-                    else {
+                    } else {
                         favorite!!.setImageResource(R.drawable.ic_baseline_favorite_24)
                         isFavorite = false
                     }
@@ -128,7 +130,7 @@ open class BaseFragment : Fragment() {
 
 
         favorite?.setOnClickListener {
-            if (!isFavorite){
+            if (!isFavorite) {
                 val musicPlaylist = MusicPlaylist(
                     0,
                     false,
@@ -142,23 +144,23 @@ open class BaseFragment : Fragment() {
                 )
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-            }
-            else {
+            } else {
                 musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toLong())
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             }
         }
         var viewDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewDownloadSong)
-        viewDownloadSong?.setOnClickListener{
+        viewDownloadSong?.setOnClickListener {
             Data.listDownload.add(music)
             FileAdapter.list.add(music)
             var fetch: Fetch
-            val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(requireContext())
-                .setDownloadConcurrentLimit(999999)
-                .enableLogging(true)
-                .setHttpDownloader(OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
-                .setNamespace(DownloadingFragment.FETCH_NAMESPACE)
-                .build()
+            val fetchConfiguration: FetchConfiguration =
+                FetchConfiguration.Builder(requireContext())
+                    .setDownloadConcurrentLimit(999999)
+                    .enableLogging(true)
+                    .setHttpDownloader(OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
+                    .setNamespace(DownloadingFragment.FETCH_NAMESPACE)
+                    .build()
             fetch = Fetch.Impl.getInstance(fetchConfiguration)
 
             val requests: List<Request> = Data.getFetchRequestWithGroupId(
@@ -167,6 +169,7 @@ open class BaseFragment : Fragment() {
             )
             fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
             Toast.makeText(context, "Downloading", Toast.LENGTH_LONG).show()
+            bottomSheetDialogSong.dismiss()
         }
     }
 
@@ -199,6 +202,11 @@ open class BaseFragment : Fragment() {
         playListViewModel.readAllData.observe(viewLifecycleOwner, Observer { playlist ->
             bottomSheetPlaylistAdapter.setPlayList(playlist, requireContext())
         })
+
+        val btnBack  = bottomSheetDialogSong.findViewById<ImageView>(R.id.imgBackAddMusicToPlayList)
+        btnBack?.setOnClickListener {
+            bottomSheetDialogSong.dismiss()
+        }
     }
 
     open fun showDialogAdd(context: Context) {
@@ -228,6 +236,14 @@ open class BaseFragment : Fragment() {
         } else {
             Toast.makeText(context, "Add PlayList: $name fail", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun updatePlayList(playList: PlayList) {
+        val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
+        // Create play list
+        val updatePlayList = PlayList(playList.id, playList.name, playList.number, playList.image)
+        // update Data to database
+        playListViewModel.updatePlaylist(updatePlayList)
     }
 
     fun inputCheck(a: String): Boolean {

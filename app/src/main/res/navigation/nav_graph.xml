@@ -23,8 +23,15 @@
             android:id="@+id/action_homeFragment_to_genresMusicListFragment"
             app:destination="@id/genresMusicListFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_playActivity"
-            app:destination="@id/playActivity" />
+            android:id="@+id/action_homeFragment_to_downloadManagerFragment"
+            app:destination="@id/downloadManagerFragment" />
+        <!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_downloadManagerFragment"-->
+<!--            app:destination="@id/downloadManagerFragment" >-->
+<!--            <argument android:name="state"-->
+<!--                app:argType="String"-->
+<!--                android:defaultValue="downloading"/>-->
+<!--        </action>-->
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
@@ -55,19 +62,12 @@
         <action
             android:id="@+id/action_searchFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_playActivity"
-            app:destination="@id/playActivity" />
     </fragment>
     <fragment
         android:id="@+id/downloadManagerFragment"
         android:name="com.example.musicdownload.view.fragment.DownloadManagerFragment"
         android:label="DownloadedFragment"
-        tools:layout="@layout/fragment_download_manager">
-        <action
-            android:id="@+id/action_downloadManagerFragment_to_playActivity"
-            app:destination="@id/playActivity" />
-    </fragment>
+        tools:layout="@layout/fragment_download_manager"/>
     <fragment
         android:id="@+id/genresMusicListFragment"
         tools:layout="@layout/fragment_music_genres"
@@ -84,8 +84,8 @@
         <argument android:name="genresKeySearch"
             app:argType="string" />
         <action
-            android:id="@+id/action_genresMusicListFragment_to_playActivity"
-            app:destination="@id/playActivity" />
+            android:id="@+id/action_genresMusicListFragment_to_downloadManagerFragment"
+            app:destination="@id/downloadManagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -93,28 +93,10 @@
         android:name="com.example.musicdownload.view.fragment.SettingFragment"
         android:label="SettingFragment" />
     <fragment
-        android:id="@+id/playActivity"
-        android:name="com.example.musicdownload.view.fragment.PlayActivity"
-        android:label="activity_play"
-        tools:layout="@layout/activity_play" >
-        <action
-            android:id="@+id/action_playActivity_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <argument
-            android:name="positionMusic"
-            app:argType="integer"/>
-        <action
-            android:id="@+id/action_playActivity_to_musicPlaylistFragment"
-            app:destination="@id/musicPlaylistFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/musicPlaylistFragment"
         tools:layout="@layout/list_playlist_layout"
         android:name="com.example.musicdownload.view.fragment.MusicPlaylistFragment"
         android:label="MusicPlaylistFragment" >
-        <action
-            android:id="@+id/action_musicPlaylistFragment_to_playActivity"
-            app:destination="@id/playActivity" />
         <action
             android:id="@+id/action_musicPlaylistFragment_to_playListFragment"
             app:destination="@id/playListFragment" />
@@ -126,9 +108,5 @@
         android:id="@+id/downloadedFragment"
         tools:layout="@layout/fragment_downloaded"
         android:name="com.example.musicdownload.view.fragment.DownloadedFragment"
-        android:label="DownloadedFragment" >
-        <action
-            android:id="@+id/action_downloadedFragment_to_playActivity"
-            app:destination="@id/playActivity" />
-    </fragment>
+        android:label="DownloadedFragment" />
 </navigation>

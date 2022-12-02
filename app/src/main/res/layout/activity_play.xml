@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutPlayingMusic"
         android:layout_width="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:scrollbars="horizontal"
         android:layout_height="match_parent">
         <ImageView
@@ -79,7 +79,10 @@
 
         <TextView
             android:id="@+id/tvSongNameNowPlaying"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
+            android:maxWidth="300dp"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="5dp"
@@ -148,6 +151,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvSongNameNowPlaying" />
 
         <ImageView
+            android:id="@+id/imgPlayFavorite"
             android:contentDescription="@string/more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,10 +164,12 @@
         <SeekBar
             android:id="@+id/seekBarNowPlaying"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="6dp"
+            android:progressDrawable="@drawable/custom_seekbar"
+            android:thumb="@drawable/custom_thumb"
             app:layout_constraintTop_toBottomOf="@+id/tvSingerSongNowPlaying" />
 
         <TextView
@@ -217,8 +223,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -229,8 +237,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/radius_20"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

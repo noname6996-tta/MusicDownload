@@ -54,7 +54,7 @@ class HomeTopListenedAdapter() :
                 it(musics[position])
             }
         }
-        holder.binding.imgItemListened.setOnClickListener{
+        holder.binding.layoutTopListened.setOnClickListener{
             onClickPlayMusic?.let{
                 it(position)
             }

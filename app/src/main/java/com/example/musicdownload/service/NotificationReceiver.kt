@@ -54,8 +54,8 @@ class NotificationReceiver:BroadcastReceiver() {
         playMusic()
     }
     private fun stopService(){
-        val service= MusicService()
-        service.stopSelf()
-        exitApplication()
+        PlayActivity.musicService?.stopForeground(true)
+        PlayActivity.musicService?.mediaPlayer?.pause()
+        PlayActivity.isPlaying = false
     }
 }

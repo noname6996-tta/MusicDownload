@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
-        android:text="DOWNLOAD"
+        android:text="DOWNLOADER"
         android:textColor="@color/teal_200"
         android:textFontWeight="700"
         android:textSize="24dp"

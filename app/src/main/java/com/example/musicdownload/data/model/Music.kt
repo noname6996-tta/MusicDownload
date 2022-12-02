@@ -1,7 +1,9 @@
 package com.example.musicdownload.data.model
 
 import android.media.MediaMetadataRetriever
+import android.os.Parcelable
 import com.example.musicdownload.view.fragment.PlayActivity
+import kotlinx.android.parcel.Parcelize
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 

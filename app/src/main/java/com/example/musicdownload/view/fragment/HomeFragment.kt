@@ -1,5 +1,6 @@
 package com.example.musicdownload.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -122,7 +123,10 @@ class HomeFragment : BaseFragment() {
         binding.viewChangeRegon.setOnClickListener {
             setBottomSheetRegion()
         }
-
+        binding.btnGoToDownloadedSong.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToDownloadManagerFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun addData() {
@@ -135,6 +139,8 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setRecTopListened() {
+        val intent = Intent(activity, PlayActivity::class.java)
+
         // set adapter
         binding.recToplistened.adapter = topListenedAdapter
 
@@ -144,10 +150,8 @@ class HomeFragment : BaseFragment() {
         binding.recToplistened.layoutManager = linearLayoutManager
         //
 
-
         viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) {
             topListenedAdapter.setMovieList(it.take(5), requireContext())
-
         }
         viewModel.getToplistenedHome()
         viewModel.errorMessage.observe(viewLifecycleOwner) {}
@@ -156,17 +160,20 @@ class HomeFragment : BaseFragment() {
             showBottomSheetMusic(it)
         }
         topListenedAdapter.setClickPlayMusic {
-            val action = HomeFragmentDirections.actionHomeFragmentToPlayActivity(it)
-            viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) { listMusic ->
-                listMusicHome.addAll(listMusic)
-                findNavController().navigate(action)
+            listMusicHome.clear()
+            PlayActivity.isPlaying = false
+            intent.putExtra("index", it)
+            intent.putExtra("MainActivitySong", "HomeFragment")
+            viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) {
+                listMusicHome.addAll(it)
             }
+            startActivity(intent)
         }
     }
 
     private fun setRecHomeDownload() {
         // set adapter
-
+        val intent = Intent(activity, PlayActivity::class.java)
         binding.viewPager2.adapter = downloadAdapter
         binding.viewPager2.offscreenPageLimit = 2
         binding.viewPager2.clipToPadding = false
@@ -195,11 +202,14 @@ class HomeFragment : BaseFragment() {
             }
         })
         downloadAdapter.setClickPlayMusic {
-            val action = HomeFragmentDirections.actionHomeFragmentToPlayActivity(it)
+            listMusicHome.clear()
+            PlayActivity.isPlaying = false
+            intent.putExtra("index", it)
+            intent.putExtra("MainActivitySong", "HomeFragment")
             viewModel.responseListenedDownLoadHome.observe(viewLifecycleOwner) { listMusic ->
                 listMusicHome.addAll(listMusic)
-                findNavController().navigate(action)
             }
+            startActivity(intent)
         }
     }
 
@@ -215,6 +225,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setRecHomeRanking() {
+        val intent = Intent(activity, PlayActivity::class.java)
         // set recycleView layout
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -229,15 +240,20 @@ class HomeFragment : BaseFragment() {
         viewModel.getRankingHome()
 
         rankingAdapter.setClickPlayMusic {
-            val action = HomeFragmentDirections.actionHomeFragmentToPlayActivity(it)
+            listMusicHome.clear()
+            PlayActivity.isPlaying = false
+            intent.putExtra("index", it)
+            intent.putExtra("MainActivitySong", "HomeFragment")
             viewModel.responseListenedRankingHome.observe(viewLifecycleOwner) { listMusic ->
                 listMusicHome.addAll(listMusic)
-                findNavController().navigate(action)
+
             }
+            startActivity(intent)
         }
     }
 
     private fun setTopDownloadHome() {
+        val intent = Intent(activity, PlayActivity::class.java)
         // set adapter
         binding.recTopDownload.adapter = topDownloadAdapter
         // set recycleView layout
@@ -253,11 +269,14 @@ class HomeFragment : BaseFragment() {
             showBottomSheetMusic(it)
         }
         topDownloadAdapter.setClickPlayMusic {
-            val action = HomeFragmentDirections.actionHomeFragmentToPlayActivity(it)
+            listMusicHome.clear()
+            PlayActivity.isPlaying = false
+            intent.putExtra("index", it)
+            intent.putExtra("MainActivitySong", "HomeFragment")
             viewModel.responseListenedTopDownLoadHome.observe(viewLifecycleOwner) { listMusic ->
                 listMusicHome.addAll(listMusic)
-                findNavController().navigate(action)
             }
+            startActivity(intent)
         }
     }
 
@@ -292,41 +311,5 @@ class HomeFragment : BaseFragment() {
             binding.tvRegionHome.text = "Eng"
             bottomSheetDialog.dismiss()
         }
-    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        if (PlayActivity.musicService!= null){
-//            binding.layoutPlayHomeBottom.visibility = VISIBLE
-//            binding.tvNameSongPlayHome.text = PlayActivity.listMusicPlay[PlayActivity.songPosition].name
-//            binding.tvSingerSongPlayHome.text = PlayActivity.listMusicPlay[PlayActivity.songPosition].artistName
-//            //seekBarSetup()
-//            binding.seekBarHome.setOnSeekBarChangeListener(object :
-//                SeekBar.OnSeekBarChangeListener {
-//                override fun onProgressChanged(
-//                    seekBar: SeekBar?,
-//                    progress: Int,
-//                    fromUser: Boolean
-//                ) {
-//                    if (fromUser) {
-//                        PlayActivity.musicService!!.mediaPlayer!!.seekTo(progress)
-//                        PlayActivity.musicService!!.showNotification(if (PlayActivity.isPlaying) R.drawable.ic_baseline_pause_24 else R.drawable.ic_baseline_play_arrow_24)
-//                    }
-//                }
-//
-//                override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
-//                override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
-//            })
-//            binding.imgPlayBtnHome.setImageResource(R.drawable.ic_baseline_pause_24)
-//            if(PlayActivity.isPlaying) binding.imgPlayBtnHome.setImageResource(R.drawable.ic_baseline_pause_24)
-//            else binding.imgPlayBtnHome.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-//        }
-//    }
-
-    fun seekBarSetup(){
-        runnable = Runnable {
-            Handler(Looper.getMainLooper()).postDelayed(runnable, 200)
-        }
-        Handler(Looper.getMainLooper()).postDelayed(runnable, 0)
     }
 }

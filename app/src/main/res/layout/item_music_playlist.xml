@@ -14,49 +14,60 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewItemMusicPlaylist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutMusicPlayList"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgMoreItemMusicPlaylist"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewItemMusicPlaylist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imgItemMusicPlaylist"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/background_radius_corner_white"
-                android:scaleType="centerCrop"
-                android:src="@drawable/demo_img_download" />
-        </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/imgItemMusicPlaylist"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/background_radius_corner_white"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/demo_img_download" />
+            </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tvItemMusicPlaylistNameSong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="18dp"
-            android:text="Lazy Song"
-            android:textColor="@color/white"
-            app:layout_constraintLeft_toRightOf="@+id/cardViewItemMusicPlaylist"
-            app:layout_constraintTop_toTopOf="parent"></TextView>
+            <TextView
+                android:id="@+id/tvItemMusicPlaylistNameSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="18dp"
+                android:text="Lazy Song"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toRightOf="@+id/cardViewItemMusicPlaylist"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/tvItemMusicPlaylistSingerSong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="6dp"
-            android:maxWidth="150dp"
-            android:text="Alex Matlac"
-            android:textColor="#909090"
-            android:textSize="10dp"
-            app:layout_constraintLeft_toRightOf="@+id/cardViewItemMusicPlaylist"
-            app:layout_constraintTop_toBottomOf="@id/tvItemMusicPlaylistNameSong" />
+            <TextView
+                android:id="@+id/tvItemMusicPlaylistSingerSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="6dp"
+                android:maxWidth="150dp"
+                android:text="Alex Matlac"
+                android:textColor="#909090"
+                android:textSize="10dp"
+                app:layout_constraintLeft_toRightOf="@+id/cardViewItemMusicPlaylist"
+                app:layout_constraintTop_toBottomOf="@id/tvItemMusicPlaylistNameSong" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
+            android:padding="8dp"
             android:id="@+id/imgMoreItemMusicPlaylist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

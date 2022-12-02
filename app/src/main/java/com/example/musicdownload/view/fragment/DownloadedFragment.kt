@@ -2,13 +2,16 @@ package com.example.musicdownload.view.fragment
 
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.media.MediaScannerConnection
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,30 +19,34 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.compose.ui.text.toLowerCase
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.musicdownload.R
 import com.example.musicdownload.adapter.HomeTopListenedAdapter
 import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
+import com.example.musicdownload.data.model.MusicLocal
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.databinding.FragmentDownloadedBinding
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuandq.radiofm.data.base.BaseFragment
+import timber.log.Timber
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.math.log
 
 
 class DownloadedFragment : BaseFragment() {
     private lateinit var binding: FragmentDownloadedBinding
-    private var arrayMusicModel = ArrayList<Music>()
+
+    companion object {
+        var arrayMusicModel = ArrayList<Music>()
+    }
+
+    var arrayMusicLocal = ArrayList<MusicLocal>()
     private val adapter = HomeTopListenedAdapter()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,38 +62,23 @@ class DownloadedFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         getDataStoreEx()
-        addEvent()
     }
 
-    private fun addEvent() {
-        adapter.setClickPlayMusic {
-            HomeFragment.listMusicHome.clear()
-            HomeFragment.listMusicHome = arrayMusicModel
-            val action = DownloadedFragmentDirections.actionDownloadedFragmentToPlayActivity(it)
-            findNavController().navigate(action)
-        }
-    }
 
     private fun initUi() {
-//        if (Data.path.isEmpty()){
-//
-//        } else {
-//            MediaScannerConnection.scanFile(
-//                requireContext(), listOf(Data.path).toTypedArray(), null, null)
-//        }
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recDownloaded.layoutManager = linearLayoutManager
-
         adapter.setClickShowMusic { showBSAfterdownMusic(it) }
         adapter.setClickPlayMusic {
+            HomeFragment.listMusicHome.clear()
+            PlayActivity.isPlaying = false
+            val intent = Intent(activity, PlayActivity::class.java)
+            intent.putExtra("MainActivitySong", "DownloadedFragment")
+            HomeFragment.listMusicHome = arrayMusicModel
+            intent.putExtra("index", it)
+            startActivity(intent)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-
     }
 
     private fun showBSAfterdownMusic(music: Music) {
@@ -124,7 +116,7 @@ class DownloadedFragment : BaseFragment() {
         var musicPlaylistid: Int = 0
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
             Observer { musicplaylist ->
-                for (item: Int in musicplaylist.indices) {
+                for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
                         favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
                         musicPlaylistid = musicplaylist[item].id
@@ -161,30 +153,59 @@ class DownloadedFragment : BaseFragment() {
 
         val viewSetRing: View = bottomSheetDialogSong.findViewById(R.id.viewSetRing)!!
         viewSetRing.setOnClickListener {
+            for (i in 0..arrayMusicLocal.size - 1) {
+                if (music.name == arrayMusicLocal[i].title) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        checkSystemWriteSettings(requireContext()) {
+                            if (it) {
+                                setRing(arrayMusicLocal[i].title)
+                                Log.e("ring",arrayMusicLocal[i].title.toString())
+                            }
+                        }
+                    }
+                }
+            }
 
         }
-
+        val viewRemoveDownloadSong: View =
+            bottomSheetDialogSong.findViewById(R.id.viewRemoveDownloadSong)!!
+        viewRemoveDownloadSong.setOnClickListener {
+            for (i in 0..arrayMusicLocal.size - 1) {
+                if (music.name == arrayMusicLocal[i].title) {
+                    val fdelete: File = File(arrayMusicLocal[i].data)
+                    fdelete.delete()
+                    getDataStoreEx()
+                    bottomSheetDialogSong.dismiss()
+                }
+            }
+        }
     }
 
-    private fun setRing() {
-        val k = File("path", "mysong.mp3") // path is a file to /sdcard/media/ringtone
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkSystemWriteSettings(ctx: Context, onGranted: (Boolean) -> Unit) {
+        if (!Settings.System.canWrite(ctx)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_WRITE_SETTINGS,
+                Uri.parse("package:" + ctx.packageName)
+            )
+            ctx.startActivity(intent)
+            onGranted(false)
+        } else {
+            onGranted(true)
+        }
+    }
 
-
+    private fun setRing(fileName: String) {
+        var path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            .toString() + "/DownloadList/"
+        val k = File(
+            path, "$fileName.mp3"
+        ) // path is a file to /sdcard/media/ringtone
         val values = ContentValues()
         values.put(MediaStore.MediaColumns.DATA, k.getAbsolutePath())
-        values.put(MediaStore.MediaColumns.TITLE, "My Song title")
-        values.put(MediaStore.MediaColumns.SIZE, 215454)
         values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3")
-        values.put(MediaStore.Audio.Media.ARTIST, "Madonna")
-        values.put(MediaStore.Audio.Media.DURATION, 230)
         values.put(MediaStore.Audio.Media.IS_RINGTONE, true)
-        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false)
-        values.put(MediaStore.Audio.Media.IS_ALARM, false)
-        values.put(MediaStore.Audio.Media.IS_MUSIC, false)
 
-//Insert it into the database
-
-//Insert it into the database
         val uri = MediaStore.Audio.Media.getContentUriForPath(k.getAbsolutePath())
         val newUri: Uri = requireActivity().getContentResolver().insert(uri!!, values)!!
 
@@ -193,9 +214,13 @@ class DownloadedFragment : BaseFragment() {
             RingtoneManager.TYPE_RINGTONE,
             newUri
         )
+        Toast.makeText(requireContext(), "Set nhạc chuông thành công nhá bro", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun getDataStoreEx() {
+        arrayMusicLocal = ArrayList()
+        arrayMusicModel = ArrayList()
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.TITLE,
@@ -205,7 +230,8 @@ class DownloadedFragment : BaseFragment() {
             MediaStore.Audio.Media.ARTIST,
         )
         val dirfile: String = "DownloadList"
-        val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " +"${MediaStore.Audio.Media.DATA} LIKE '%$dirfile%'"
+        val selection =
+            MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + "${MediaStore.Audio.Media.DATA} LIKE '%$dirfile%'"
         val cursor = requireContext().contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             projection,
@@ -214,71 +240,93 @@ class DownloadedFragment : BaseFragment() {
             null
         )
 
-        if (cursor != null) {
-            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-            val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-            val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
-            val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
-            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-            while (cursor.moveToNext()) {
-                var id: Long = cursor.getLong(idColumn)
-                val title: String = cursor.getString(titleColumn)
-                val data: String = cursor.getString(dataColumn)
-                val duration: String = cursor.getString(durationColumn)
-                val album: Long = cursor.getLong(albumColumn)
-                val name: String = cursor.getString(nameColumn)
+        try {
+            if (cursor != null) {
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+                val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+                val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+                val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+                val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+                while (cursor.moveToNext()) {
+                    var id: Long = cursor.getLong(idColumn)
+                    val title: String = cursor.getString(titleColumn)
+                    val data: String = cursor.getString(dataColumn)
+                    val duration: String = cursor.getString(durationColumn)
+                    val album: Long = cursor.getLong(albumColumn)
+                    val name: String = cursor.getString(nameColumn)
 
-                val albumArtworkUri = ContentUris.withAppendedId(
-                    Uri.parse("content://media/external/audio/albumart"), album
-                ).toString()
+                    val albumArtworkUri = ContentUris.withAppendedId(
+                        Uri.parse("content://media/external/audio/albumart"), album
+                    ).toString()
 
-                val song = Music(
-                    "",
-                    title,
-                    duration.trim().toInt(),
-                    "",
-                    name,
-                    "",
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    data,
-                    "",
-                    "",
-                    "",
-                    "",
-                    albumArtworkUri,
-                    true,
-                    ""
-                )
-                arrayMusicModel.add(song)
+                    val songLocal = MusicLocal(
+                        id, title, data, duration, album, name
+                    )
+
+                    val song = Music(
+                        "",
+                        title,
+                        duration.trim().toInt(),
+                        "",
+                        name,
+                        "",
+                        "",
+                        "",
+                        "",
+                        0,
+                        "",
+                        "",
+                        data,
+                        "",
+                        "",
+                        "",
+                        "",
+                        albumArtworkUri,
+                        true,
+                        ""
+                    )
+                    arrayMusicLocal.add(songLocal)
+                    arrayMusicModel.add(song)
+                }
+
             }
+        } catch (e : Exception) {
 
         }
+
         if (arrayMusicModel.size == 0) {
-            binding.tvHaveNull.visibility = View.VISIBLE
             binding.recDownloaded.visibility = View.GONE
         } else {
             binding.recDownloaded.visibility = View.VISIBLE
-            binding.tvHaveNull.visibility = View.GONE
             // set to list view if has data
-//            list_Music.adapter = SongAdapter(this, arrayAudioModel)
             binding.recDownloaded.adapter = adapter
             adapter.setMovieList(arrayMusicModel, requireContext())
         }
     }
 
-    private fun getDDSD(){
+    private fun getDDSD() {
         val file = Environment.getExternalStorageDirectory().getAbsolutePath();
         File(file).walk().toList().forEach {
             val filemp3 = it.name.toLowerCase(Locale.ROOT).contains(".mp3")
             if (filemp3) {
-                Log.d("aaaaa", "file =${it.name}")
+                Log.d("aaaaa", "file =${it}")
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!Data.listDownload.isEmpty()) {
+            for (i in 0..Data.listDownload.size - 1) {
+                MediaScannerConnection.scanFile(
+                    requireContext(), arrayOf(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                            .toString() + "/DownloadList/${Data.listDownload[i].name}.mp3"
+                    ), null, null
+                )
+            }
+
         }
     }
 }

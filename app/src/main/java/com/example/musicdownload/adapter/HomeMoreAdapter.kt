@@ -19,7 +19,10 @@ class HomeMoreAdapter(private val onClickMusic: (Music)->Unit) : RecyclerView.Ad
         notifyDataSetChanged()
     }
 
-
+    private var onClickPlayMusic: ((i:Int) -> Unit)? = null
+    fun setClickPlayMusic(position: ((i:Int) -> Unit)) {
+        onClickPlayMusic = position
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,6 +41,11 @@ class HomeMoreAdapter(private val onClickMusic: (Music)->Unit) : RecyclerView.Ad
         }
         Glide.with(holder.itemView.context).load(music.image).error(R.drawable.demo_img_download)
             .into(holder.binding.imgMore)
+        holder.binding.layoutItemMorePlayMusic.setOnClickListener {
+            onClickPlayMusic?.let{
+                it(position)
+            }
+        }
     }
 
     override fun getItemCount(): Int {

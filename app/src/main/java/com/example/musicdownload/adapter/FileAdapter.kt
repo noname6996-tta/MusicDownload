@@ -11,12 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musicdownload.R
@@ -25,18 +20,19 @@ import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.download.Data.listDownload
 import com.example.musicdownload.data.download.Utils
 import com.example.musicdownload.data.model.Music
-import com.example.musicdownload.view.activity.MainActivity
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Status
 import java.io.File
 
-class FileAdapter(context: Context,var actionListener: ActionListener) : RecyclerView.Adapter<FileAdapter.ViewHolder>() {
-    companion object{
+class FileAdapter(context: Context, var actionListener: ActionListener) :
+    RecyclerView.Adapter<FileAdapter.ViewHolder>() {
+    companion object {
         var list = ArrayList<Music>()
+
         class DownloadData {
             var id = 0
             var download: Download? = null
-            var eta: Long = -1L
+            var eta: Long = 0L
             var downloadedBytesPerSecond: Long = 0L
             override fun hashCode(): Int {
                 return id
@@ -53,6 +49,7 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
             }
         }
     }
+
     private val downloads = ArrayList<DownloadData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -65,7 +62,7 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.actionButton.setOnClickListener(null)
         holder.actionButton.isEnabled = true
-        val downloadData : DownloadData = downloads[position]
+        val downloadData: DownloadData = downloads[position]
         var url = ""
         if (downloadData.download != null) {
             url = downloadData.download!!.url
@@ -73,14 +70,13 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
         val uri = Uri.parse(url)
         val status = downloadData.download!!.status
         val context = holder.itemView.context
-        if  (Data.listDownload.isEmpty()){
 
-        } else {
-            holder.titleTextView.text = list[position].name
-            holder.tvArtistDownloading.text = list[position].artistName
-            Glide.with(holder.itemView.context).load(list[position].image).error(R.drawable.demo_img_download)
-                .into(holder.itemView.findViewById(R.id.imgItemDownload))
-        }
+        holder.titleTextView.text = list[position].name
+        holder.tvArtistDownloading.text = list[position].artistName
+        Glide.with(holder.itemView.context).load(list[position].image)
+            .error(R.drawable.demo_img_download)
+            .into(holder.itemView.findViewById(R.id.imgItemDownload))
+
 
         holder.statusTextView.text = getStatusString(status)
         var progress = downloadData.download!!.progress
@@ -89,12 +85,12 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
         }
         holder.progressBar.progress = progress
         holder.progressTextView.text = context.getString(R.string.percent_progress, progress)
-        if (downloadData.eta.equals(-1)) {
+        if (downloadData.eta == 0L) {
             holder.timeRemainingTextView.text = ""
         } else {
             holder.timeRemainingTextView.setText(Utils.getETAString(context, downloadData.eta))
         }
-        if (downloadData.downloadedBytesPerSecond.equals(0)) {
+        if (downloadData.downloadedBytesPerSecond.equals(0L)) {
             holder.downloadedBytesPerSecondTextView.text = ""
         } else {
             holder.downloadedBytesPerSecondTextView.setText(
@@ -103,7 +99,11 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
                     downloadData.downloadedBytesPerSecond
                 )
             )
-            Log.e("downloaded",Utils.getDownloadSpeedString(context, downloadData.downloadedBytesPerSecond).toString())
+            Log.e(
+                "downloaded",
+                Utils.getDownloadSpeedString(context, downloadData.downloadedBytesPerSecond)
+                    .toString()
+            )
         }
 
         when (status) {
@@ -111,7 +111,11 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
                 holder.actionButton.setText(R.string.view)
                 holder.actionButton.setOnClickListener { view: View? ->
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        Toast.makeText(context, "Downloaded Path:" + downloadData.download!!.file, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            "Downloaded Path:" + downloadData.download!!.file,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                     val file = File(downloadData.download!!.file)
                     val uri1 = Uri.fromFile(file)
@@ -119,15 +123,23 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
                     share.setDataAndType(uri1, Utils.getMimeType(context, uri1))
                     context.startActivity(share)
                 }
-//                Toast.makeText(context, "Downloaded complete", Toast.LENGTH_LONG).show()
                 MediaScannerConnection.scanFile(
-                    context, listOf(Data.path[position]).toTypedArray(), null, null)
+                    context,
+                    listOf(Data.path[position]).toTypedArray(),
+                    null,
+                    null
+                )
                 actionListener.onRemoveDownload(
                     downloadData.download!!.id
                 )
-                list.remove(list[position])
-                listDownload.remove(list[position])
-                Data.path.remove(Data.path[position])
+                if (list.size > 0) {
+                    if (list[position] != null) {
+                        listDownload.remove(list[position])
+                        list.remove(list[position])
+                    }
+                }
+
+
             }
             Status.FAILED -> {
                 holder.actionButton.setText(R.string.retry)
@@ -207,7 +219,7 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
 
     fun update(download: Download, eta: Long, downloadedBytesPerSecond: Long) {
         for (position in downloads.indices) {
-            val downloadData :DownloadData = downloads[position]
+            val downloadData: DownloadData = downloads[position]
             if (downloadData.id == download.id) {
                 when (download.status) {
                     Status.REMOVED, Status.DELETED -> {
@@ -241,8 +253,8 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
 
     class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView
-        val tvArtistDownloading : TextView
-        val imgItemDownload : ImageView
+        val tvArtistDownloading: TextView
+        val imgItemDownload: ImageView
         val statusTextView: TextView
         val progressBar: ProgressBar
         val progressTextView: TextView
@@ -262,6 +274,4 @@ class FileAdapter(context: Context,var actionListener: ActionListener) : Recycle
             downloadedBytesPerSecondTextView = itemView.findViewById(R.id.downloadSpeedTextView)
         }
     }
-
-
 }

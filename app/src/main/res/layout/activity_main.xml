@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="#000000"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigation">
 
             <SeekBar
@@ -44,16 +44,20 @@
 
             <TextView
                 android:id="@+id/tvNameSongPlayHome"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="17dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/roboto"
                 android:maxLines="1"
-                android:text="Love the way you lie"
+                android:text="Love the way you liewwwwwwwwwwwwwwww"
                 android:textColor="#FFFFFF"
                 android:textFontWeight="400"
                 android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginRight="6dp"
+                app:layout_constraintEnd_toStartOf="@+id/imgAddPlayListHome"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,18 +78,18 @@
 
             <ImageView
                 android:id="@+id/imgPlayBtnHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/ic_baseline_pause_24"
+                android:src="@drawable/ic_baseline_play_arrow_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imgFavoriteHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginRight="25dp"
                 android:src="@drawable/ic_baseline_favorite_border_24"
                 app:layout_constraintBottom_toBottomOf="parent"

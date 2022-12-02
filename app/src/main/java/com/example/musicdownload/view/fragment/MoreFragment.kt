@@ -1,5 +1,6 @@
 package com.example.musicdownload.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.example.musicRanking.adapter.HomeMoreAdapter
 import com.example.musicdownload.R
 import com.example.musicdownload.adapter.HomeMoreGenresAdapter
+import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.repository.MusicRepository
 import com.example.musicdownload.databinding.FragmentMoreBinding
 import com.example.musicdownload.network.RetrofitService
@@ -32,6 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuandq.radiofm.data.base.BaseFragment
 
 class MoreFragment(): BaseFragment() {
+    lateinit var listMusicMore: ArrayList<Music>
     private lateinit var _binding: FragmentMoreBinding
     lateinit var viewModel: HomeFragmentViewModel
     private val retrofitService = RetrofitService.getInstance()
@@ -82,6 +85,7 @@ class MoreFragment(): BaseFragment() {
     }
 
     private fun addData() {
+        listMusicMore = ArrayList()
         binding.recMore.adapter = homeMoreAdapter
         // set recycleView layout
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -93,6 +97,7 @@ class MoreFragment(): BaseFragment() {
             1 -> {
                 viewModel.responseListenedRankingHome.observe(viewLifecycleOwner) {
                     homeMoreAdapter.setMovieList(it, requireContext())
+                    listMusicMore.addAll(it)
                 }
                 viewModel.errorMessage.observe(viewLifecycleOwner){}
                 viewModel.getRankingHome()
@@ -101,6 +106,7 @@ class MoreFragment(): BaseFragment() {
             2 -> {
                 viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) {
                     homeMoreAdapter.setMovieList(it, requireContext())
+                    listMusicMore.addAll(it)
                 }
                 viewModel.errorMessage.observe(viewLifecycleOwner){}
                 viewModel.getToplistenedHome()
@@ -109,6 +115,7 @@ class MoreFragment(): BaseFragment() {
             3 -> {
                 viewModel.responseListenedTopDownLoadHome.observe(viewLifecycleOwner) {
                     homeMoreAdapter.setMovieList(it, requireContext())
+                    listMusicMore.addAll(it)
                 }
                 viewModel.errorMessage.observe(viewLifecycleOwner){}
                 viewModel.getTopDownLoadHome()
@@ -117,6 +124,16 @@ class MoreFragment(): BaseFragment() {
             4 ->{
                 addDataForGenres()
             }
+        }
+
+        homeMoreAdapter.setClickPlayMusic {
+            HomeFragment.listMusicHome.clear()
+            PlayActivity.isPlaying = false
+            val intent = Intent(activity, PlayActivity::class.java)
+            intent.putExtra("MainActivitySong", "HomeFragment")
+            intent.putExtra("index", it)
+            HomeFragment.listMusicHome.addAll(listMusicMore)
+            startActivity(intent)
         }
     }
 }

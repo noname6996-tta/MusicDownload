@@ -14,14 +14,18 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musicdownload.adapter.FileAdapter
 import com.example.musicdownload.data.download.ActionListener
 import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
+import com.example.musicdownload.data.model.MusicPlaylist
+import com.example.musicdownload.data.model.PlayList
 import com.example.musicdownload.databinding.FragmentDownloadingBinding
 import com.example.musicdownload.view.activity.MainActivity
+import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2core.Downloader.FileDownloaderType
@@ -101,7 +105,7 @@ class DownloadingFragment : Fragment(),ActionListener {
                  )
              }
              for (download in list) {
-                 fileAdapter.addDownload(download!!)
+//                 fileAdapter.addDownload(download!!)
              }
          }.addListener(fetchListener)
     }
@@ -135,13 +139,13 @@ class DownloadingFragment : Fragment(),ActionListener {
                 UNKNOWN_REMAINING_TIME,
                 UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
             )
-            for (i in 0..Data.path.size-1){
-                MediaScannerConnection.scanFile(
-                    requireContext(), listOf(Data.path[i]).toTypedArray(), null, null)
-            }
-
-            Toast.makeText(requireActivity(),"Download complete",Toast.LENGTH_SHORT).show()
+//            for (i in 0..Data.path.size-1){
+//                MediaScannerConnection.scanFile(
+//                    requireContext(), listOf(Data.path[i]).toTypedArray(), null, null)
+//            }
+//            Toast.makeText(requireActivity(),"Download complete",Toast.LENGTH_SHORT).show()
         }
+
 
         override fun onError(download: Download, error: Error, throwable: Throwable?) {
             super.onError(download, error, throwable)
@@ -190,6 +194,8 @@ class DownloadingFragment : Fragment(),ActionListener {
                 UNKNOWN_REMAINING_TIME,
                 UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
             )
+//            Data.listDownload.remove(music)
+//            FileAdapter.list.remove(music)
         }
 
         override fun onDeleted(download: Download) {
@@ -221,8 +227,8 @@ class DownloadingFragment : Fragment(),ActionListener {
         if (requestCode == STORAGE_PERMISSION_CODE && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             enqueueDownloads()
         } else {
-            Snackbar.make(mainView, com.example.musicdownload.R.string.permission_not_enabled, Snackbar.LENGTH_INDEFINITE)
-                .show()
+//            Snackbar.make(requireActivity(), com.example.musicdownload.R.string.permission_not_enabled, Snackbar.LENGTH_INDEFINITE)
+//                .show()
         }
     }
 

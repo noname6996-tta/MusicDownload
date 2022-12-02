@@ -14,52 +14,64 @@
         android:paddingLeft="4dp"
         android:paddingRight="2dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewTopDownload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutTopDownload"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgMoreTopDownload"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" >
 
-            <ImageView
-                android:id="@+id/imgItemTopDownload"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/background_radius_corner_white"
-                android:scaleType="centerCrop"
-                android:src="@drawable/demo_img_download" />
-        </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewTopDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/layoutTopDownload"
+                app:layout_constraintStart_toStartOf="@+id/layoutTopDownload"
+                app:layout_constraintTop_toTopOf="@+id/layoutTopDownload">
 
-        <TextView
-            android:id="@+id/tvTopDownloadNameSong"
-            android:maxLines="1"
-            android:layout_width="120dp"
-            android:maxWidth="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="18dp"
-            android:text="Lazy Song"
-            android:textColor="@color/white"
-            app:layout_constraintLeft_toRightOf="@+id/cardViewTopDownload"
-            app:layout_constraintTop_toTopOf="parent"></TextView>
+                <ImageView
+                    android:id="@+id/imgItemTopDownload"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/background_radius_corner_white"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/demo_img_download" />
+            </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tvTopDownloadSingerSong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="6dp"
-            android:text="Alex Matlac"
-            android:maxWidth="120dp"
-            android:maxLines="1"
-            android:textColor="#909090"
-            android:textSize="10dp"
-            app:layout_constraintLeft_toRightOf="@+id/cardViewTopDownload"
-            app:layout_constraintTop_toBottomOf="@id/tvTopDownloadNameSong" />
+            <TextView
+                android:id="@+id/tvTopDownloadNameSong"
+                android:maxLines="1"
+                android:layout_width="120dp"
+                android:maxWidth="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="18dp"
+                android:text="Lazy Song"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toRightOf="@+id/cardViewTopDownload"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <TextView
+                android:id="@+id/tvTopDownloadSingerSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="6dp"
+                android:text="Alex Matlac"
+                android:maxWidth="120dp"
+                android:maxLines="1"
+                android:textColor="#909090"
+                android:textSize="10dp"
+                app:layout_constraintLeft_toRightOf="@+id/cardViewTopDownload"
+                app:layout_constraintTop_toBottomOf="@id/tvTopDownloadNameSong" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <ImageView
+            android:padding="6dp"
             android:id="@+id/imgMoreTopDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

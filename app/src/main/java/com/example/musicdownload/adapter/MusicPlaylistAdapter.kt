@@ -50,7 +50,7 @@ class MusicPlaylistAdapter() :
                 it(musicPlaylists[position])
             }
         }
-        holder.binding.imgItemMusicPlaylist.setOnClickListener{
+        holder.binding.layoutMusicPlayList.setOnClickListener{
             onClickPlayMusic?.let{
                 it(position)
             }

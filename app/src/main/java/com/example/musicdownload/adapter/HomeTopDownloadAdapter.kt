@@ -50,7 +50,7 @@ class HomeTopDownloadAdapter() : RecyclerView.Adapter<HomeFragmentTopDownloadVie
                 it(musics[position])
             }
         }
-        holder.binding.imgItemTopDownload.setOnClickListener{
+        holder.binding.layoutTopDownload.setOnClickListener{
             onClickPlayMusic?.let{
                 it(position)
             }

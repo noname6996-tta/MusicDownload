@@ -1,10 +1,12 @@
 package com.example.musicdownload.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -17,6 +19,7 @@ import com.example.musicdownload.databinding.FragmentSearchBinding
 import com.example.musicdownload.network.RetrofitService
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
+import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.example.musicdownload.viewmodel.SearchViewModel
 import com.xuandq.radiofm.data.base.BaseFragment
 
@@ -24,8 +27,7 @@ class SearchFragment : BaseFragment() {
     companion object {
         lateinit var binding: FragmentSearchBinding
     }
-
-    private var a: String = ""
+    private var list = ArrayList<Search>()
     private lateinit var searchViewModel: SearchViewModel
     lateinit var viewModel: HomeFragmentViewModel
     private val topListenedAdapter = HomeTopListenedAdapter()
@@ -55,8 +57,10 @@ class SearchFragment : BaseFragment() {
     private fun initUi() {
 
         binding.tvCancelSearch.setOnClickListener {
+            var editTextHello = binding.edtSearch.text.toString().trim()
+            insertSearchToDatabase(editTextHello)
             findNavController().popBackStack()
-            insertSearchToDatabase(a)
+
         }
         // set adapter
         binding.recListSearch.adapter = topListenedAdapter
@@ -77,6 +81,7 @@ class SearchFragment : BaseFragment() {
         //
         searchViewModel.readAllMusicData.observe(viewLifecycleOwner, Observer { search ->
             recentlySearchAdapter.setSearchList(search, requireContext())
+            list.addAll(search)
             if (search.isEmpty()) {
                 binding.textView2.visibility = View.GONE
                 binding.recSearchRecently.visibility = View.GONE
@@ -86,42 +91,48 @@ class SearchFragment : BaseFragment() {
             }
 
         })
-        //
-        binding.edtSearchKey.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return true
-            }
 
-            override fun onQueryTextChange(query: String?): Boolean {
-                topListenedAdapter.getFilter()?.filter(query)
-                a = query.toString()
-                return true
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable) {
+                topListenedAdapter.getFilter()?.filter(s)
             }
         })
         topListenedAdapter.setClickShowMusic {
             showBottomSheetMusic(it)
-            insertSearchToDatabase(a)
         }
         topListenedAdapter.setClickPlayMusic {
-            val action = SearchFragmentDirections.actionSearchFragmentToPlayActivity(it)
+            var editTextHello = binding.edtSearch.text.toString().trim()
+            insertSearchToDatabase(editTextHello)
+            val intent = Intent(activity, PlayActivity::class.java)
             viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) { listMusic ->
+                HomeFragment.listMusicHome.clear()
+                PlayActivity.isPlaying = false
                 HomeFragment.listMusicHome.addAll(listMusic)
-                findNavController().navigate(action)
-                insertSearchToDatabase(a)
+                intent.putExtra("MainActivitySong", "HomeFragment")
+                intent.putExtra("index", it)
+                startActivity(intent)
             }
         }
         recentlySearchAdapter.setClickDeleteSearch {
             searchViewModel.deleteSearchlist(it)
         }
         recentlySearchAdapter.setClickSearch {
-            binding.edtSearchKey.setQuery(it.name,true)
+            binding.edtSearch.setText(it.name)
+        }
+
+        binding.btnDeleteSearch.setOnClickListener {
+            binding.edtSearch.setText("")
         }
     }
 
+    //bugggg
     private fun insertSearchToDatabase(name: String) {
         if (inputCheck(name)) {
             // Create play list
-            val search = Search(0, name)
+            val search = Search( name)
             // add Data to database
             searchViewModel.addSearchList(search)
         }

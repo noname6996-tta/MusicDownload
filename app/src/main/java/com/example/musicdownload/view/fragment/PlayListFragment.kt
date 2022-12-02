@@ -34,7 +34,7 @@ class PlayListFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -67,7 +67,7 @@ class PlayListFragment : BaseFragment() {
         }
         // favorite
         val playlistFa = PlayList(0,"Favorite",0,"")
-        binding.viewFavorite.setOnClickListener{
+        binding.layoutItemFavoritePlaylist.setOnClickListener{
             val action = PlayListFragmentDirections.actionPlayListFragmentToMusicPlaylistFragment(playlistFa)
             findNavController().navigate(action)
         }

@@ -45,7 +45,7 @@ class PlayListItemAdapter : RecyclerView.Adapter<PlayListViewHolder>() {
                 it(playLists[position])
             }
         }
-        holder.binding.viewImgPlaylist.setOnClickListener{
+        holder.binding.layoutitemPlaylistMusic.setOnClickListener{
             onClickSendPlayList?.let{
                 it(playLists[position])
             }
