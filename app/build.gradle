@@ -106,10 +106,12 @@ dependencies {
     implementation 'com.airbnb.android:lottie:5.2.0'
     //
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    //
+    // prdownloader
     implementation 'com.mindorks.android:prdownloader:0.6.0'
-    //
+    // dexter
     implementation 'com.karumi:dexter:6.2.3'
+    // circleimageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
 
 kapt {

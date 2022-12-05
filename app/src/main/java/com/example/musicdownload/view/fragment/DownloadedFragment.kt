@@ -165,7 +165,7 @@ class DownloadedFragment : BaseFragment() {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 checkSystemWriteSettings(requireContext()) {
                                     if (it) {
-                                        setRing(arrayMusicLocal[i].title)
+                                        setRing(arrayMusicLocal[i])
                                         Log.e("ring",arrayMusicLocal[i].title.toString())
                                     }
                                 }
@@ -181,6 +181,10 @@ class DownloadedFragment : BaseFragment() {
                         if (music.name == arrayMusicLocal[i].title) {
                             val fdelete: File = File(arrayMusicLocal[i].data)
                             fdelete.delete()
+                            arrayMusicModel.remove(arrayMusicModel[i])
+                            MediaScannerConnection.scanFile(
+                                requireContext(), arrayOf(arrayMusicLocal[i].data), null, null
+                            )
                             getDataStoreEx()
                             bottomSheetDialogSong.dismiss()
                         }
@@ -203,16 +207,22 @@ class DownloadedFragment : BaseFragment() {
         }
     }
 
-    private fun setRing(fileName: String) {
+    private fun setRing(musicLocal: MusicLocal) {
         var path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             .toString() + "/DownloadList/"
         val k = File(
-            path, "$fileName.mp3"
+            path, "${musicLocal.title}.mp3"
         ) // path is a file to /sdcard/media/ringtone
         val values = ContentValues()
-        values.put(MediaStore.MediaColumns.DATA, k.getAbsolutePath())
-        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3")
-        values.put(MediaStore.Audio.Media.IS_RINGTONE, true)
+        values.put(MediaStore.MediaColumns.DATA, k.getAbsolutePath());
+        values.put(MediaStore.MediaColumns.TITLE, musicLocal.title);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
+        values.put(MediaStore.Audio.Media.ARTIST, musicLocal.artist);
+        values.put(MediaStore.Audio.Media.DURATION, musicLocal.duration);
+        values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
+        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
+        values.put(MediaStore.Audio.Media.IS_ALARM, false);
+        values.put(MediaStore.Audio.Media.IS_MUSIC, false);
 
         val uri = MediaStore.Audio.Media.getContentUriForPath(k.getAbsolutePath())
         val newUri: Uri = requireActivity().getContentResolver().insert(uri!!, values)!!

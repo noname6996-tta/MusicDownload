@@ -156,6 +156,9 @@ open class BaseFragment : Fragment() {
         var viewDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewDownloadSong)
         var tvDownload = bottomSheetDialogSong.findViewById<TextView>(R.id.tvDownload)
         var imageviewDownloadSong = bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewDownloadSong)
+        var viewRemoveDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewRemoveDownloadSong)
+        var removeSong = bottomSheetDialogSong.findViewById<TextView>(R.id.removeSong)
+        var imageviewRemoveDownloadSong = bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewRemoveDownloadSong)
         var count : Int =0
         for (i in 0..listMusicOffline.size-1){
             if (music.name == listMusicOffline[i].name){
@@ -166,6 +169,17 @@ open class BaseFragment : Fragment() {
             viewDownloadSong!!.visibility = View.GONE
             tvDownload!!.visibility = View.GONE
             imageviewDownloadSong!!.visibility = View.GONE
+            viewRemoveDownloadSong!!.visibility = View.VISIBLE
+            removeSong!!.visibility = View.VISIBLE
+            imageviewRemoveDownloadSong!!.visibility = View.VISIBLE
+        }
+        else {
+            viewDownloadSong!!.visibility = View.VISIBLE
+            tvDownload!!.visibility = View.VISIBLE
+            imageviewDownloadSong!!.visibility = View.VISIBLE
+            viewRemoveDownloadSong!!.visibility = View.GONE
+            removeSong!!.visibility = View.GONE
+            imageviewRemoveDownloadSong!!.visibility = View.GONE
         }
         viewDownloadSong?.setOnClickListener {
             Data.listDownload.add(music)
@@ -187,6 +201,10 @@ open class BaseFragment : Fragment() {
             fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
             Toast.makeText(context, "Downloading", Toast.LENGTH_LONG).show()
             bottomSheetDialogSong.dismiss()
+        }
+
+        viewRemoveDownloadSong?.setOnClickListener {
+
         }
     }
 

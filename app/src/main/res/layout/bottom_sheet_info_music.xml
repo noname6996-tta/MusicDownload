@@ -165,6 +165,42 @@
                 app:layout_constraintBottom_toBottomOf="@+id/viewDownloadSong"
                 app:layout_constraintStart_toEndOf="@+id/imageviewDownloadSong"
                 app:layout_constraintTop_toTopOf="@+id/viewDownloadSong" />
+
+            <View
+                android:id="@+id/viewRemoveDownloadSong"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="@dimen/radius_corner_8dp"
+                android:layout_marginRight="17dp"
+                android:background="@drawable/bkg_radius_corner_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewDownloadSong"/>
+
+            <ImageView
+                android:id="@+id/imageviewRemoveDownloadSong"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="18dp"
+                android:src="@drawable/delete"
+                app:layout_constraintBottom_toBottomOf="@+id/viewRemoveDownloadSong"
+                app:layout_constraintStart_toStartOf="@+id/viewRemoveDownloadSong"
+                app:layout_constraintTop_toTopOf="@+id/viewRemoveDownloadSong" />
+
+            <TextView
+                android:id="@+id/removeSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@string/remove_downloaded_song"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:layout_marginLeft="20dp"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewRemoveDownloadSong"
+                app:layout_constraintStart_toEndOf="@+id/imageviewRemoveDownloadSong"
+                app:layout_constraintTop_toTopOf="@+id/viewRemoveDownloadSong" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

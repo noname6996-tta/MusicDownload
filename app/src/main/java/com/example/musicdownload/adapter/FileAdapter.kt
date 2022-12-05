@@ -108,7 +108,7 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
 
         when (status) {
             Status.COMPLETED -> {
-                holder.actionButton.setText(R.string.view)
+                holder.actionButton.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
                 holder.actionButton.setOnClickListener { view: View? ->
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         Toast.makeText(
@@ -142,28 +142,28 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
 
             }
             Status.FAILED -> {
-                holder.actionButton.setText(R.string.retry)
+                holder.actionButton.setImageResource(R.drawable.ic_baseline_error_outline_24)
                 holder.actionButton.setOnClickListener { view: View? ->
                     holder.actionButton.isEnabled = false
                     actionListener.onRetryDownload(downloadData.download!!.id)
                 }
             }
             Status.PAUSED -> {
-                holder.actionButton.setText(R.string.resume)
+                holder.actionButton.setImageResource(R.drawable.ic_baseline_play_circle_outline_24)
                 holder.actionButton.setOnClickListener { view: View? ->
                     holder.actionButton.isEnabled = false
                     actionListener.onResumeDownload(downloadData.download!!.id)
                 }
             }
             Status.DOWNLOADING, Status.QUEUED -> {
-                holder.actionButton.setText(R.string.pause)
+                holder.actionButton.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
                 holder.actionButton.setOnClickListener { view: View? ->
                     holder.actionButton.isEnabled = false
                     actionListener.onPauseDownload(downloadData.download!!.id)
                 }
             }
             Status.ADDED -> {
-                holder.actionButton.setText(R.string.download)
+                holder.actionButton.setImageResource(R.drawable.ic_baseline_add_circle_outline_24)
                 holder.actionButton.setOnClickListener { view: View? ->
                     holder.actionButton.isEnabled = false
                     actionListener.onResumeDownload(downloadData.download!!.id)
@@ -258,7 +258,7 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
         val statusTextView: TextView
         val progressBar: ProgressBar
         val progressTextView: TextView
-        val actionButton: Button
+        val actionButton: ImageView
         val timeRemainingTextView: TextView
         val downloadedBytesPerSecondTextView: TextView
 
