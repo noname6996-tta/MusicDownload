@@ -43,8 +43,8 @@ class MusicPlaylistRepository(private val musicPlaylistDao: MusicPlayListDao){
         musicPlaylistDao.deleteMusicPlaylist(musicPlaylist)
     }
 
-    suspend fun deleteMusicPlaylistWithid(id : Long){
-        musicPlaylistDao.deleteMusicPlaylistWithId(id)
+    suspend fun deleteMusicPlaylistWithid(name : String){
+        musicPlaylistDao.deleteMusicPlaylistWithId(name)
     }
 
     suspend fun deleteAllMusicPlaylist(){

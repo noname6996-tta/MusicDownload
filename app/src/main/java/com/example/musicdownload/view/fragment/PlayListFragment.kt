@@ -62,13 +62,13 @@ class PlayListFragment : BaseFragment() {
             showBottomSheetUpdatePlaylist(requireContext(),it)
         }
         adapter.setClickSendInfo {
-            val action = PlayListFragmentDirections.actionPlayListFragmentToMusicPlaylistFragment(it)
+            val action = PlayListFragmentDirections.actionPlayListFragmentToMusicPlaylistFragment(it,false)
             findNavController().navigate(action)
         }
         // favorite
-        val playlistFa = PlayList(0,"Favorite",0,"")
+        val playlistFa = PlayList("Favorite",0,"")
         binding.layoutItemFavoritePlaylist.setOnClickListener{
-            val action = PlayListFragmentDirections.actionPlayListFragmentToMusicPlaylistFragment(playlistFa)
+            val action = PlayListFragmentDirections.actionPlayListFragmentToMusicPlaylistFragment(playlistFa,true)
             findNavController().navigate(action)
         }
     }
@@ -108,7 +108,7 @@ class PlayListFragment : BaseFragment() {
     private fun updatePlayList(playList: PlayList,name: String){
         if (inputCheck(name)){
             // Create play list
-            val updatePlayList = PlayList (playList.id,name,playList.number,playList.image)
+            val updatePlayList = PlayList (name,playList.number,playList.image)
             // update Data to database
             playListViewModel.updatePlaylist(updatePlayList)
             Toast.makeText(context, "Change name playList: $name Success",Toast.LENGTH_SHORT).show()

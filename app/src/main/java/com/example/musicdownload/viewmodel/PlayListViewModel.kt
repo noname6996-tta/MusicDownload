@@ -85,9 +85,9 @@ class MusicPlayListViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun deleteMusicPlaylistWithId(id:Long) {
+    fun deleteMusicPlaylistWithId(name:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryMusicPlaylist.deleteMusicPlaylistWithid(id)
+            repositoryMusicPlaylist.deleteMusicPlaylistWithid(name.toString().trim())
         }
     }
 

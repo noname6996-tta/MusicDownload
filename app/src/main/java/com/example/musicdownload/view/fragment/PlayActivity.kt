@@ -1,6 +1,7 @@
 package com.example.musicdownload.view.fragment
 
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.*
 import android.media.MediaPlayer
 import android.net.ConnectivityManager
@@ -54,13 +55,12 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         var repeat: Boolean = false
     }
 
-    var musicPlaylistid: Int = 0
+    var musicPlaylistid: String = "123456789"
     private var isFavorite: Boolean = false
     private var listMusicOffline = ArrayList<Music>()
     var sufferOption: Boolean = false
     lateinit var viewModel: HomeFragmentViewModel
     private val retrofitService = RetrofitService.getInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayBinding.inflate(layoutInflater)
@@ -116,8 +116,6 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         }
         binding.btnBackPlay.setOnClickListener {
             onBackPressed()
-            MainActivity.binding.bottomNavigation.visibility = View.VISIBLE
-            MainActivity.binding.layoutPlayHomeBottom.visibility = View.VISIBLE
         }
         binding.seekBarNowPlaying.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -154,7 +152,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                     0,
                     false,
                     true,
-                    0,
+                    "favorite",
                     music.name,
                     music.artistName,
                     music.duration,
@@ -164,7 +162,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 binding.imgPlayFavorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
             } else {
-                musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toLong())
+                musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
                 binding.imgPlayFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             }
         }
@@ -261,14 +259,18 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 } else {
                     getDataStoreEx()
                     listMusicPlay = HomeFragment.listMusicHome
-                    for (i in 0..listMusicOffline.size-1){
-                        if (HomeFragment.listMusicHome[songPosition].name.equals(listMusicOffline[i].name)){
-                            checkFavorite(listMusicPlay[songPosition])
-                            if (musicService != null && !isPlaying) playMedia()
-                        }
-                        else nextSong(true)
+                    for (i in 0 until listMusicOffline.size){
+                        Log.e("fafadas",songPosition.toString()+ "/"+listMusicPlay.size.toString())
+//                        if (HomeFragment.listMusicHome[songPosition].name.equals(listMusicOffline[i].name)){
+//
+//                        }
+                        while (HomeFragment.listMusicHome[songPosition].name.equals(listMusicOffline[i].name)){
+                                checkFavorite(listMusicPlay[songPosition])
+                                if (musicService != null && !isPlaying) playMedia()
+                                break
+                            }
+                        nextSong(true)
                     }
-
                 }
             }
             "GenresMusicListFragment" -> {
@@ -391,7 +393,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite == true) {
                         binding.imgPlayFavorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-                        musicPlaylistid = musicplaylist[item].id
+                        musicPlaylistid = musicplaylist[item].name
                         isFavorite = true
                     } else {
                         binding.imgPlayFavorite!!.setImageResource(R.drawable.ic_baseline_favorite_border_24)
@@ -409,6 +411,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         } else {
             binding.imgPlayOrPasuePlaying.setImageResource(R.drawable.ic_baseline_play_arrow_24)
         }
+
     }
 
     private fun checkForInternet(context: Context): Boolean {
@@ -482,13 +485,13 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         val favorite = bottomSheetDialogSong.findViewById<ImageView>(R.id.imgFavoriteMusic)
         val musicPlayListViewModel = ViewModelProvider(this)[MusicPlayListViewModel::class.java]
         var isFavorite: Boolean = false
-        var musicPlaylistid: Int = 0
+        var musicPlaylistid: String = "123456789"
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
                 for (item: Int in musicplaylist.indices) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
                         favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-                        musicPlaylistid = musicplaylist[item].id
+                        musicPlaylistid = musicplaylist[item].name
                         isFavorite = true
                     } else {
                         favorite!!.setImageResource(R.drawable.ic_baseline_favorite_24)
@@ -505,7 +508,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                     0,
                     false,
                     true,
-                    0,
+                    "favorite",
                     music.name,
                     music.artistName,
                     music.duration,
@@ -515,8 +518,8 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
             } else {
-                musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toLong())
-                favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+                musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
+                favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
         }
         var viewDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewDownloadSong)
@@ -597,7 +600,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
-            val playList = PlayList(0, name, 0, "")
+            val playList = PlayList( name, 0, "")
             // add Data to database
             playListViewModel.addPlayList(playList)
             Toast.makeText(this, "Add PlayList: $name Success", Toast.LENGTH_SHORT).show()
@@ -617,15 +620,23 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             0,
             false,
             false,
-            playList.id,
+            playList.name,
             music.name,
             music.artistName,
             music.duration,
             music.image,
             music.audio
         )
-        //
-        musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-        Toast.makeText(this, "Add PlayList: ${music.name} Success", Toast.LENGTH_SHORT).show()
+        musicPlayListViewModel.readAllMusicData.observe(this,
+            Observer { musicplaylist ->
+                for (item: Int in musicplaylist.indices) {
+                    if (musicplaylist[item].namePlayList == playList.name) {
+                        Toast.makeText(this, "Song ${music.name} already in this Playlist", Toast.LENGTH_SHORT).show()
+                    } else {
+                        musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+                        Toast.makeText(this, "Add PlayList: ${music.name} Success", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
     }
 }

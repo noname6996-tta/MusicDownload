@@ -60,7 +60,7 @@ class MusicPlaylistFragment : BaseFragment() {
     @SuppressLint("SuspiciousIndentation")
     private fun initUi() {
         val playList = args.playlist
-        if (playList.id == 0) {
+        if (args.favorite) {
             binding.imgMoreMusicPlaylist.visibility = View.GONE
             binding.imgPlayList.visibility = View.GONE
             binding.imgPlayListFa.visibility = View.VISIBLE
@@ -76,55 +76,91 @@ class MusicPlaylistFragment : BaseFragment() {
             findNavController().popBackStack()
         }
 
-        val id = playList.id
+        val id = playList.name
         var listMusicPlaylist = ArrayList<MusicPlaylist>()
         val listMusic = ArrayList<Music>()
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
             Observer { musicplaylist ->
                 for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].idPlaylist == id) {
-                        listMusicPlaylist.add(musicplaylist[item])
-                        // Create play list
-                        val updatePlayList = PlayList(
-                            playList.id,
-                            playList.name,
-                            listMusicPlaylist.size,
-                            listMusicPlaylist[0].image
-                        )
-                        // update Data to database
-                        playListViewModel.updatePlaylist(updatePlayList)
-                        Glide.with(requireContext()).load(listMusicPlaylist[0].image)
-                            .error(R.drawable.demo_img_download)
-                            .into(binding.imgPlayList)
-                        //
-                        val music = Music(
-                            "",
-                            musicplaylist[item].name,
-                            musicplaylist[item].duration,
-                            "",
-                            musicplaylist[item].artists,
-                            "",
-                            "",
-                            "",
-                            "",
-                            0,
-                            "",
-                            "",
-                            musicplaylist[item].audio,
-                            "",
-                            "",
-                            "",
-                            "",
-                            musicplaylist[item].image,
-                            true,
-                            ""
-                        )
-                        listMusic.add(music)
+                    if (args.favorite){
+                        if (musicplaylist[item].favorite) {
+                            listMusicPlaylist.add(musicplaylist[item])
+                            val music = Music(
+                                "",
+                                musicplaylist[item].name,
+                                musicplaylist[item].duration,
+                                "",
+                                musicplaylist[item].artists,
+                                "",
+                                "",
+                                "",
+                                "",
+                                0,
+                                "",
+                                "",
+                                musicplaylist[item].audio,
+                                "",
+                                "",
+                                "",
+                                "",
+                                musicplaylist[item].image,
+                                true,
+                                ""
+                            )
+                            listMusic.add(music)
+                            val hashSet = HashSet<MusicPlaylist>()
+                            hashSet.addAll(listMusicPlaylist)
+                            listMusicPlaylist.clear()
+                            listMusicPlaylist.addAll(hashSet)
+                            musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
+                            binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
+                            musicAdapter.notifyDataSetChanged()
+                        }
+                    }
+                    else {
+                        if (musicplaylist[item].namePlayList == id) {
+                            listMusicPlaylist.add(musicplaylist[item])
+                            // Create play list
+                            val updatePlayList = PlayList(
+                                playList.name,
+                                listMusicPlaylist.size,
+                                listMusicPlaylist[0].image
+                            )
+                            // update Data to database
+                            playListViewModel.updatePlaylist(updatePlayList)
+                            Glide.with(requireContext()).load(listMusicPlaylist[0].image)
+                                .error(R.drawable.demo_img_download)
+                                .into(binding.imgPlayList)
+                            //
+                            val music = Music(
+                                "",
+                                musicplaylist[item].name,
+                                musicplaylist[item].duration,
+                                "",
+                                musicplaylist[item].artists,
+                                "",
+                                "",
+                                "",
+                                "",
+                                0,
+                                "",
+                                "",
+                                musicplaylist[item].audio,
+                                "",
+                                "",
+                                "",
+                                "",
+                                musicplaylist[item].image,
+                                true,
+                                ""
+                            )
+                            listMusic.add(music)
+                            musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
+                            binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
+                            musicAdapter.notifyDataSetChanged()
+                        }
                     }
                 }
-                musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
-                binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
-                musicAdapter.notifyDataSetChanged()
             })
 
         musicAdapter.setClickShowMusic {
@@ -135,23 +171,23 @@ class MusicPlaylistFragment : BaseFragment() {
             showBottomSheetUpdatePlaylist(requireContext(), playList)
         }
         musicAdapter.setClickPlayMusic {
-            HomeFragment.listMusicHome.clear()
+            HomeFragment.listMusicHome = listMusic
             PlayActivity.isPlaying = false
 
             val intent = Intent(activity, PlayActivity::class.java)
             intent.putExtra("MainActivitySong", "PlaylistFragment")
             if (checkForInternet(requireContext())) {
-                HomeFragment.listMusicHome = listMusic
+
                 intent.putExtra("index", it)
                 startActivity(intent)
             } else {
                 getDataStoreEx()
                 for (i in 0..listMusicOffline.size - 1) {
-                    if (listMusic[it].name.equals(listMusicOffline[i].name)) {
-                        HomeFragment.listMusicHome.add(listMusicOffline[i])
+                    if (listMusic[it].name == listMusicOffline[i].name) {
                         intent.putExtra("index", it)
                         startActivity(intent)
                     } else {
+
                     }
                 }
             }
@@ -296,7 +332,7 @@ class MusicPlaylistFragment : BaseFragment() {
     private fun updatePlayList(playList: PlayList, name: String) {
         if (inputCheck(name)) {
             // Create play list
-            val updatePlayList = PlayList(playList.id, name, playList.number, playList.image)
+            val updatePlayList = PlayList(name, playList.number, playList.image)
             // update Data to database
             playListViewModel.updatePlaylist(updatePlayList)
             Toast.makeText(context, "Change name playList: $name Success", Toast.LENGTH_SHORT)
@@ -319,7 +355,7 @@ class MusicPlaylistFragment : BaseFragment() {
         builder.setNegativeButton("No") { _, _ ->
 
         }
-        builder.setTitle("Delete ${playList.name} playlist ?")
+        builder.setTitle("Remove ${playList.name} playlist ?")
         builder.setMessage("Do you really want delete this?")
         builder.create().show()
     }
@@ -330,7 +366,7 @@ class MusicPlaylistFragment : BaseFragment() {
             musicPlayListViewModel.deleteMusicPlaylist(musicPlaylist)
             Toast.makeText(
                 context,
-                "Delete music : ${musicPlaylist.name} Success",
+                "Remove music : ${musicPlaylist.name} Success",
                 Toast.LENGTH_SHORT
             ).show()
             findNavController().popBackStack()
@@ -338,8 +374,8 @@ class MusicPlaylistFragment : BaseFragment() {
         builder.setNegativeButton("No") { _, _ ->
 
         }
-        builder.setTitle("Delete ${musicPlaylist.name} playlist ?")
-        builder.setMessage("Do you really want delete this?")
+        builder.setTitle("Remove ${musicPlaylist.name} playlist ?")
+        builder.setMessage("Do you really want remove this?")
         builder.create().show()
     }
 

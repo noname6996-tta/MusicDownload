@@ -132,7 +132,7 @@ class SearchFragment : BaseFragment() {
     private fun insertSearchToDatabase(name: String) {
         if (inputCheck(name)) {
             // Create play list
-            val search = Search( name)
+            val search = Search(name)
             // add Data to database
             searchViewModel.addSearchList(search)
         }

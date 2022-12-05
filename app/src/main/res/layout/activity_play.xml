@@ -246,4 +246,13 @@
             app:lottie_fileName="loading.json"
             app:lottie_loop="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/processBarPlay"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/layoutPlayingMusic"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var runnable: Runnable
     lateinit var musicPlayListViewModel: MusicPlayListViewModel
     var isFavorite: Boolean = false
-    var musicPlaylistid: Int = 0
+    var musicPlaylistid: String = ""
 
     companion object {
         lateinit var binding: ActivityMainBinding
@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                         0,
                         false,
                         true,
-                        0,
+                        "favorite",
                         music.name,
                         music.artistName,
                         music.duration,
@@ -192,9 +192,12 @@ class MainActivity : AppCompatActivity() {
                     )
                     musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                     binding.imgFavoriteHome.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                    isFavorite = true
                 } else {
-                    isFavorite == true
-                    musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toLong())
+                    isFavorite = false
+                    musicPlayListViewModel.deleteMusicPlaylistWithId(
+                        musicPlaylistid.toString().trim()
+                    )
                     binding.imgFavoriteHome.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 }
             }
@@ -236,7 +239,7 @@ class MainActivity : AppCompatActivity() {
                 for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
                         binding.imgFavoriteHome!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-                        musicPlaylistid = musicplaylist[item].id
+                        musicPlaylistid = musicplaylist[item].name
                         isFavorite = true
                     } else {
                         binding.imgFavoriteHome!!.setImageResource(R.drawable.ic_baseline_favorite_border_24)
@@ -303,7 +306,7 @@ class MainActivity : AppCompatActivity() {
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
-            val playList = PlayList(0, name, 0, "")
+            val playList = PlayList(name, 0, "")
             // add Data to database
             playListViewModel.addPlayList(playList)
             Toast.makeText(this, "Add PlayList: $name Success", Toast.LENGTH_SHORT).show()
@@ -323,15 +326,23 @@ class MainActivity : AppCompatActivity() {
             0,
             false,
             false,
-            playList.id,
+            playList.name,
             music.name,
             music.artistName,
             music.duration,
             music.image,
             music.audio
         )
-        //
-        musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-        Toast.makeText(this, "Add PlayList: ${music.name} Success", Toast.LENGTH_SHORT).show()
+        musicPlayListViewModel.readAllMusicData.observe(this,
+            Observer { musicplaylist ->
+                for (item: Int in musicplaylist.indices) {
+                    if (musicplaylist[item].namePlayList == playList.name) {
+                        Toast.makeText(this, "Song ${music.name} already in this Playlist", Toast.LENGTH_SHORT).show()
+                    } else {
+                        musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+                        Toast.makeText(this, "Add PlayList: ${music.name} Success", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
     }
 }

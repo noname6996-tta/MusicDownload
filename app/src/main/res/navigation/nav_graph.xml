@@ -103,6 +103,9 @@
         <argument
             android:name="playlist"
             app:argType="com.example.musicdownload.data.model.PlayList" />
+        <argument
+            android:name="favorite"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/downloadedFragment"

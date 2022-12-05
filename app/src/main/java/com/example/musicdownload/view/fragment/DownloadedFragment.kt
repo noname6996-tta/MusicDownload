@@ -31,6 +31,7 @@ import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.MusicLocal
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.databinding.FragmentDownloadedBinding
+import com.example.musicdownload.view.activity.MainActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuandq.radiofm.data.base.BaseFragment
@@ -48,6 +49,9 @@ class DownloadedFragment : BaseFragment() {
 
     var arrayMusicLocal = ArrayList<MusicLocal>()
     private val adapter = HomeTopListenedAdapter()
+    lateinit var musicPlayListViewModel: MusicPlayListViewModel
+    var isFavorite: Boolean = false
+    var musicPlaylistid: String = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +64,8 @@ class DownloadedFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        musicPlayListViewModel =
+            ViewModelProvider(this)[com.example.musicdownload.viewmodel.MusicPlayListViewModel::class.java]
         initUi()
         getDataStoreEx()
     }
@@ -81,7 +87,23 @@ class DownloadedFragment : BaseFragment() {
         }
     }
 
+    private fun checkFavorite(music: Music) {
+        musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
+            Observer { musicplaylist ->
+                for (item: Int in 0..musicplaylist.size - 1) {
+                    if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
+                        musicPlaylistid = musicplaylist[item].name
+                        isFavorite = true
+                    } else {
+                        isFavorite = false
+                    }
+
+                }
+            })
+    }
+
     private fun showBSAfterdownMusic(music: Music) {
+        checkFavorite(music)
         val bottomSheetDialogSong = BottomSheetDialog(this.requireContext());
         bottomSheetDialogSong.setContentView(R.layout.bottom_sheet_download);
         bottomSheetDialogSong.show()
@@ -111,32 +133,13 @@ class DownloadedFragment : BaseFragment() {
         }
 
         val favorite = bottomSheetDialogSong.findViewById<ImageView>(R.id.imgFavoriteMusic)
-        val musicPlayListViewModel = ViewModelProvider(this)[MusicPlayListViewModel::class.java]
-        var isFavorite: Boolean = false
-        var musicPlaylistid: Int = 0
-        musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
-            Observer { musicplaylist ->
-                for (item: Int in 0..musicplaylist.size - 1) {
-                    if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
-                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-                        musicPlaylistid = musicplaylist[item].id
-                        isFavorite = true
-                    } else {
-                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_24)
-                        isFavorite = false
-                    }
-
-                }
-            })
-
-
         favorite?.setOnClickListener {
-            if (!isFavorite) {
+            if (isFavorite) {
                 val musicPlaylist = MusicPlaylist(
                     0,
                     false,
                     true,
-                    0,
+                    "",
                     music.name,
                     music.artistName,
                     music.duration,
@@ -146,8 +149,8 @@ class DownloadedFragment : BaseFragment() {
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
             } else {
-                musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toLong())
-                favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+                musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
+                favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
         }
 

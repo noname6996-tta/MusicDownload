@@ -26,8 +26,9 @@ interface PlayListDao {
     @Query("DELETE FROM playlist_table")
     suspend fun deleteAllPlaylist()
 
-    @Query("SELECT * FROM playlist_table ORDER BY id ASC")
+    @Query("SELECT * FROM playlist_table")
     fun readAllData(): LiveData<List<PlayList>>
+
 }
 
 @Dao
@@ -42,13 +43,13 @@ interface MusicPlayListDao{
     @Delete
     suspend fun deleteMusicPlaylist(musicPlaylist: MusicPlaylist)
 
-    @Query("DELETE FROM music_playlist_table WHERE id = :id")
-    suspend fun deleteMusicPlaylistWithId(id: Long)
+    @Query("DELETE FROM music_playlist_table WHERE name = :name")
+    suspend fun deleteMusicPlaylistWithId(name: String)
 
     @Query("DELETE FROM music_playlist_table")
     suspend fun deleteAllMusicPlaylist()
 
-    @Query("SELECT * FROM music_playlist_table ORDER BY id ASC")
+    @Query("SELECT * FROM music_playlist_table")
     fun readAllMusicData(): LiveData<List<MusicPlaylist>>
 }
 
@@ -63,6 +64,6 @@ interface SearchDao{
     @Query("DELETE FROM search_table")
     suspend fun deleteAllSearch()
 
-    @Query("SELECT * FROM search_table ORDER BY id ASC")
+    @Query("SELECT * FROM search_table")
     fun readAllSearchData(): LiveData<List<Search>>
 }
