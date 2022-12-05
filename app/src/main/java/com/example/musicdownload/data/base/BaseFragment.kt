@@ -1,11 +1,14 @@
 package com.xuandq.radiofm.data.base
 
 import android.app.Dialog
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -39,6 +42,7 @@ import com.tonyodev.fetch2core.Downloader
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
 
 open class BaseFragment : Fragment() {
+    private var listMusicOffline = ArrayList<Music>()
     open fun checkForInternet(context: Context): Boolean {
         // register activity with the connectivity manager service
         val connectivityManager =
@@ -148,25 +152,39 @@ open class BaseFragment : Fragment() {
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             }
         }
+        getDataStoreEx()
         var viewDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewDownloadSong)
+        var tvDownload = bottomSheetDialogSong.findViewById<TextView>(R.id.tvDownload)
+        var imageviewDownloadSong = bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewDownloadSong)
+        var count : Int =0
+        for (i in 0..listMusicOffline.size-1){
+            if (music.name == listMusicOffline[i].name){
+                count ++
+            }
+        }
+        if (count>0){
+            viewDownloadSong!!.visibility = View.GONE
+            tvDownload!!.visibility = View.GONE
+            imageviewDownloadSong!!.visibility = View.GONE
+        }
         viewDownloadSong?.setOnClickListener {
-//            Data.listDownload.add(music)
-//            FileAdapter.list.add(music)
-//            var fetch: Fetch
-//            val fetchConfiguration: FetchConfiguration =
-//                FetchConfiguration.Builder(requireContext())
-//                    .setDownloadConcurrentLimit(999999)
-//                    .enableLogging(true)
-//                    .setHttpDownloader(OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
-//                    .setNamespace(DownloadingFragment.FETCH_NAMESPACE)
-//                    .build()
-//            fetch = Fetch.Impl.getInstance(fetchConfiguration)
-//
-//            val requests: List<Request> = Data.getFetchRequestWithGroupId(
-//                DownloadingFragment.GROUP_ID,
-//                requireContext()
-//            )
-//            fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
+            Data.listDownload.add(music)
+            FileAdapter.list.add(music)
+            var fetch: Fetch
+            val fetchConfiguration: FetchConfiguration =
+                FetchConfiguration.Builder(requireContext())
+                    .setDownloadConcurrentLimit(999999)
+                    .enableLogging(true)
+                    .setHttpDownloader(OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
+                    .setNamespace(DownloadingFragment.FETCH_NAMESPACE)
+                    .build()
+            fetch = Fetch.Impl.getInstance(fetchConfiguration)
+
+            val requests: List<Request> = Data.getFetchRequestWithGroupId(
+                DownloadingFragment.GROUP_ID,
+                requireContext()
+            )
+            fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
             Toast.makeText(context, "Downloading", Toast.LENGTH_LONG).show()
             bottomSheetDialogSong.dismiss()
         }
@@ -228,7 +246,7 @@ open class BaseFragment : Fragment() {
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
-            val playList = PlayList( name, 0, "")
+            val playList = PlayList(name, 0, "")
             // add Data to database
             playListViewModel.addPlayList(playList)
             Toast.makeText(context, "Add PlayList: $name Success", Toast.LENGTH_SHORT).show()
@@ -242,6 +260,7 @@ open class BaseFragment : Fragment() {
     }
 
     private fun insertMusicToPlaylist(music: Music, playList: PlayList) {
+        var count: Int = 0
         val musicPlayListViewModel = ViewModelProvider(this)[MusicPlayListViewModel::class.java]
         //
         val musicPlaylist = MusicPlaylist(
@@ -255,6 +274,94 @@ open class BaseFragment : Fragment() {
             music.image,
             music.audio
         )
-        musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+        musicPlayListViewModel.readAllMusicData.observe(this,
+            Observer { musicplaylist ->
+                for (item: Int in musicplaylist.indices) {
+                    if (musicplaylist[item].namePlayList == playList.name && musicplaylist[item].name == music.name) {
+                        count++
+                    }
+                }
+                Log.e("count", count.toString())
+                if (count > 0) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Song ${music.name} already in this Playlist",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+                    Toast.makeText(
+                        requireContext(),
+                        "Add PlayList: ${music.name} Success",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun getDataStoreEx() {
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ARTIST,
+        )
+        val dirfile: String = "DownloadList"
+        val selection =
+            MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + "${MediaStore.Audio.Media.DATA} LIKE '%$dirfile%'"
+        val cursor = requireActivity().contentResolver.query(
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            selection,
+            null,
+            null
+        )
+
+        if (cursor != null) {
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+            val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+            val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+            val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+            while (cursor.moveToNext()) {
+                var id: Long = cursor.getLong(idColumn)
+                val title: String = cursor.getString(titleColumn)
+                val data: String = cursor.getString(dataColumn)
+                val duration: String = cursor.getString(durationColumn)
+                val album: Long = cursor.getLong(albumColumn)
+                val name: String = cursor.getString(nameColumn)
+
+                val albumArtworkUri = ContentUris.withAppendedId(
+                    Uri.parse("content://media/external/audio/albumart"), album
+                ).toString()
+
+                val song = Music(
+                    "",
+                    title,
+                    duration.trim().toInt(),
+                    "",
+                    name,
+                    "",
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    data,
+                    "",
+                    "",
+                    "",
+                    "",
+                    albumArtworkUri,
+                    true,
+                    ""
+                )
+                listMusicOffline.add(song)
+            }
+        }
     }
 }

@@ -87,23 +87,7 @@ class DownloadedFragment : BaseFragment() {
         }
     }
 
-    private fun checkFavorite(music: Music) {
-        musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
-            Observer { musicplaylist ->
-                for (item: Int in 0..musicplaylist.size - 1) {
-                    if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
-                        musicPlaylistid = musicplaylist[item].name
-                        isFavorite = true
-                    } else {
-                        isFavorite = false
-                    }
-
-                }
-            })
-    }
-
     private fun showBSAfterdownMusic(music: Music) {
-        checkFavorite(music)
         val bottomSheetDialogSong = BottomSheetDialog(this.requireContext());
         bottomSheetDialogSong.setContentView(R.layout.bottom_sheet_download);
         bottomSheetDialogSong.show()
@@ -133,55 +117,76 @@ class DownloadedFragment : BaseFragment() {
         }
 
         val favorite = bottomSheetDialogSong.findViewById<ImageView>(R.id.imgFavoriteMusic)
-        favorite?.setOnClickListener {
-            if (isFavorite) {
-                val musicPlaylist = MusicPlaylist(
-                    0,
-                    false,
-                    true,
-                    "",
-                    music.name,
-                    music.artistName,
-                    music.duration,
-                    music.image,
-                    music.audio
-                )
-                musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-                favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-            } else {
-                musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
-                favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
-        }
 
-        val viewSetRing: View = bottomSheetDialogSong.findViewById(R.id.viewSetRing)!!
-        viewSetRing.setOnClickListener {
-            for (i in 0..arrayMusicLocal.size - 1) {
-                if (music.name == arrayMusicLocal[i].title) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        checkSystemWriteSettings(requireContext()) {
-                            if (it) {
-                                setRing(arrayMusicLocal[i].title)
-                                Log.e("ring",arrayMusicLocal[i].title.toString())
+        var count : Int =0
+        musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
+            Observer { musicplaylist ->
+                for (item: Int in 0..musicplaylist.size - 1) {
+                    if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
+                        musicPlaylistid = musicplaylist[item].name
+                        count++
+                    }
+                }
+                if (count>0){
+                    favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                    isFavorite = true
+                } else {
+                    favorite!!.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                    isFavorite = false
+                }
+                favorite?.setOnClickListener {
+                    if (!isFavorite) {
+                        val musicPlaylist = MusicPlaylist(
+                            0,
+                            false,
+                            true,
+                            "",
+                            music.name,
+                            music.artistName,
+                            music.duration,
+                            music.image,
+                            music.audio
+                        )
+                        musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+                        MainActivity.binding.imgFavoriteHome.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                        isFavorite = true
+                    } else {
+                        isFavorite = false
+                        musicPlayListViewModel.deleteMusicPlaylistWithId(
+                            musicPlaylistid.toString().trim()
+                        )
+                        MainActivity.binding.imgFavoriteHome.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                    }
+                }
+                val viewSetRing: View = bottomSheetDialogSong.findViewById(R.id.viewSetRing)!!
+                viewSetRing.setOnClickListener {
+                    for (i in 0..arrayMusicLocal.size - 1) {
+                        if (music.name == arrayMusicLocal[i].title) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                checkSystemWriteSettings(requireContext()) {
+                                    if (it) {
+                                        setRing(arrayMusicLocal[i].title)
+                                        Log.e("ring",arrayMusicLocal[i].title.toString())
+                                    }
+                                }
                             }
                         }
                     }
-                }
-            }
 
-        }
-        val viewRemoveDownloadSong: View =
-            bottomSheetDialogSong.findViewById(R.id.viewRemoveDownloadSong)!!
-        viewRemoveDownloadSong.setOnClickListener {
-            for (i in 0..arrayMusicLocal.size - 1) {
-                if (music.name == arrayMusicLocal[i].title) {
-                    val fdelete: File = File(arrayMusicLocal[i].data)
-                    fdelete.delete()
-                    getDataStoreEx()
-                    bottomSheetDialogSong.dismiss()
                 }
-            }
-        }
+                val viewRemoveDownloadSong: View =
+                    bottomSheetDialogSong.findViewById(R.id.viewRemoveDownloadSong)!!
+                viewRemoveDownloadSong.setOnClickListener {
+                    for (i in 0..arrayMusicLocal.size - 1) {
+                        if (music.name == arrayMusicLocal[i].title) {
+                            val fdelete: File = File(arrayMusicLocal[i].data)
+                            fdelete.delete()
+                            getDataStoreEx()
+                            bottomSheetDialogSong.dismiss()
+                        }
+                    }
+                }
+            })
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

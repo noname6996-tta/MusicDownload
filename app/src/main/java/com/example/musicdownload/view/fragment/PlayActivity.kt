@@ -1,7 +1,6 @@
 package com.example.musicdownload.view.fragment
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.*
 import android.media.MediaPlayer
 import android.net.ConnectivityManager
@@ -54,7 +53,6 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         var musicService: MusicService? = null
         var repeat: Boolean = false
     }
-
     var musicPlaylistid: String = "123456789"
     private var isFavorite: Boolean = false
     private var listMusicOffline = ArrayList<Music>()
@@ -83,10 +81,12 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             else playResume()
         }
         binding.imgNextSong.setOnClickListener {
+            binding.imgNextSong.isEnabled = false
             nextSong(true)
 
         }
         binding.imgPreviousSong.setOnClickListener {
+            binding.imgPreviousSong.isEnabled = true
             nextSong(false)
         }
         binding.imgPlayingSuffer.setOnClickListener {
@@ -173,10 +173,14 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             setSongPosition(true)
             setLayout()
             playMedia()
+            binding.imgNextSong.isEnabled = true
+            binding.imgPreviousSong.isEnabled = true
         } else {
             setSongPosition(false)
             setLayout()
             playMedia()
+            binding.imgNextSong.isEnabled = true
+            binding.imgPreviousSong.isEnabled = true
         }
     }
 
@@ -260,11 +264,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                     getDataStoreEx()
                     listMusicPlay = HomeFragment.listMusicHome
                     for (i in 0 until listMusicOffline.size){
-                        Log.e("fafadas",songPosition.toString()+ "/"+listMusicPlay.size.toString())
-//                        if (HomeFragment.listMusicHome[songPosition].name.equals(listMusicOffline[i].name)){
-//
-//                        }
-                        while (HomeFragment.listMusicHome[songPosition].name.equals(listMusicOffline[i].name)){
+                        while (HomeFragment.listMusicHome[songPosition].name == listMusicOffline[i].name){
                                 checkFavorite(listMusicPlay[songPosition])
                                 if (musicService != null && !isPlaying) playMedia()
                                 break
@@ -522,7 +522,21 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
         }
+        getDataStoreEx()
         var viewDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewDownloadSong)
+        var tvDownload = bottomSheetDialogSong.findViewById<TextView>(R.id.tvDownload)
+        var imageviewDownloadSong = bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewDownloadSong)
+        var count : Int =0
+        for (i in 0..listMusicOffline.size-1){
+            if (music.name == listMusicOffline[i].name){
+                count ++
+            }
+        }
+        if (count>0){
+            viewDownloadSong!!.visibility = View.GONE
+            tvDownload!!.visibility = View.GONE
+            imageviewDownloadSong!!.visibility = View.GONE
+        }
         viewDownloadSong?.setOnClickListener {
             Data.listDownload.add(music)
             FileAdapter.list.add(music)

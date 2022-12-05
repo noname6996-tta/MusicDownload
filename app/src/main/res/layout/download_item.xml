@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:textSize="16sp"
+        android:textSize="14dp"
         android:fontFamily="@font/roboto"
         android:textFontWeight="400"
         android:textColor="@color/white"
@@ -24,8 +24,8 @@
         android:id="@+id/tvArtistDownloading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="6dp"
+        android:textSize="10dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/roboto"
         android:textFontWeight="400"
         android:textColor="@color/text_gray"
@@ -35,8 +35,8 @@
         tools:text="Title" />
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="11dp"
         android:layout_marginTop="14dp"
         app:cardCornerRadius="5dp"
@@ -58,38 +58,42 @@
         android:layout_width="0dp"
         android:layout_height="5dp"
         android:layout_marginStart="17dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:max="100"
         android:progress="0"
+        android:layout_marginTop="6dp"
         android:progressDrawable="@drawable/progress_bar"
-        app:layout_constraintBottom_toBottomOf="@+id/actionButton"
-        app:layout_constraintEnd_toStartOf="@+id/actionButton"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/imgMoreTopListened"
         app:layout_constraintStart_toEndOf="@+id/cardView3"
         app:layout_constraintTop_toBottomOf="@+id/tvArtistDownloading" />
 
     <Button
         android:id="@+id/actionButton"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:text="@string/retry"
         android:textColor="@color/teal_200"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="10dp"
+        android:translationZ="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView3"
+        app:layout_constraintEnd_toEndOf="@+id/cardView3"
+        app:layout_constraintStart_toStartOf="@+id/cardView3"
+        app:layout_constraintTop_toTopOf="@+id/cardView3" />
 
     <TextView
         android:id="@+id/progress_TextView"
         android:layout_width="wrap_content"
-        android:textColor="@color/teal_200"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/actionButton"
+        android:textColor="@color/teal_200"
+        android:textSize="10dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
         tools:text="10%" />
 
     <TextView
+        android:visibility="gone"
         android:gravity="center"
         android:id="@+id/downloadSpeedTextView"
         android:layout_width="150dp"
@@ -104,7 +108,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/status_TextView"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toBottomOf="@+id/remaining_TextView"
         tools:text="204 MB/s" />
 
@@ -114,8 +117,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:textColor="@color/white"
-        android:textSize="12sp"
-        android:layout_marginTop="4dp"
+        android:textSize="10sp"
+        android:layout_marginTop="6dp"
         android:layout_marginStart="17dp"
         app:layout_constraintStart_toEndOf="@+id/cardView3"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
@@ -124,7 +127,7 @@
     <TextView
         android:gravity="center"
         android:id="@+id/status_TextView"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginStart="8dp"
@@ -134,118 +137,15 @@
         android:textStyle="italic|bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/downloadSpeedTextView"
         app:layout_constraintTop_toBottomOf="@+id/remaining_TextView"
         tools:text="Status" />
-
+    <ImageView
+        android:padding="8dp"
+        android:id="@+id/imgMoreTopListened"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <?xml version="1.0" encoding="utf-8"?>-->
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--xmlns:tools="http://schemas.android.com/tools"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="wrap_content">-->
-
-<!--<TextView-->
-<!--    android:id="@+id/titleTextView"-->
-<!--    android:layout_width="0dp"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:layout_marginEnd="8dp"-->
-<!--    android:layout_marginStart="8dp"-->
-<!--    android:layout_marginTop="8dp"-->
-<!--    android:textSize="17sp"-->
-<!--    android:textStyle="bold"-->
-<!--    app:layout_constraintEnd_toEndOf="parent"-->
-<!--    app:layout_constraintStart_toStartOf="parent"-->
-<!--    app:layout_constraintTop_toTopOf="parent"-->
-<!--    tools:text="Title" />-->
-
-<!--<ProgressBar-->
-<!--    android:id="@+id/progressBar"-->
-<!--    style="@android:style/Widget.ProgressBar.Horizontal"-->
-<!--    android:layout_width="0dp"-->
-<!--    android:layout_height="5dp"-->
-<!--    android:layout_marginBottom="8dp"-->
-<!--    android:layout_marginEnd="8dp"-->
-<!--    android:layout_marginStart="8dp"-->
-<!--    android:layout_marginTop="8dp"-->
-<!--    android:max="100"-->
-<!--    android:progress="0"-->
-<!--    android:progressDrawable="@drawable/progress_bar"-->
-<!--    app:layout_constraintBottom_toBottomOf="@+id/actionButton"-->
-<!--    app:layout_constraintEnd_toStartOf="@+id/actionButton"-->
-<!--    app:layout_constraintStart_toStartOf="parent"-->
-<!--    app:layout_constraintTop_toTopOf="@+id/actionButton" />-->
-
-<!--<Button-->
-<!--    android:id="@+id/actionButton"-->
-<!--    style="?android:attr/borderlessButtonStyle"-->
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:layout_marginEnd="8dp"-->
-<!--    android:layout_marginRight="8dp"-->
-<!--    android:layout_marginTop="8dp"-->
-<!--    android:text="@string/retry"-->
-<!--    android:textColor="@color/colorAccent"-->
-<!--    app:layout_constraintEnd_toEndOf="parent"-->
-<!--    app:layout_constraintTop_toBottomOf="@+id/titleTextView" />-->
-
-<!--<TextView-->
-<!--    android:id="@+id/progress_TextView"-->
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:layout_marginBottom="8dp"-->
-<!--    android:layout_marginEnd="8dp"-->
-<!--    android:layout_marginStart="8dp"-->
-<!--    app:layout_constraintBottom_toTopOf="@+id/status_TextView"-->
-<!--    app:layout_constraintEnd_toStartOf="@+id/actionButton"-->
-<!--    app:layout_constraintHorizontal_bias="0.0"-->
-<!--    app:layout_constraintStart_toStartOf="@+id/progressBar"-->
-<!--    app:layout_constraintTop_toBottomOf="@+id/progressBar"-->
-<!--    tools:text="10%" />-->
-
-<!--<TextView-->
-<!--    android:id="@+id/downloadSpeedTextView"-->
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:layout_marginBottom="8dp"-->
-<!--    android:layout_marginEnd="8dp"-->
-<!--    android:layout_marginStart="8dp"-->
-<!--    app:layout_constraintBottom_toTopOf="@+id/status_TextView"-->
-<!--    app:layout_constraintEnd_toEndOf="@+id/progressBar"-->
-<!--    app:layout_constraintHorizontal_bias="1.0"-->
-<!--    app:layout_constraintStart_toEndOf="@+id/progress_TextView"-->
-<!--    app:layout_constraintTop_toBottomOf="@+id/progressBar"-->
-<!--    tools:text="204 MB/s" />-->
-
-<!--<TextView-->
-<!--    android:id="@+id/remaining_TextView"-->
-<!--    android:layout_width="0dp"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:layout_marginBottom="8dp"-->
-<!--    android:layout_marginEnd="8dp"-->
-<!--    android:layout_marginStart="8dp"-->
-<!--    android:layout_marginTop="8dp"-->
-<!--    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--    app:layout_constraintEnd_toStartOf="@+id/status_TextView"-->
-<!--    app:layout_constraintStart_toStartOf="parent"-->
-<!--    app:layout_constraintTop_toBottomOf="@+id/progress_TextView"-->
-<!--    tools:text="10s" />-->
-
-<!--<TextView-->
-<!--    android:id="@+id/status_TextView"-->
-<!--    android:layout_width="0dp"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:layout_marginBottom="8dp"-->
-<!--    android:layout_marginEnd="8dp"-->
-<!--    android:layout_marginStart="8dp"-->
-<!--    android:layout_marginTop="8dp"-->
-<!--    android:textStyle="italic|bold"-->
-<!--    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--    app:layout_constraintEnd_toEndOf="parent"-->
-<!--    app:layout_constraintStart_toEndOf="@+id/remaining_TextView"-->
-<!--    app:layout_constraintTop_toBottomOf="@+id/actionButton"-->
-<!--    tools:text="Status" />-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

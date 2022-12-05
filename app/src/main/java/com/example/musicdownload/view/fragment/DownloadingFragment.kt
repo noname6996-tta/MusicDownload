@@ -139,11 +139,6 @@ class DownloadingFragment : Fragment(),ActionListener {
                 UNKNOWN_REMAINING_TIME,
                 UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
             )
-//            for (i in 0..Data.path.size-1){
-//                MediaScannerConnection.scanFile(
-//                    requireContext(), listOf(Data.path[i]).toTypedArray(), null, null)
-//            }
-//            Toast.makeText(requireActivity(),"Download complete",Toast.LENGTH_SHORT).show()
         }
 
 
@@ -194,8 +189,6 @@ class DownloadingFragment : Fragment(),ActionListener {
                 UNKNOWN_REMAINING_TIME,
                 UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
             )
-//            Data.listDownload.remove(music)
-//            FileAdapter.list.remove(music)
         }
 
         override fun onDeleted(download: Download) {

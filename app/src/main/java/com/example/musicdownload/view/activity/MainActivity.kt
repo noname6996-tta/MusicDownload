@@ -1,11 +1,13 @@
 package com.example.musicdownload.view.activity
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
@@ -34,6 +36,12 @@ import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.DexterBuilder
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var musicPlayListViewModel: MusicPlayListViewModel
     var isFavorite: Boolean = false
     var musicPlaylistid: String = ""
+    lateinit var dexter : DexterBuilder
 
     companion object {
         lateinit var binding: ActivityMainBinding
@@ -50,6 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkPermission()
         musicPlayListViewModel =
             ViewModelProvider(this)[com.example.musicdownload.viewmodel.MusicPlayListViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -183,7 +193,7 @@ class MainActivity : AppCompatActivity() {
                         0,
                         false,
                         true,
-                        "favorite",
+                        "",
                         music.name,
                         music.artistName,
                         music.duration,
@@ -320,6 +330,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun insertMusicToPlaylist(music: Music, playList: PlayList) {
+        var count: Int = 0
         val musicPlayListViewModel = ViewModelProvider(this)[MusicPlayListViewModel::class.java]
         //
         val musicPlaylist = MusicPlaylist(
@@ -336,13 +347,50 @@ class MainActivity : AppCompatActivity() {
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
                 for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].namePlayList == playList.name) {
-                        Toast.makeText(this, "Song ${music.name} already in this Playlist", Toast.LENGTH_SHORT).show()
-                    } else {
-                        musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-                        Toast.makeText(this, "Add PlayList: ${music.name} Success", Toast.LENGTH_SHORT).show()
+                    if (musicplaylist[item].namePlayList == playList.name && musicplaylist[item].name == music.name) {
+                        count++
                     }
+                }
+                Log.e("count", count.toString())
+                if (count > 0) {
+                    Toast.makeText(
+                        this,
+                        "Song ${music.name} already in this Playlist",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+                    Toast.makeText(
+                        this,
+                        "Add PlayList: ${music.name} Success",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
+
+    private fun checkPermission(){
+        dexter = Dexter.withContext(this)
+            .withPermissions(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ).withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                    if (report.areAllPermissionsGranted()){
+
+                    }
+                    else {
+                        Toast.makeText(applicationContext,"Please give permission first",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest?>?, token: PermissionToken?) {
+                    token?.continuePermissionRequest()
+                }
+            }).withErrorListener{
+                Toast.makeText(this, it.name, Toast.LENGTH_SHORT).show()
+            }
+        dexter.check()
+    }
+
+
 }

@@ -54,7 +54,7 @@
             android:text="Lazy Song"
             android:textColor="@color/white"
             app:layout_constraintLeft_toRightOf="@+id/cardViewListened"
-            app:layout_constraintTop_toTopOf="parent"></TextView>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tvTopListenedSingerSong"
@@ -77,6 +77,6 @@
             android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></ImageView>
+            app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

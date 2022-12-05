@@ -3,6 +3,7 @@ package com.example.musicdownload.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.musicdownload.data.database.PlayListDataBase
 import com.example.musicdownload.data.model.MusicPlaylist
@@ -17,18 +18,15 @@ import kotlinx.coroutines.launch
 class PlayListViewModel(application: Application) : AndroidViewModel(application) {
 
     val readAllData: LiveData<List<PlayList>>
-    val readAllMusicData: LiveData<List<MusicPlaylist>>
     private val repositoryPlaylist: PlayListRepository
-    private val repositoryMusicPlaylist: MusicPlaylistRepository
+    var musicPlaylist = MutableLiveData<List<MusicPlaylist>>()
 
     init {
         val playListDao = PlayListDataBase.getDatabase(application).playDao()
         repositoryPlaylist = PlayListRepository(playListDao)
         readAllData = repositoryPlaylist.readAllData
 
-        val musicPlayListDao = PlayListDataBase.getDatabase(application).musicPlayDao()
-        repositoryMusicPlaylist = MusicPlaylistRepository(musicPlayListDao)
-        readAllMusicData = repositoryMusicPlaylist.readAllDataMusic
+
     }
 
     fun addPlayList(playList: PlayList) {

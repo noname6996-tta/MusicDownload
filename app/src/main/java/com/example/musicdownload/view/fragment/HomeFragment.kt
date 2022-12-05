@@ -10,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -124,6 +125,7 @@ class HomeFragment : BaseFragment() {
             setBottomSheetRegion()
         }
         binding.btnGoToDownloadedSong.setOnClickListener {
+            Toast.makeText(requireContext(),"lala",Toast.LENGTH_SHORT).show()
             val action = HomeFragmentDirections.actionHomeFragmentToDownloadManagerFragment()
             findNavController().navigate(action)
         }
