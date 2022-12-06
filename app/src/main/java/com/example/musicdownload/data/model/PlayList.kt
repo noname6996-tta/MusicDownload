@@ -8,7 +8,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(tableName = "playlist_table")
 data class PlayList(
-    @PrimaryKey()
+    @PrimaryKey(autoGenerate = true)
+    val id : Int,
     val name: String,
     val number : Int,
     val image : String
@@ -21,7 +22,7 @@ data class MusicPlaylist(
     var id: Int,
     var getDownloaded: Boolean,
     var favorite: Boolean,
-    var namePlayList: String,
+    var idPlayList: Int,
     var name: String,
     var artists: String,
     var duration: Int,

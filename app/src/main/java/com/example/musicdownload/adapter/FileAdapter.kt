@@ -11,7 +11,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musicdownload.R
@@ -51,6 +54,7 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
             }
         }
     }
+
     val context = context
     private val downloads = ArrayList<DownloadData>()
 
@@ -190,7 +194,41 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
         }
 
         holder.imgMoreTopListened.setOnClickListener {
+            val bottomSheetDialogSong = BottomSheetDialog(context);
+            bottomSheetDialogSong.setContentView(R.layout.bottom_sheet_downloading);
+            bottomSheetDialogSong.show()
+            val img: ImageView = bottomSheetDialogSong.findViewById(R.id.imgBottomSheetSong)!!
+            val song: TextView = bottomSheetDialogSong.findViewById(R.id.tvSongBtMusic)!!
+            val singer: TextView = bottomSheetDialogSong.findViewById(R.id.tvSingerBtMusic)!!
+            Glide.with(context).load(list[position].image).error(R.drawable.demo_img_download)
+                .into(img)
+            song.text = list[position].name
+            singer.text = list[position].artistName
+            val btnRemove = bottomSheetDialogSong.findViewById<View>(R.id.viewRemoveSong)
+            btnRemove?.setOnClickListener {
+                val uri12 = Uri.parse(downloadData.download!!.url)
+                AlertDialog.Builder(context)
+                    .setMessage(context.getString(R.string.delete_title, uri12.lastPathSegment))
+                    .setPositiveButton(R.string.delete) { dialog, which ->
+                        actionListener.onRemoveDownload(
+                            downloadData.download!!.id
+                        )
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+                true
+                bottomSheetDialogSong.dismiss()
+            }
 
+            val btnPause = bottomSheetDialogSong.findViewById<View>(R.id.viewPauseDownloadSong)
+            btnPause?.setOnClickListener {
+                holder.actionButton.setImageResource(R.drawable.ic_baseline_play_circle_outline_24)
+                holder.actionButton.setOnClickListener { view: View? ->
+                    holder.actionButton.isEnabled = false
+                    actionListener.onResumeDownload(downloadData.download!!.id)
+                    bottomSheetDialogSong.dismiss()
+                }
+            }
         }
     }
 
@@ -257,6 +295,7 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
         }
     }
 
+
     class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView
         val tvArtistDownloading: TextView
@@ -268,6 +307,7 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
         val timeRemainingTextView: TextView
         val downloadedBytesPerSecondTextView: TextView
         val imgMoreTopListened: ImageView
+
         init {
             titleTextView = itemView.findViewById(R.id.titleTextView)
             statusTextView = itemView.findViewById(R.id.status_TextView)
@@ -282,28 +322,5 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
         }
     }
 
-    private fun showBottomSheetDownloadinf(position: Int){
-        val bottomSheetDialogSong = BottomSheetDialog(context);
-        bottomSheetDialogSong.setContentView(R.layout.bottom_sheet_info_music);
-        bottomSheetDialogSong.show()
-        val img: ImageView = bottomSheetDialogSong.findViewById(R.id.imgBottomSheetSong)!!
-        val song: TextView = bottomSheetDialogSong.findViewById(R.id.tvSongBtMusic)!!
-        val singer: TextView = bottomSheetDialogSong.findViewById(R.id.tvSingerBtMusic)!!
-        Glide.with(context).load(list[position].image).error(R.drawable.demo_img_download)
-            .into(img)
-        song.text = list[position].name
-        singer.text = list[position].artistName
-        val viewShare: View? = bottomSheetDialogSong.findViewById(R.id.layoutShare)
-        if (viewShare == null) {
 
-        } else {
-            viewShare.setOnClickListener {
-                val shareIntent = Intent()
-                shareIntent.action = Intent.ACTION_SEND
-                shareIntent.type = "plain/text"
-                shareIntent.putExtra(Intent.EXTRA_TEXT, list[position].audio)
-                context.startActivity(Intent.createChooser(shareIntent, "Sharing Music File!!"))
-            }
-        }
-    }
 }

@@ -66,7 +66,7 @@ class PlayListFragment : BaseFragment() {
             findNavController().navigate(action)
         }
         // favorite
-        val playlistFa = PlayList("Favorite",0,"")
+        val playlistFa = PlayList(0,"Favorite",0,"")
         binding.layoutItemFavoritePlaylist.setOnClickListener{
             val action = PlayListFragmentDirections.actionPlayListFragmentToMusicPlaylistFragment(playlistFa,true)
             findNavController().navigate(action)
@@ -108,7 +108,7 @@ class PlayListFragment : BaseFragment() {
     private fun updatePlayList(playList: PlayList,name: String){
         if (inputCheck(name)){
             // Create play list
-            val updatePlayList = PlayList (name,playList.number,playList.image)
+            val updatePlayList = PlayList (playList.id,name,playList.number,playList.image)
             // update Data to database
             playListViewModel.updatePlaylist(updatePlayList)
             Toast.makeText(context, "Change name playList: $name Success",Toast.LENGTH_SHORT).show()
@@ -120,13 +120,14 @@ class PlayListFragment : BaseFragment() {
         val builder = AlertDialog.Builder(context)
         builder.setPositiveButton("Yes"){_,_ ->
             playListViewModel.deletePlaylist(playList)
-            Toast.makeText(context, "Change name playList: ${playList.name} Success",Toast.LENGTH_SHORT).show()
+            // delete song where playlist = playlist.name
+            Toast.makeText(context, "Remove playList: ${playList.name} Success",Toast.LENGTH_SHORT).show()
         }
         builder.setNegativeButton("No"){_,_ ->
 
         }
         builder.setTitle("Delete ${playList.name} playlist ?")
-        builder.setMessage("Chắc ko bro ??")
+        builder.setMessage("Do you really remove this??")
         builder.create().show()
     }
 

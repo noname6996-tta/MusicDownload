@@ -1,6 +1,7 @@
 package com.example.musicdownload.view.fragment
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.os.Build
@@ -11,12 +12,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.musicdownload.R
 import com.example.musicdownload.adapter.FileAdapter
 import com.example.musicdownload.data.download.ActionListener
 import com.example.musicdownload.data.download.Data
@@ -26,6 +31,7 @@ import com.example.musicdownload.data.model.PlayList
 import com.example.musicdownload.databinding.FragmentDownloadingBinding
 import com.example.musicdownload.view.activity.MainActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2core.Downloader.FileDownloaderType
@@ -44,8 +50,6 @@ class DownloadingFragment : Fragment(),ActionListener {
     private val STORAGE_PERMISSION_CODE = 200
     private val UNKNOWN_REMAINING_TIME: Long = -1L
     private val UNKNOWN_DOWNLOADED_BYTES_PER_SECOND: Long = 0L
-
-    private lateinit var mainView: View
     private lateinit var fileAdapter: FileAdapter
     private lateinit var fetch: Fetch
 
@@ -207,7 +211,7 @@ class DownloadingFragment : Fragment(),ActionListener {
                 STORAGE_PERMISSION_CODE
             )
         } else {
-            //enqueueDownloads()
+
         }
     }
 
@@ -220,8 +224,7 @@ class DownloadingFragment : Fragment(),ActionListener {
         if (requestCode == STORAGE_PERMISSION_CODE && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             enqueueDownloads()
         } else {
-//            Snackbar.make(requireActivity(), com.example.musicdownload.R.string.permission_not_enabled, Snackbar.LENGTH_INDEFINITE)
-//                .show()
+
         }
     }
 

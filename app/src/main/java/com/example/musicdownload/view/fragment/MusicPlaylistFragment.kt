@@ -76,7 +76,7 @@ class MusicPlaylistFragment : BaseFragment() {
             findNavController().popBackStack()
         }
 
-        val id = playList.name
+        val id = playList.id
         var listMusicPlaylist = ArrayList<MusicPlaylist>()
         val listMusic = ArrayList<Music>()
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
@@ -115,13 +115,17 @@ class MusicPlaylistFragment : BaseFragment() {
                             musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
                             binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
                             musicAdapter.notifyDataSetChanged()
+                            if  (listMusicPlaylist.size==0){
+                                binding.tvListSize.setText("No Song in the Playlist")
+                                binding.imgPlayListMusic.visibility = View.GONE}
                         }
                     }
                     else {
-                        if (musicplaylist[item].namePlayList == id) {
+                        if (musicplaylist[item].idPlayList == id) {
                             listMusicPlaylist.add(musicplaylist[item])
                             // Create play list
                             val updatePlayList = PlayList(
+                                playList.id,
                                 playList.name,
                                 listMusicPlaylist.size,
                                 listMusicPlaylist[0].image
@@ -158,6 +162,9 @@ class MusicPlaylistFragment : BaseFragment() {
                             musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
                             binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
                             musicAdapter.notifyDataSetChanged()
+                            if  (listMusicPlaylist.size==0){
+                                binding.tvListSize.setText("No Song in the Playlist")
+                                binding.imgPlayListMusic.visibility = View.GONE}
                         }
                     }
                 }
@@ -332,7 +339,7 @@ class MusicPlaylistFragment : BaseFragment() {
     private fun updatePlayList(playList: PlayList, name: String) {
         if (inputCheck(name)) {
             // Create play list
-            val updatePlayList = PlayList(name, playList.number, playList.image)
+            val updatePlayList = PlayList(playList.id,name, playList.number, playList.image)
             // update Data to database
             playListViewModel.updatePlaylist(updatePlayList)
             Toast.makeText(context, "Change name playList: $name Success", Toast.LENGTH_SHORT)

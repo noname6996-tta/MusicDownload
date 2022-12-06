@@ -35,22 +35,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
-    <ImageView
-        android:id="@+id/imgPlayList"
+    <LinearLayout
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_baseline_favorite_true_24"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/view11"
         app:layout_constraintEnd_toEndOf="@+id/view11"
         app:layout_constraintStart_toStartOf="@+id/view11"
-        app:layout_constraintTop_toTopOf="@+id/view11" />
+        app:layout_constraintTop_toTopOf="@+id/view11"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/imgPlayList"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+
+            android:src="@drawable/playlistmusic" />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/imgPlayListFa"
         android:visibility="gone"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:scaleType="centerCrop"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/ic_baseline_favorite_true_24"
         app:layout_constraintBottom_toBottomOf="@+id/view11"
         app:layout_constraintEnd_toEndOf="@+id/view11"
@@ -86,10 +95,9 @@
         android:id="@+id/imgPlayListMusic"
         android:layout_width="108dp"
         android:layout_height="32dp"
-        android:background="@drawable/btnplaylist"
-        app:layout_constraintStart_toEndOf="@+id/view11"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="@dimen/radius_corner_8dp"
+        android:background="@drawable/btnplaylist"
+        app:layout_constraintStart_toStartOf="@+id/tvListSize"
         app:layout_constraintTop_toBottomOf="@+id/tvListSize" />
 
     <androidx.recyclerview.widget.RecyclerView

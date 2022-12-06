@@ -61,7 +61,6 @@ class DownloadedFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDownloadedBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -143,7 +142,7 @@ class DownloadedFragment : BaseFragment() {
                             0,
                             false,
                             true,
-                            "",
+                            0,
                             music.name,
                             music.artistName,
                             music.duration,

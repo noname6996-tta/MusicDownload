@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
                         0,
                         false,
                         true,
-                        "",
+                        0,
                         music.name,
                         music.artistName,
                         music.duration,
@@ -316,7 +316,7 @@ class MainActivity : AppCompatActivity() {
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
-            val playList = PlayList(name, 0, "")
+            val playList = PlayList(0,name, 0, "")
             // add Data to database
             playListViewModel.addPlayList(playList)
             Toast.makeText(this, "Add PlayList: $name Success", Toast.LENGTH_SHORT).show()
@@ -337,7 +337,7 @@ class MainActivity : AppCompatActivity() {
             0,
             false,
             false,
-            playList.name,
+            playList.id,
             music.name,
             music.artistName,
             music.duration,
@@ -347,7 +347,7 @@ class MainActivity : AppCompatActivity() {
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
                 for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].namePlayList == playList.name && musicplaylist[item].name == music.name) {
+                    if (musicplaylist[item].id == playList.id && musicplaylist[item].name == music.name) {
                         count++
                     }
                 }

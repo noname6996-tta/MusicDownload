@@ -1,5 +1,6 @@
 package com.xuandq.radiofm.data.base
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentUris
 import android.content.Context
@@ -142,7 +143,7 @@ open class BaseFragment : Fragment() {
                     0,
                     false,
                     true,
-                    "",
+                    0,
                     music.name,
                     music.artistName,
                     music.duration,
@@ -209,39 +210,49 @@ open class BaseFragment : Fragment() {
         }
 
         viewRemoveDownloadSong?.setOnClickListener {
-            for (i in 0..arrayMusicLocalBase.size - 1) {
-                if (music.name == arrayMusicLocalBase[i].title) {
-                    val fdelete: File = File(arrayMusicLocalBase[i].data)
-                    fdelete.delete()
-                    MediaScannerConnection.scanFile(
-                        requireContext(), arrayOf(arrayMusicLocalBase[i].data), null, null
-                    )
-                    getDataStoreEx()
-                    var count2 : Int =0
-                    for (i in 0..listMusicOffline.size-1){
-                        if (music.name == listMusicOffline[i].name){
-                            count ++
+            val builder = AlertDialog.Builder(context)
+            builder.setPositiveButton("Yes"){_,_ ->
+                for (i in 0..arrayMusicLocalBase.size - 1) {
+                    if (music.name == arrayMusicLocalBase[i].title) {
+                        val fdelete: File = File(arrayMusicLocalBase[i].data)
+                        fdelete.delete()
+                        MediaScannerConnection.scanFile(
+                            requireContext(), arrayOf(arrayMusicLocalBase[i].data), null, null
+                        )
+                        getDataStoreEx()
+                        var count2 : Int =0
+                        for (i in 0..listMusicOffline.size-1){
+                            if (music.name == listMusicOffline[i].name){
+                                count2 ++
+                            }
                         }
+                        if (count2>0){
+                            viewDownloadSong!!.visibility = View.GONE
+                            tvDownload!!.visibility = View.GONE
+                            imageviewDownloadSong!!.visibility = View.GONE
+                            viewRemoveDownloadSong!!.visibility = View.VISIBLE
+                            removeSong!!.visibility = View.VISIBLE
+                            imageviewRemoveDownloadSong!!.visibility = View.VISIBLE
+                        }
+                        else {
+                            viewDownloadSong!!.visibility = View.VISIBLE
+                            tvDownload!!.visibility = View.VISIBLE
+                            imageviewDownloadSong!!.visibility = View.VISIBLE
+                            viewRemoveDownloadSong!!.visibility = View.GONE
+                            removeSong!!.visibility = View.GONE
+                            imageviewRemoveDownloadSong!!.visibility = View.GONE
+                        }
+                        bottomSheetDialogSong.dismiss()
                     }
-                    if (count2>0){
-                        viewDownloadSong!!.visibility = View.GONE
-                        tvDownload!!.visibility = View.GONE
-                        imageviewDownloadSong!!.visibility = View.GONE
-                        viewRemoveDownloadSong!!.visibility = View.VISIBLE
-                        removeSong!!.visibility = View.VISIBLE
-                        imageviewRemoveDownloadSong!!.visibility = View.VISIBLE
-                    }
-                    else {
-                        viewDownloadSong!!.visibility = View.VISIBLE
-                        tvDownload!!.visibility = View.VISIBLE
-                        imageviewDownloadSong!!.visibility = View.VISIBLE
-                        viewRemoveDownloadSong!!.visibility = View.GONE
-                        removeSong!!.visibility = View.GONE
-                        imageviewRemoveDownloadSong!!.visibility = View.GONE
-                    }
-                    bottomSheetDialogSong.dismiss()
                 }
+                Toast.makeText(context, "Remove song Success",Toast.LENGTH_SHORT).show()
             }
+            builder.setNegativeButton("No"){_,_ ->
+
+            }
+            builder.setTitle("Remove song from this phone?")
+            builder.setMessage("Do you really want??")
+            builder.create().show()
         }
     }
 
@@ -301,7 +312,7 @@ open class BaseFragment : Fragment() {
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
-            val playList = PlayList(name, 0, "")
+            val playList = PlayList(0,name, 0, "")
             // add Data to database
             playListViewModel.addPlayList(playList)
             Toast.makeText(context, "Add PlayList: $name Success", Toast.LENGTH_SHORT).show()
@@ -322,7 +333,7 @@ open class BaseFragment : Fragment() {
             0,
             false,
             false,
-            playList.name,
+            playList.id,
             music.name,
             music.artistName,
             music.duration,
@@ -332,7 +343,7 @@ open class BaseFragment : Fragment() {
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
                 for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].namePlayList == playList.name && musicplaylist[item].name == music.name) {
+                    if (musicplaylist[item].idPlayList == playList.id && musicplaylist[item].name == music.name) {
                         count++
                     }
                 }
