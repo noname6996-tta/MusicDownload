@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
+import android.media.MediaScannerConnection
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -28,8 +29,10 @@ import com.example.musicdownload.adapter.BottomSheetPlaylistAdapter
 import com.example.musicdownload.adapter.FileAdapter
 import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
+import com.example.musicdownload.data.model.MusicLocal
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.data.model.PlayList
+import com.example.musicdownload.view.fragment.DownloadedFragment
 import com.example.musicdownload.view.fragment.DownloadingFragment
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.PlayListViewModel
@@ -40,9 +43,11 @@ import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.Request
 import com.tonyodev.fetch2core.Downloader
 import com.tonyodev.fetch2okhttp.OkHttpDownloader
+import java.io.File
 
 open class BaseFragment : Fragment() {
     private var listMusicOffline = ArrayList<Music>()
+    var arrayMusicLocalBase = ArrayList<MusicLocal>()
     open fun checkForInternet(context: Context): Boolean {
         // register activity with the connectivity manager service
         val connectivityManager =
@@ -204,7 +209,39 @@ open class BaseFragment : Fragment() {
         }
 
         viewRemoveDownloadSong?.setOnClickListener {
-
+            for (i in 0..arrayMusicLocalBase.size - 1) {
+                if (music.name == arrayMusicLocalBase[i].title) {
+                    val fdelete: File = File(arrayMusicLocalBase[i].data)
+                    fdelete.delete()
+                    MediaScannerConnection.scanFile(
+                        requireContext(), arrayOf(arrayMusicLocalBase[i].data), null, null
+                    )
+                    getDataStoreEx()
+                    var count2 : Int =0
+                    for (i in 0..listMusicOffline.size-1){
+                        if (music.name == listMusicOffline[i].name){
+                            count ++
+                        }
+                    }
+                    if (count2>0){
+                        viewDownloadSong!!.visibility = View.GONE
+                        tvDownload!!.visibility = View.GONE
+                        imageviewDownloadSong!!.visibility = View.GONE
+                        viewRemoveDownloadSong!!.visibility = View.VISIBLE
+                        removeSong!!.visibility = View.VISIBLE
+                        imageviewRemoveDownloadSong!!.visibility = View.VISIBLE
+                    }
+                    else {
+                        viewDownloadSong!!.visibility = View.VISIBLE
+                        tvDownload!!.visibility = View.VISIBLE
+                        imageviewDownloadSong!!.visibility = View.VISIBLE
+                        viewRemoveDownloadSong!!.visibility = View.GONE
+                        removeSong!!.visibility = View.GONE
+                        imageviewRemoveDownloadSong!!.visibility = View.GONE
+                    }
+                    bottomSheetDialogSong.dismiss()
+                }
+            }
         }
     }
 
@@ -318,68 +355,78 @@ open class BaseFragment : Fragment() {
     }
 
     private fun getDataStoreEx() {
-        val projection = arrayOf(
-            MediaStore.Audio.Media._ID,
-            MediaStore.Audio.Media.TITLE,
-            MediaStore.Audio.Media.DATA,
-            MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.ALBUM_ID,
-            MediaStore.Audio.Media.ARTIST,
-        )
-        val dirfile: String = "DownloadList"
-        val selection =
-            MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + "${MediaStore.Audio.Media.DATA} LIKE '%$dirfile%'"
-        val cursor = requireActivity().contentResolver.query(
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-            projection,
-            selection,
-            null,
-            null
-        )
+        try {
+            arrayMusicLocalBase = ArrayList()
+            val projection = arrayOf(
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.ALBUM_ID,
+                MediaStore.Audio.Media.ARTIST,
+            )
+            val dirfile: String = "DownloadList"
+            val selection =
+                MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + "${MediaStore.Audio.Media.DATA} LIKE '%$dirfile%'"
+            val cursor = requireActivity().contentResolver.query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                selection,
+                null,
+                null
+            )
 
-        if (cursor != null) {
-            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-            val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-            val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
-            val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-            val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
-            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-            while (cursor.moveToNext()) {
-                var id: Long = cursor.getLong(idColumn)
-                val title: String = cursor.getString(titleColumn)
-                val data: String = cursor.getString(dataColumn)
-                val duration: String = cursor.getString(durationColumn)
-                val album: Long = cursor.getLong(albumColumn)
-                val name: String = cursor.getString(nameColumn)
+            if (cursor != null) {
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+                val dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+                val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+                val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
+                val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+                while (cursor.moveToNext()) {
+                    var id: Long = cursor.getLong(idColumn)
+                    val title: String = cursor.getString(titleColumn)
+                    val data: String = cursor.getString(dataColumn)
+                    val duration: String = cursor.getString(durationColumn)
+                    val album: Long = cursor.getLong(albumColumn)
+                    val name: String = cursor.getString(nameColumn)
 
-                val albumArtworkUri = ContentUris.withAppendedId(
-                    Uri.parse("content://media/external/audio/albumart"), album
-                ).toString()
+                    val albumArtworkUri = ContentUris.withAppendedId(
+                        Uri.parse("content://media/external/audio/albumart"), album
+                    ).toString()
 
-                val song = Music(
-                    "",
-                    title,
-                    duration.trim().toInt(),
-                    "",
-                    name,
-                    "",
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    data,
-                    "",
-                    "",
-                    "",
-                    "",
-                    albumArtworkUri,
-                    true,
-                    ""
-                )
-                listMusicOffline.add(song)
+                    val songLocal = MusicLocal(
+                        id, title, data, duration, album, name
+                    )
+
+                    val song = Music(
+                        "",
+                        title,
+                        duration.trim().toInt(),
+                        "",
+                        name,
+                        "",
+                        "",
+                        "",
+                        "",
+                        0,
+                        "",
+                        "",
+                        data,
+                        "",
+                        "",
+                        "",
+                        "",
+                        albumArtworkUri,
+                        true,
+                        ""
+                    )
+                    arrayMusicLocalBase.add(songLocal)
+                    listMusicOffline.add(song)
+                }
             }
+        } catch (e : Exception){
+            Log.e("getDataStoreEx",e.toString())
         }
     }
 }

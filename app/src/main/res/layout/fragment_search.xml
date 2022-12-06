@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:src="@drawable/ic_baseline_cancel_24"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/bg_search"
         app:layout_constraintEnd_toEndOf="@+id/bg_search"
         app:layout_constraintTop_toTopOf="@+id/bg_search" />
@@ -61,8 +61,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
         android:padding="10dp"
+        android:layout_marginTop="12dp"
         android:src="@drawable/ic_baseline_arrow_back_ios_24"
-        app:layout_constraintBottom_toTopOf="@+id/recListSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

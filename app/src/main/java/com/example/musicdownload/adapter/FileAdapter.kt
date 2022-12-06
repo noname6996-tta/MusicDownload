@@ -20,11 +20,13 @@ import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.download.Data.listDownload
 import com.example.musicdownload.data.download.Utils
 import com.example.musicdownload.data.model.Music
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tonyodev.fetch2.Download
 import com.tonyodev.fetch2.Status
 import java.io.File
 
 class FileAdapter(context: Context, var actionListener: ActionListener) :
+
     RecyclerView.Adapter<FileAdapter.ViewHolder>() {
     companion object {
         var list = ArrayList<Music>()
@@ -49,7 +51,7 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
             }
         }
     }
-
+    val context = context
     private val downloads = ArrayList<DownloadData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -186,6 +188,10 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
                 .show()
             true
         }
+
+        holder.imgMoreTopListened.setOnClickListener {
+
+        }
     }
 
     fun addDownload(download: Download) {
@@ -261,7 +267,7 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
         val actionButton: ImageView
         val timeRemainingTextView: TextView
         val downloadedBytesPerSecondTextView: TextView
-
+        val imgMoreTopListened: ImageView
         init {
             titleTextView = itemView.findViewById(R.id.titleTextView)
             statusTextView = itemView.findViewById(R.id.status_TextView)
@@ -272,6 +278,32 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
             progressTextView = itemView.findViewById(R.id.progress_TextView)
             timeRemainingTextView = itemView.findViewById(R.id.remaining_TextView)
             downloadedBytesPerSecondTextView = itemView.findViewById(R.id.downloadSpeedTextView)
+            imgMoreTopListened = itemView.findViewById(R.id.imgMoreTopListened)
+        }
+    }
+
+    private fun showBottomSheetDownloadinf(position: Int){
+        val bottomSheetDialogSong = BottomSheetDialog(context);
+        bottomSheetDialogSong.setContentView(R.layout.bottom_sheet_info_music);
+        bottomSheetDialogSong.show()
+        val img: ImageView = bottomSheetDialogSong.findViewById(R.id.imgBottomSheetSong)!!
+        val song: TextView = bottomSheetDialogSong.findViewById(R.id.tvSongBtMusic)!!
+        val singer: TextView = bottomSheetDialogSong.findViewById(R.id.tvSingerBtMusic)!!
+        Glide.with(context).load(list[position].image).error(R.drawable.demo_img_download)
+            .into(img)
+        song.text = list[position].name
+        singer.text = list[position].artistName
+        val viewShare: View? = bottomSheetDialogSong.findViewById(R.id.layoutShare)
+        if (viewShare == null) {
+
+        } else {
+            viewShare.setOnClickListener {
+                val shareIntent = Intent()
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.type = "plain/text"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, list[position].audio)
+                context.startActivity(Intent.createChooser(shareIntent, "Sharing Music File!!"))
+            }
         }
     }
 }

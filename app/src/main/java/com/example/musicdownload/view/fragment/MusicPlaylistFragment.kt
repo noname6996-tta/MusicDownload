@@ -177,13 +177,13 @@ class MusicPlaylistFragment : BaseFragment() {
             val intent = Intent(activity, PlayActivity::class.java)
             intent.putExtra("MainActivitySong", "PlaylistFragment")
             if (checkForInternet(requireContext())) {
-
                 intent.putExtra("index", it)
                 startActivity(intent)
             } else {
                 getDataStoreEx()
                 for (i in 0..listMusicOffline.size - 1) {
                     if (listMusic[it].name == listMusicOffline[i].name) {
+                        HomeFragment.listMusicHome.add(listMusicOffline[i])
                         intent.putExtra("index", it)
                         startActivity(intent)
                     } else {

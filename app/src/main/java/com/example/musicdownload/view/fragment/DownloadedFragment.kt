@@ -36,7 +36,10 @@ import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuandq.radiofm.data.base.BaseFragment
 import timber.log.Timber
+import java.io.BufferedInputStream
 import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
 import java.util.*
 
 
@@ -165,8 +168,13 @@ class DownloadedFragment : BaseFragment() {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 checkSystemWriteSettings(requireContext()) {
                                     if (it) {
-                                        setRing(arrayMusicLocal[i])
-                                        Log.e("ring",arrayMusicLocal[i].title.toString())
+                                        setAsRingtone(arrayMusicLocal[i])
+                                        if (setAsRingtone(arrayMusicLocal[i])){
+                                            Toast.makeText(requireContext(),"Set ringtone success",Toast.LENGTH_SHORT).show()
+                                        }
+                                        else {
+                                            Toast.makeText(requireContext(),"Set ringtone fail",Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 }
                             }
@@ -207,33 +215,48 @@ class DownloadedFragment : BaseFragment() {
         }
     }
 
-    private fun setRing(musicLocal: MusicLocal) {
-        var path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            .toString() + "/DownloadList/"
-        val k = File(
-            path, "${musicLocal.title}.mp3"
-        ) // path is a file to /sdcard/media/ringtone
+    private fun setAsRingtone(musicDownloaded: MusicLocal): Boolean {
         val values = ContentValues()
-        values.put(MediaStore.MediaColumns.DATA, k.getAbsolutePath());
-        values.put(MediaStore.MediaColumns.TITLE, musicLocal.title);
-        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
-        values.put(MediaStore.Audio.Media.ARTIST, musicLocal.artist);
-        values.put(MediaStore.Audio.Media.DURATION, musicLocal.duration);
-        values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
-        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
-        values.put(MediaStore.Audio.Media.IS_ALARM, false);
-        values.put(MediaStore.Audio.Media.IS_MUSIC, false);
+        val file = File(musicDownloaded.data!!)
+        values.put(MediaStore.MediaColumns.TITLE, musicDownloaded.title)
+        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mpeg")
+        values.put(MediaStore.Audio.Media.IS_RINGTONE, true)
 
-        val uri = MediaStore.Audio.Media.getContentUriForPath(k.getAbsolutePath())
-        val newUri: Uri = requireActivity().getContentResolver().insert(uri!!, values)!!
-
-        RingtoneManager.setActualDefaultRingtoneUri(
-            requireActivity(),
-            RingtoneManager.TYPE_RINGTONE,
-            newUri
-        )
-        Toast.makeText(requireContext(), "Set nhạc chuông thành công nhá bro", Toast.LENGTH_SHORT)
-            .show()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val newUri: Uri? = requireContext().contentResolver
+                .insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
+            try {
+                requireContext().contentResolver.openOutputStream(newUri!!).use { os ->
+                    val size = file.length().toInt()
+                    val bytes = ByteArray(size)
+                    try {
+                        val buf = BufferedInputStream(FileInputStream(file))
+                        buf.read(bytes, 0, bytes.size)
+                        buf.close()
+                        os?.write(bytes)
+                        os?.close()
+                        os?.flush()
+                    } catch (e: IOException) {
+                        return false
+                    }
+                }
+            } catch (ignored: Exception) {
+                return false
+            }
+            RingtoneManager.setActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE, newUri)
+        } else {
+            values.put(MediaStore.MediaColumns.DATA, file.absolutePath)
+            val uri = MediaStore.Audio.Media.getContentUriForPath(file.absolutePath)
+            requireContext().contentResolver
+                .delete(uri!!, MediaStore.MediaColumns.DATA + "=" + file.absolutePath + "", null)
+            val newUri: Uri? = requireContext().contentResolver.insert(uri, values)
+            RingtoneManager.setActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE, newUri)
+            MediaStore.Audio.Media.getContentUriForPath(file.absolutePath)?.let {
+                requireContext().contentResolver
+                    .insert(it, values)
+            }
+        }
+        return true
     }
 
     private fun getDataStoreEx() {

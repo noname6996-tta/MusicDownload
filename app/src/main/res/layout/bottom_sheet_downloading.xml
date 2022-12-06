@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="440dp"
+    android:background="@color/black"
+    >
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/text_gray"
+        app:cardCornerRadius="16dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:background="#1B1A21"
+            android:layout_height="match_parent">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="114dp"
+                android:layout_height="114dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imgBottomSheetSong"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/demo_img_download" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvSongBtMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/Songname_default"
+                android:textColor="#FFFFFF"
+                android:textFontWeight="600"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+            <TextView
+                android:id="@+id/tvSingerBtMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/SongSingger_default"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSongBtMusic" />
+
+            <View
+                android:id="@+id/view9"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginRight="54dp"
+                android:background="@drawable/background_circle"
+                app:layout_constraintEnd_toStartOf="@+id/cardView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgFavoriteMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_favorite_24"
+                app:layout_constraintBottom_toBottomOf="@+id/view9"
+                app:layout_constraintEnd_toEndOf="@+id/view9"
+                app:layout_constraintStart_toStartOf="@+id/view9"
+                app:layout_constraintTop_toTopOf="@+id/view9" />
+            <View
+                android:id="@+id/layoutShare"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginLeft="54dp"
+                android:background="@drawable/background_circle"
+                app:layout_constraintStart_toEndOf="@+id/cardView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="@dimen/radius_20"
+                android:layout_height="@dimen/radius_20"
+                android:src="@drawable/share_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/layoutShare"
+                app:layout_constraintEnd_toEndOf="@+id/layoutShare"
+                app:layout_constraintStart_toStartOf="@+id/layoutShare"
+                app:layout_constraintTop_toTopOf="@+id/layoutShare" />
+            <View
+                android:id="@+id/viewAddToPlaylist"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="17dp"
+                android:background="@drawable/bkg_radius_corner_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSingerBtMusic"/>
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:src="@drawable/ic_baseline_playlist_add_24"
+                app:layout_constraintBottom_toBottomOf="@+id/viewAddToPlaylist"
+                app:layout_constraintStart_toStartOf="@+id/viewAddToPlaylist"
+                app:layout_constraintTop_toTopOf="@+id/viewAddToPlaylist" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/addToList"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewAddToPlaylist"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="@+id/viewAddToPlaylist" />
+
+            <View
+                android:id="@+id/viewDownloadSong"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="@dimen/radius_corner_8dp"
+                android:visibility="visible"
+                android:layout_marginRight="17dp"
+                android:background="@drawable/bkg_radius_corner_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewAddToPlaylist"/>
+
+            <ImageView
+                android:id="@+id/imageviewDownloadSong"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/delete"
+                app:layout_constraintBottom_toBottomOf="@+id/viewDownloadSong"
+                app:layout_constraintStart_toStartOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="@+id/viewDownloadSong" />
+
+            <TextView
+                android:id="@+id/tvDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@string/remove_downloaded"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewDownloadSong"
+                app:layout_constraintStart_toStartOf="@+id/textView3"
+                app:layout_constraintTop_toTopOf="@+id/viewDownloadSong" />
+
+            <View
+                android:id="@+id/viewRemoveDownloadSong"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="@dimen/radius_corner_8dp"
+                android:layout_marginRight="17dp"
+                android:background="@drawable/bkg_radius_corner_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewDownloadSong"/>
+
+            <ImageView
+                android:id="@+id/imageviewRemoveDownloadSong"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_baseline_pause_circle_outline_24"
+                app:layout_constraintBottom_toBottomOf="@+id/viewRemoveDownloadSong"
+                app:layout_constraintStart_toStartOf="@+id/imageviewDownloadSong"
+                app:layout_constraintTop_toTopOf="@+id/viewRemoveDownloadSong" />
+
+            <TextView
+                android:id="@+id/removeSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="@string/pause_downloaded"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewRemoveDownloadSong"
+                app:layout_constraintStart_toStartOf="@+id/tvDownload"
+                app:layout_constraintTop_toTopOf="@+id/viewRemoveDownloadSong" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

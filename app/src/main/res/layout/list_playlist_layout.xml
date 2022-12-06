@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="9dp"
-        android:text="05 Songs"
+        android:text="0 Songs"
         android:textColor="@color/text_gray"
         android:textSize="12dp"
         app:layout_constraintStart_toEndOf="@+id/view11"

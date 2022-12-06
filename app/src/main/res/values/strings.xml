@@ -69,5 +69,7 @@
     <string name="feedback">Feedback</string>
     <string name="rating_app">Rating App</string>
     <string name="remove_downloaded_song">Remove Downloaded Song</string>
+    <string name="remove_downloaded">Remove Download</string>
+    <string name="pause_downloaded">Pause Download</string>
     <string name="set_as_ringtone">Set as Ringtone</string>
 </resources>
