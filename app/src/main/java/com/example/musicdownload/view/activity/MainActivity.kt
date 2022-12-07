@@ -1,6 +1,6 @@
 package com.example.musicdownload.view.activity
 
-import android.Manifest
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -30,6 +30,7 @@ import com.example.musicdownload.adapter.BottomSheetPlaylistAdapter
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.data.model.PlayList
+import com.example.musicdownload.data.model.exitApplication
 import com.example.musicdownload.databinding.ActivityMainBinding
 import com.example.musicdownload.view.fragment.PlayActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
@@ -392,5 +393,18 @@ class MainActivity : AppCompatActivity() {
         dexter.check()
     }
 
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+        builder.setMessage("Do you want to Exit?")
+        builder.setPositiveButton("Yes") { dialog, which -> //if user pressed "yes", then he is allowed to exit from application
+            this.finishAffinity();
+        }
+        builder.setNegativeButton("No") { dialog, which -> //if user select "No", just cancel this dialog and continue with app
+            dialog.cancel()
+        }
+        val alert = builder.create()
+        alert.show()
+    }
 
 }

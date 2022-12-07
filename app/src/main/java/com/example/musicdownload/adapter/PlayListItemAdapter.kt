@@ -4,9 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.musicdownload.R
-import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.PlayList
 import com.example.musicdownload.databinding.ItemPlaylistBinding
 
@@ -18,14 +16,17 @@ class PlayListItemAdapter : RecyclerView.Adapter<PlayListViewHolder>() {
         this.context = context
         notifyDataSetChanged()
     }
+
     private var onClickPlayList: ((PlayList) -> Unit)? = null
     fun setClickShowPlayList(listener: ((PlayList) -> Unit)) {
         onClickPlayList = listener
     }
+
     private var onClickSendPlayList: ((PlayList) -> Unit)? = null
     fun setClickSendInfo(listener: ((PlayList) -> Unit)) {
         onClickSendPlayList = listener
     }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,15 +39,14 @@ class PlayListItemAdapter : RecyclerView.Adapter<PlayListViewHolder>() {
     override fun onBindViewHolder(holder: PlayListViewHolder, position: Int) {
         val playList = playLists[position]
         holder.binding.tvNamePlaylist.text = playList.name
-        Glide.with(holder.itemView.context).load(playList.image).error(R.drawable.demo_img_download)
-            .into(holder.binding.imgItemPlaylist)
+        holder.binding.imgItemPlaylist.setImageResource(R.drawable.playlistmusic)
         holder.binding.imgMorePlayList.setOnClickListener {
-            onClickPlayList?.let{
+            onClickPlayList?.let {
                 it(playLists[position])
             }
         }
-        holder.binding.layoutitemPlaylistMusic.setOnClickListener{
-            onClickSendPlayList?.let{
+        holder.binding.layoutitemPlaylistMusic.setOnClickListener {
+            onClickSendPlayList?.let {
                 it(playLists[position])
             }
         }

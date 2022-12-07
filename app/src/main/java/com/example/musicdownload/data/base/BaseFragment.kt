@@ -123,16 +123,19 @@ open class BaseFragment : Fragment() {
         var musicPlaylistid: String = ""
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
             Observer { musicplaylist ->
+                var countFa : Int = 0
                 for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
-                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
                         musicPlaylistid = musicplaylist[item].name
-                        isFavorite = true
-                    } else {
-                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_24)
-                        isFavorite = false
+                        countFa++
                     }
-
+                }
+                if (countFa>0){
+                    favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                    isFavorite = true
+                } else {
+                    favorite!!.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                    isFavorite = false
                 }
             })
 
@@ -219,29 +222,7 @@ open class BaseFragment : Fragment() {
                         MediaScannerConnection.scanFile(
                             requireContext(), arrayOf(arrayMusicLocalBase[i].data), null, null
                         )
-                        getDataStoreEx()
-                        var count2 : Int =0
-                        for (i in 0..listMusicOffline.size-1){
-                            if (music.name == listMusicOffline[i].name){
-                                count2 ++
-                            }
-                        }
-                        if (count2>0){
-                            viewDownloadSong!!.visibility = View.GONE
-                            tvDownload!!.visibility = View.GONE
-                            imageviewDownloadSong!!.visibility = View.GONE
-                            viewRemoveDownloadSong!!.visibility = View.VISIBLE
-                            removeSong!!.visibility = View.VISIBLE
-                            imageviewRemoveDownloadSong!!.visibility = View.VISIBLE
-                        }
-                        else {
-                            viewDownloadSong!!.visibility = View.VISIBLE
-                            tvDownload!!.visibility = View.VISIBLE
-                            imageviewDownloadSong!!.visibility = View.VISIBLE
-                            viewRemoveDownloadSong!!.visibility = View.GONE
-                            removeSong!!.visibility = View.GONE
-                            imageviewRemoveDownloadSong!!.visibility = View.GONE
-                        }
+                        listMusicOffline.clear()
                         bottomSheetDialogSong.dismiss()
                     }
                 }
@@ -326,7 +307,6 @@ open class BaseFragment : Fragment() {
     }
 
     private fun insertMusicToPlaylist(music: Music, playList: PlayList) {
-        var count: Int = 0
         val musicPlayListViewModel = ViewModelProvider(this)[MusicPlayListViewModel::class.java]
         //
         val musicPlaylist = MusicPlaylist(
@@ -342,12 +322,12 @@ open class BaseFragment : Fragment() {
         )
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
+                var count: Int = 0
                 for (item: Int in musicplaylist.indices) {
                     if (musicplaylist[item].idPlayList == playList.id && musicplaylist[item].name == music.name) {
                         count++
                     }
                 }
-                Log.e("count", count.toString())
                 if (count > 0) {
                     Toast.makeText(
                         requireContext(),

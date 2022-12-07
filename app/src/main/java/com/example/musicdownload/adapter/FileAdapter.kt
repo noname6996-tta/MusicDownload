@@ -213,6 +213,8 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
                         actionListener.onRemoveDownload(
                             downloadData.download!!.id
                         )
+                        list.remove(list[position])
+                        listDownload.remove(listDownload[position])
                     }
                     .setNegativeButton(R.string.cancel, null)
                     .show()
@@ -226,8 +228,8 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
                 holder.actionButton.setOnClickListener { view: View? ->
                     holder.actionButton.isEnabled = false
                     actionListener.onResumeDownload(downloadData.download!!.id)
-                    bottomSheetDialogSong.dismiss()
                 }
+                bottomSheetDialogSong.dismiss()
             }
         }
     }

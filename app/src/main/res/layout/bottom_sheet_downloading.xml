@@ -34,7 +34,11 @@
 
             <TextView
                 android:id="@+id/tvSongBtMusic"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_marginRight="24dp"
+                android:layout_marginLeft="24dp"
+                android:maxLines="2"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:fontFamily="@font/roboto"

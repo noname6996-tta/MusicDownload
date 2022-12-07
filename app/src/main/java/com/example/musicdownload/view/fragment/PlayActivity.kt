@@ -497,16 +497,19 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         var musicPlaylistid: String = "123456789"
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
-                for (item: Int in musicplaylist.indices) {
+                var countFa : Int = 0
+                for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
-                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
                         musicPlaylistid = musicplaylist[item].name
-                        isFavorite = true
-                    } else {
-                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_24)
-                        isFavorite = false
+                        countFa++
                     }
-
+                }
+                if (countFa>0){
+                    favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                    isFavorite = true
+                } else {
+                    favorite!!.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                    isFavorite = false
                 }
             })
 
@@ -524,11 +527,14 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                     music.image,
                     music.audio
                 )
+                // check xem co trong playlist nao chưa
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                bottomSheetDialogSong.dismiss()
             } else {
                 musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
-                favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+                bottomSheetDialogSong.dismiss()
             }
         }
         getDataStoreEx()
@@ -592,29 +598,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                         MediaScannerConnection.scanFile(
                             this, arrayOf(arrayMusicLocalBase[i].data), null, null
                         )
-                        getDataStoreEx()
-                        var count2 : Int =0
-                        for (i in 0..listMusicOffline.size-1){
-                            if (music.name == listMusicOffline[i].name){
-                                count ++
-                            }
-                        }
-                        if (count2>0){
-                            viewDownloadSong!!.visibility = View.GONE
-                            tvDownload!!.visibility = View.GONE
-                            imageviewDownloadSong!!.visibility = View.GONE
-                            viewRemoveDownloadSong!!.visibility = View.VISIBLE
-                            removeSong!!.visibility = View.VISIBLE
-                            imageviewRemoveDownloadSong!!.visibility = View.VISIBLE
-                        }
-                        else {
-                            viewDownloadSong!!.visibility = View.VISIBLE
-                            tvDownload!!.visibility = View.VISIBLE
-                            imageviewDownloadSong!!.visibility = View.VISIBLE
-                            viewRemoveDownloadSong!!.visibility = View.GONE
-                            removeSong!!.visibility = View.GONE
-                            imageviewRemoveDownloadSong!!.visibility = View.GONE
-                        }
+                        listMusicOffline.clear()
                         bottomSheetDialogSong.dismiss()
                     }
                 }

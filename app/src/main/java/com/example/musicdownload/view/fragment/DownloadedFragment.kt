@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.musicdownload.R
+import com.example.musicdownload.adapter.FileAdapter
 import com.example.musicdownload.adapter.HomeTopListenedAdapter
 import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
@@ -119,10 +120,9 @@ class DownloadedFragment : BaseFragment() {
         }
 
         val favorite = bottomSheetDialogSong.findViewById<ImageView>(R.id.imgFavoriteMusic)
-
-        var count : Int =0
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
             Observer { musicplaylist ->
+                var count : Int =0
                 for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
                         musicPlaylistid = musicplaylist[item].name
@@ -150,14 +150,14 @@ class DownloadedFragment : BaseFragment() {
                             music.audio
                         )
                         musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-                        MainActivity.binding.imgFavoriteHome.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
                         isFavorite = true
                     } else {
-                        isFavorite = false
                         musicPlayListViewModel.deleteMusicPlaylistWithId(
                             musicPlaylistid.toString().trim()
                         )
-                        MainActivity.binding.imgFavoriteHome.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                        favorite!!.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                        isFavorite = false
                     }
                 }
                 val viewSetRing: View = bottomSheetDialogSong.findViewById(R.id.viewSetRing)!!
@@ -192,6 +192,7 @@ class DownloadedFragment : BaseFragment() {
                             MediaScannerConnection.scanFile(
                                 requireContext(), arrayOf(arrayMusicLocal[i].data), null, null
                             )
+                            arrayMusicLocal.remove(arrayMusicLocal[i])
                             getDataStoreEx()
                             bottomSheetDialogSong.dismiss()
                         }
@@ -329,7 +330,6 @@ class DownloadedFragment : BaseFragment() {
                     arrayMusicLocal.add(songLocal)
                     arrayMusicModel.add(song)
                 }
-
             }
         } catch (e : Exception) {
 

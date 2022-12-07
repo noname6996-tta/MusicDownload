@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/imgItemPlaylist"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/playlistmusic"
         app:layout_constraintBottom_toBottomOf="@+id/viewImgPlaylist"
         app:layout_constraintEnd_toEndOf="@+id/viewImgPlaylist"

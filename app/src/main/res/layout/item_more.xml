@@ -50,6 +50,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="16dp"
                 android:text="Lazy Song"
+                android:maxWidth="180dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/white"
                 app:layout_constraintLeft_toRightOf="@+id/cardViewListened"
                 app:layout_constraintTop_toTopOf="parent" />

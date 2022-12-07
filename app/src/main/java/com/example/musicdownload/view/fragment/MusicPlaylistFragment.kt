@@ -112,12 +112,17 @@ class MusicPlaylistFragment : BaseFragment() {
                             hashSet.addAll(listMusicPlaylist)
                             listMusicPlaylist.clear()
                             listMusicPlaylist.addAll(hashSet)
-                            musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
+
+                        }
+                        musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
+                        binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
+                        musicAdapter.notifyDataSetChanged()
+                        if  (listMusicPlaylist.size==0){
+                            binding.tvListSize.setText("No Song in the Playlist")
+                            binding.imgPlayListMusic.visibility = View.GONE}
+                        else {
                             binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
-                            musicAdapter.notifyDataSetChanged()
-                            if  (listMusicPlaylist.size==0){
-                                binding.tvListSize.setText("No Song in the Playlist")
-                                binding.imgPlayListMusic.visibility = View.GONE}
+                            binding.imgPlayListMusic.visibility = View.VISIBLE
                         }
                     }
                     else {
@@ -132,10 +137,6 @@ class MusicPlaylistFragment : BaseFragment() {
                             )
                             // update Data to database
                             playListViewModel.updatePlaylist(updatePlayList)
-                            Glide.with(requireContext()).load(listMusicPlaylist[0].image)
-                                .error(R.drawable.demo_img_download)
-                                .into(binding.imgPlayList)
-                            //
                             val music = Music(
                                 "",
                                 musicplaylist[item].name,
@@ -159,13 +160,16 @@ class MusicPlaylistFragment : BaseFragment() {
                                 ""
                             )
                             listMusic.add(music)
-                            musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
-                            binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
-                            musicAdapter.notifyDataSetChanged()
-                            if  (listMusicPlaylist.size==0){
-                                binding.tvListSize.setText("No Song in the Playlist")
-                                binding.imgPlayListMusic.visibility = View.GONE}
                         }
+                        musicAdapter.setMusicPlaylistList(listMusicPlaylist, requireContext())
+                        if  (listMusicPlaylist.size==0){
+                            binding.tvListSize.setText("No Song in the Playlist")
+                            binding.imgPlayListMusic.visibility = View.GONE
+                        } else {
+                            binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
+                            binding.imgPlayListMusic.visibility = View.VISIBLE
+                        }
+                        musicAdapter.notifyDataSetChanged()
                     }
                 }
             })

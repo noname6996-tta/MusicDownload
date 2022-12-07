@@ -116,7 +116,7 @@ class DownloadingFragment : Fragment(),ActionListener {
 
     override fun onPause() {
         super.onPause()
-        fetch.removeListener(fetchListener)
+//        fetch.removeListener(fetchListener)
     }
 
      override fun onDestroy() {

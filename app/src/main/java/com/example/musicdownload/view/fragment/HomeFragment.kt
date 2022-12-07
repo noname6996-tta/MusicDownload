@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -75,6 +76,10 @@ class HomeFragment : BaseFragment() {
         binding.btnReload.setOnClickListener {
             setCheckInternet()
         }
+        binding.btnGoToDownloadedSong.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToDownloadManagerFragment()
+            findNavController().navigate(action)
+        }
     }
 
 
@@ -124,11 +129,7 @@ class HomeFragment : BaseFragment() {
         binding.viewChangeRegon.setOnClickListener {
             setBottomSheetRegion()
         }
-        binding.btnGoToDownloadedSong.setOnClickListener {
-            Toast.makeText(requireContext(),"lala",Toast.LENGTH_SHORT).show()
-            val action = HomeFragmentDirections.actionHomeFragmentToDownloadManagerFragment()
-            findNavController().navigate(action)
-        }
+
     }
 
     private fun addData() {
