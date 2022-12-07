@@ -46,6 +46,7 @@ class DownloadingFragment : Fragment(),ActionListener {
     companion object {
         val GROUP_ID = "listGroup".hashCode()
         val FETCH_NAMESPACE = "DownloadListActivity"
+        var arrayMusicDownloading = ArrayList<Music>()
     }
     private val STORAGE_PERMISSION_CODE = 200
     private val UNKNOWN_REMAINING_TIME: Long = -1L

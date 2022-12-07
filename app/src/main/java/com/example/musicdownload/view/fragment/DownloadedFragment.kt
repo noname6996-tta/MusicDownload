@@ -1,5 +1,6 @@
 package com.example.musicdownload.view.fragment
 
+import android.app.AlertDialog
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
@@ -25,18 +26,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.musicdownload.R
-import com.example.musicdownload.adapter.FileAdapter
 import com.example.musicdownload.adapter.HomeTopListenedAdapter
 import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.MusicLocal
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.databinding.FragmentDownloadedBinding
-import com.example.musicdownload.view.activity.MainActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuandq.radiofm.data.base.BaseFragment
-import timber.log.Timber
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -122,14 +120,14 @@ class DownloadedFragment : BaseFragment() {
         val favorite = bottomSheetDialogSong.findViewById<ImageView>(R.id.imgFavoriteMusic)
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
             Observer { musicplaylist ->
-                var count : Int =0
+                var count: Int = 0
                 for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
                         musicPlaylistid = musicplaylist[item].name
                         count++
                     }
                 }
-                if (count>0){
+                if (count > 0) {
                     favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
                     isFavorite = true
                 } else {
@@ -168,11 +166,18 @@ class DownloadedFragment : BaseFragment() {
                                 checkSystemWriteSettings(requireContext()) {
                                     if (it) {
                                         setAsRingtone(arrayMusicLocal[i])
-                                        if (setAsRingtone(arrayMusicLocal[i])){
-                                            Toast.makeText(requireContext(),"Set ringtone success",Toast.LENGTH_SHORT).show()
-                                        }
-                                        else {
-                                            Toast.makeText(requireContext(),"Set ringtone fail",Toast.LENGTH_SHORT).show()
+                                        if (setAsRingtone(arrayMusicLocal[i])) {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Set ringtone success",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Set ringtone fail",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 }
@@ -184,19 +189,28 @@ class DownloadedFragment : BaseFragment() {
                 val viewRemoveDownloadSong: View =
                     bottomSheetDialogSong.findViewById(R.id.viewRemoveDownloadSong)!!
                 viewRemoveDownloadSong.setOnClickListener {
-                    for (i in 0..arrayMusicLocal.size - 1) {
-                        if (music.name == arrayMusicLocal[i].title) {
-                            val fdelete: File = File(arrayMusicLocal[i].data)
-                            fdelete.delete()
-                            arrayMusicModel.remove(arrayMusicModel[i])
-                            MediaScannerConnection.scanFile(
-                                requireContext(), arrayOf(arrayMusicLocal[i].data), null, null
-                            )
-                            arrayMusicLocal.remove(arrayMusicLocal[i])
-                            getDataStoreEx()
-                            bottomSheetDialogSong.dismiss()
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setPositiveButton("Yes") { _, _ ->
+                        for (i in 0..arrayMusicLocal.size - 1) {
+                            if (music.name == arrayMusicLocal[i].title) {
+                                val fdelete: File = File(arrayMusicLocal[i].data)
+                                fdelete.delete()
+                                arrayMusicModel.remove(arrayMusicModel[i])
+                                MediaScannerConnection.scanFile(
+                                    requireContext(), arrayOf(arrayMusicLocal[i].data), null, null
+                                )
+                                adapter.setMovieList(arrayMusicModel, requireContext())
+                                bottomSheetDialogSong.dismiss()
+                            }
                         }
+                        Toast.makeText(requireContext(), "Remove song Success",Toast.LENGTH_SHORT).show()
                     }
+                    builder.setNegativeButton("No") { _, _ ->
+
+                    }
+                    builder.setTitle("Remove song from this phone?")
+                    builder.setMessage("Do you really want??")
+                    builder.create().show()
                 }
             })
     }
@@ -243,14 +257,22 @@ class DownloadedFragment : BaseFragment() {
             } catch (ignored: Exception) {
                 return false
             }
-            RingtoneManager.setActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE, newUri)
+            RingtoneManager.setActualDefaultRingtoneUri(
+                context,
+                RingtoneManager.TYPE_RINGTONE,
+                newUri
+            )
         } else {
             values.put(MediaStore.MediaColumns.DATA, file.absolutePath)
             val uri = MediaStore.Audio.Media.getContentUriForPath(file.absolutePath)
             requireContext().contentResolver
                 .delete(uri!!, MediaStore.MediaColumns.DATA + "=" + file.absolutePath + "", null)
             val newUri: Uri? = requireContext().contentResolver.insert(uri, values)
-            RingtoneManager.setActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE, newUri)
+            RingtoneManager.setActualDefaultRingtoneUri(
+                context,
+                RingtoneManager.TYPE_RINGTONE,
+                newUri
+            )
             MediaStore.Audio.Media.getContentUriForPath(file.absolutePath)?.let {
                 requireContext().contentResolver
                     .insert(it, values)
@@ -329,9 +351,16 @@ class DownloadedFragment : BaseFragment() {
                     )
                     arrayMusicLocal.add(songLocal)
                     arrayMusicModel.add(song)
+                    if (Data.listDownload.size > 0) {
+                        for (i in 0..Data.listDownload.size - 1) {
+                            if (Data.listDownload[i].name == song.name) {
+                                arrayMusicModel.remove(song)
+                            }
+                        }
+                    }
                 }
             }
-        } catch (e : Exception) {
+        } catch (e: Exception) {
 
         }
 
