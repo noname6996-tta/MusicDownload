@@ -62,6 +62,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
     private var isFavorite: Boolean = false
     private var listMusicOffline = ArrayList<Music>()
     var sufferOption: Boolean = false
+    var sufferOptionNothing: Boolean = false
     lateinit var viewModel: HomeFragmentViewModel
     private val retrofitService = RetrofitService.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,15 +97,23 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         }
         binding.imgPlayingSuffer.setOnClickListener {
             if (repeat) {
-
+                if (!sufferOptionNothing) {
+                    sufferOptionNothing= true
+                    binding.imgPlayingSuffer.setImageResource(R.drawable.suffertrue)
+                } else {
+                    sufferOptionNothing= false
+                    binding.imgPlayingSuffer.setImageResource(R.drawable.randmusic)
+                }
             } else {
                 if (!sufferOption) {
                     sufferOption = true
+                    sufferOptionNothing= true
                     binding.imgPlayingSuffer.setImageResource(R.drawable.suffertrue)
                     var listMusicPlayShuffer: ArrayList<Music> = listMusicPlay
                     listMusicPlayShuffer.shuffle()
                 } else {
                     sufferOption = false
+                    sufferOptionNothing= false
                     binding.imgPlayingSuffer.setImageResource(R.drawable.randmusic)
                 }
             }
@@ -113,7 +122,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         binding.imgPlayingRepeat.setOnClickListener {
             if (!repeat) {
                 repeat = true
-                binding.imgPlayingRepeat.setImageResource(R.drawable.repeatcolor)
+                binding.imgPlayingRepeat.setImageResource(R.drawable.loop_image_true)
             } else {
                 repeat = false
                 binding.imgPlayingRepeat.setImageResource(R.drawable.imgrepeat)
@@ -197,7 +206,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             .into(binding.imgPlaying)
         binding.tvSongNameNowPlaying.text = listMusicPlay[songPosition].name
         binding.tvSingerSongNowPlaying.text = listMusicPlay[songPosition].artistName
-        if (repeat) binding.imgPlayingRepeat.setImageResource(R.drawable.repeatcolor)
+        if (repeat) binding.imgPlayingRepeat.setImageResource(R.drawable.loop_image_true)
     }
 
     private fun playMedia() {

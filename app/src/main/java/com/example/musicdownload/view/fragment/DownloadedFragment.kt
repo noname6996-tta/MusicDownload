@@ -387,16 +387,6 @@ class DownloadedFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!Data.listDownload.isEmpty()) {
-            for (i in 0..Data.listDownload.size - 1) {
-                MediaScannerConnection.scanFile(
-                    requireContext(), arrayOf(
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                            .toString() + "/DownloadList/${Data.listDownload[i].name}.mp3"
-                    ), null, null
-                )
-            }
-
-        }
+        getDataStoreEx()
     }
 }

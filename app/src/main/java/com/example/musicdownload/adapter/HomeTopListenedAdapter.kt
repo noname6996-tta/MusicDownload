@@ -45,13 +45,13 @@ class HomeTopListenedAdapter() :
     }
 
     override fun onBindViewHolder(holder: HomeFragmentTopListenedViewHolder, position: Int) {
-        val music = musics[position]
+        val music = musicsFilter[position]
         HomeFragment.positionMusic = position
         holder.binding.tvTopListenedSingerSong.text = music.artistName
         holder.binding.tvTopListenedNameSong.text = music.name
         holder.binding.imgMoreTopListened.setOnClickListener {
             onClickMusic?.let{
-                it(musics[position])
+                it(music)
             }
         }
         holder.binding.layoutTopListened.setOnClickListener{
@@ -67,7 +67,7 @@ class HomeTopListenedAdapter() :
         return musics.size
     }
 
-    fun getFilter(): Filter? {
+    fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val srcSearch = charSequence.toString()

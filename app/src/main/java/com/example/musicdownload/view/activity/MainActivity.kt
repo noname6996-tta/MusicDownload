@@ -21,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     var isFavorite: Boolean = false
     var musicPlaylistid: String = ""
     lateinit var dexter : DexterBuilder
-
+    lateinit var navHostFragment : NavHostFragment
     companion object {
         lateinit var binding: ActivityMainBinding
     }
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         musicPlayListViewModel =
             ViewModelProvider(this)[com.example.musicdownload.viewmodel.MusicPlayListViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val navHostFragment =
+        navHostFragment =
             supportFragmentManager.findFragmentById(R.id.frameMain) as NavHostFragment
         navController = navHostFragment.findNavController()
 
@@ -141,7 +143,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return (navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp())
     }
 
     override fun onResume() {
@@ -240,6 +243,12 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         PlayActivity.musicService?.stopSelf()
+        if(PlayActivity.musicService != null){
+//        PlayActivity.musicService!!.audioManager.abandonAudioFocus(PlayActivity.musicService)
+            PlayActivity.musicService!!.stopForeground(true)
+            PlayActivity.musicService!!.mediaPlayer!!.release()
+            PlayActivity.musicService = null}
+        exitProcess(1)
     }
 
     private fun checkFavorite(music: Music) {
@@ -350,7 +359,6 @@ class MainActivity : AppCompatActivity() {
                         count++
                     }
                 }
-                Log.e("count", count.toString())
                 if (count > 0) {
 //                    Toast.makeText(
 //                        this,
@@ -392,17 +400,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val builder = AlertDialog.Builder(this)
-        builder.setCancelable(false)
-        builder.setMessage("Do you want to Exit?")
-        builder.setPositiveButton("Yes") { dialog, which -> //if user pressed "yes", then he is allowed to exit from application
-            this.finishAffinity();
+        val backStackEntryCount = navHostFragment.childFragmentManager.backStackEntryCount
+        if (backStackEntryCount > 0) {
+            if (!navController.popBackStack()) {
+                finish()
+            }
+            return
+        } else {
+            val builder = AlertDialog.Builder(this)
+            builder.setCancelable(false)
+            builder.setMessage("Do you want to Exit?")
+            builder.setPositiveButton("Yes") { dialog, which -> //if user pressed "yes", then he is allowed to exit from application
+                this.finishAffinity();
+            }
+            builder.setNegativeButton("No") { dialog, which -> //if user select "No", just cancel this dialog and continue with app
+                dialog.cancel()
+            }
+            val alert = builder.create()
+            alert.show()
         }
-        builder.setNegativeButton("No") { dialog, which -> //if user select "No", just cancel this dialog and continue with app
-            dialog.cancel()
-        }
-        val alert = builder.create()
-        alert.show()
     }
 
 }

@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.musicdownload.view.fragment.DownloadedFragment
 import com.example.musicdownload.view.fragment.DownloadingFragment
 
-class DownlaodPagerAdapter (fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity){
+class DownloadPagerAdapter (fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity){
     override fun getItemCount()=2
 
     override fun createFragment(position: Int): Fragment {

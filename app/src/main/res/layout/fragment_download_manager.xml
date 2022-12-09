@@ -34,62 +34,90 @@
         android:background="@drawable/bgr_radius_bottom_download"
         app:layout_constraintBottom_toBottomOf="@+id/view16" />
 
-    <TextView
-        android:id="@+id/btnDemo1"
-        android:layout_width="wrap_content"
-        android:layout_height="61dp"
-        android:fontFamily="@font/roboto"
-        android:gravity="center"
-        android:text="Downloaded"
-        android:layout_marginEnd="4dp"
-        android:textColor="@color/white"
-        android:textSize="16dp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/view7"
-        app:layout_constraintEnd_toStartOf="@+id/btnDemo2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view16" />
+<!--    <TextView-->
+<!--        android:id="@+id/btnDemo1"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="61dp"-->
+<!--        android:fontFamily="@font/roboto"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Downloaded"-->
+<!--        android:layout_marginEnd="4dp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="16dp"-->
+<!--        android:textStyle="normal"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/view7"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/btnDemo2"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/view16" />-->
 
-    <View
-        android:id="@+id/viewSlideBtn1"
-        android:layout_width="34dp"
-        android:layout_height="4dp"
-        android:background="@drawable/background_radius_top_color_btnplay"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDemo1"
-        app:layout_constraintEnd_toEndOf="@+id/btnDemo1"
-        app:layout_constraintStart_toStartOf="@+id/btnDemo1" />
+<!--    <View-->
+<!--        android:id="@+id/viewSlideBtn1"-->
+<!--        android:layout_width="34dp"-->
+<!--        android:layout_height="4dp"-->
+<!--        android:background="@drawable/background_radius_top_color_btnplay"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/btnDemo1"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/btnDemo1"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/btnDemo1" />-->
 
 
-    <TextView
-        android:id="@+id/btnDemo2"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_height="61dp"
-        android:fontFamily="@font/roboto"
-        android:gravity="center"
-        android:text="Downloading"
-        android:textColor="@color/white"
-        android:textSize="16dp"
-        android:textStyle="normal"
+<!--    <TextView-->
+<!--        android:id="@+id/btnDemo2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_marginStart="4dp"-->
+<!--        android:layout_height="61dp"-->
+<!--        android:fontFamily="@font/roboto"-->
+<!--        android:gravity="center"-->
+<!--        android:text="Downloading"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="16dp"-->
+<!--        android:textStyle="normal"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/view7"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/btnDemo1"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/view16" />-->
+
+<!--    <View-->
+<!--        android:id="@+id/viewSlideBtn2"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_width="34dp"-->
+<!--        android:layout_height="4dp"-->
+<!--        android:background="@drawable/background_radius_top_color_btnplay"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/btnDemo2"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/btnDemo2"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/btnDemo2" />-->
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutHomeGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:scrollbars="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/view7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnDemo1"
-        app:layout_constraintTop_toTopOf="@+id/view16" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view16"
+        app:tabIndicator="@drawable/tab_indicator"
+        app:tabIndicatorColor="@color/color_btnPlay"
+        app:tabIndicatorGravity="bottom"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/color_btnPlay"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="#FFFFFF" />
 
-    <View
-        android:id="@+id/viewSlideBtn2"
-        android:visibility="gone"
-        android:layout_width="34dp"
-        android:layout_height="4dp"
-        android:background="@drawable/background_radius_top_color_btnplay"
-        app:layout_constraintBottom_toBottomOf="@+id/btnDemo2"
-        app:layout_constraintEnd_toEndOf="@+id/btnDemo2"
-        app:layout_constraintStart_toStartOf="@+id/btnDemo2" />
-
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerHomeGroup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bgr_radius_bottom_download"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view7" />
     <FrameLayout
         android:id="@+id/viewPagerDownloadFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:background="@drawable/bgr_radius_bottom_download"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
