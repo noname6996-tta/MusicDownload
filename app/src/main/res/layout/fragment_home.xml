@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="homeFragmentViewModel"
             type="com.example.musicdownload.viewmodel.HomeFragmentViewModel" />
@@ -11,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black">
+
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
@@ -30,10 +33,10 @@
                     android:id="@+id/tvLogoMusic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="MUSIC"
+                    android:text="@string/music"
                     android:textColor="@color/color_btnPlay"
                     android:textFontWeight="700"
                     app:layout_constraintStart_toStartOf="parent"
@@ -42,10 +45,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="DOWNLOADER"
+                    android:text="@string/downloader"
                     android:textColor="@color/white"
                     android:textFontWeight="700"
                     app:layout_constraintLeft_toRightOf="@+id/tvLogoMusic"
@@ -56,7 +59,7 @@
                     android:layout_width="75dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="14dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginEnd="6dp"
                     android:background="@drawable/regon_logo"
                     app:layout_constraintEnd_toStartOf="@+id/imgSearchHome"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +68,8 @@
                     android:id="@+id/imageView3"
                     android:layout_width="19dp"
                     android:layout_height="19dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginStart="6dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/globe_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/viewChangeRegon"
                     app:layout_constraintStart_toStartOf="@+id/viewChangeRegon"
@@ -73,13 +77,14 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
                     android:layout_marginEnd="6dp"
                     android:src="@drawable/polygon_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/viewChangeRegon"
                     app:layout_constraintEnd_toEndOf="@+id/viewChangeRegon"
-                    app:layout_constraintTop_toTopOf="@+id/viewChangeRegon" />
+                    app:layout_constraintTop_toTopOf="@+id/viewChangeRegon"
+                    android:contentDescription="@string/todo" />
 
                 <TextView
                     android:id="@+id/tvRegionHome"
@@ -90,6 +95,7 @@
                     android:maxLines="1"
                     android:text="@string/default_time_language"
                     android:textColor="@color/white"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/viewChangeRegon"
                     app:layout_constraintEnd_toEndOf="@+id/viewChangeRegon"
                     app:layout_constraintStart_toStartOf="@+id/viewChangeRegon"
@@ -100,20 +106,21 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginTop="13dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/background_cirle"
                     android:padding="6dp"
                     android:src="@drawable/ic_baseline_search_24"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/todo" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2"
                     android:layout_width="0dp"
                     android:layout_height="265dp"
-                    android:paddingEnd="160dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
+                    android:paddingEnd="160dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvLogoMusic" />
@@ -122,10 +129,10 @@
                     android:id="@+id/tvLogoTopRanking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Top Ranking"
+                    android:text="@string/top_ranking"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -135,10 +142,10 @@
                     android:id="@+id/tvMoreTopRanking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/roboto"
-                    android:text="More"
+                    android:padding="16dp"
+                    android:text="@string/more"
                     android:textColor="@color/color_btnPlay"
                     android:textSize="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -172,8 +179,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:padding="16dp"
                     android:fontFamily="@font/roboto"
+                    android:padding="16dp"
                     android:text="More"
                     android:textColor="@color/color_btnPlay"
                     android:textSize="12dp"
@@ -181,10 +188,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/recItemRanking" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginStart="8dp"
                     android:id="@+id/recToplistened"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
                     android:scrollbars="none"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -209,8 +216,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:padding="16dp"
                     android:fontFamily="@font/roboto"
+                    android:padding="16dp"
                     android:text="More"
                     android:textColor="@color/color_btnPlay"
                     android:textSize="12dp"
@@ -221,8 +228,8 @@
                     android:id="@+id/recTopDownload"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -246,8 +253,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:padding="16dp"
                     android:fontFamily="@font/roboto"
+                    android:padding="16dp"
                     android:text="@string/more"
                     android:textColor="@color/color_btnPlay"
                     android:textSize="12dp"
@@ -258,51 +265,60 @@
                     android:id="@+id/recGenres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvLogoGenres" />
+
                 <View
                     android:id="@+id/viewOnTopPlayHome"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="70dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recGenres"/>
+                    app:layout_constraintTop_toBottomOf="@+id/recGenres" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
         <io.supercharge.shimmerlayout.ShimmerLayout
             android:id="@+id/shimmerLayout"
-            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            >
+            android:visibility="gone">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
-                <include layout="@layout/item_shimmer_download_home"/>
-                <include layout="@layout/item_shimmer"/>
-                <include layout="@layout/item_shimmer"/>
-                <include layout="@layout/item_shimmer"/>
-                <include layout="@layout/item_shimmer"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_shimmer_download_home" />
+
+                <include layout="@layout/item_shimmer" />
+
+                <include layout="@layout/item_shimmer" />
+
+                <include layout="@layout/item_shimmer" />
+
+                <include layout="@layout/item_shimmer" />
+
                 <include layout="@layout/item_shimmer" />
             </LinearLayout>
 
 
         </io.supercharge.shimmerlayout.ShimmerLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutNotConnect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/backgroundPrimary"
-            android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:visibility="gone"
+            android:layout_marginRight="16dp"
+            android:background="@color/backgroundPrimary"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -320,18 +336,24 @@
 
             <View
                 android:id="@+id/btnGoToDownloadedSong"
-                android:layout_width="200dp"
+                android:layout_width="256dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_go_to_offline"
                 app:layout_constraintBottom_toTopOf="@+id/btnReload"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <View
+            <TextView
                 android:id="@+id/btnReload"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
+                android:text="Retry"
+                android:textColor="@color/white"
+                android:gravity="center"
                 android:layout_marginBottom="164dp"
+                android:textSize="16dp"
+                android:fontFamily="@font/roboto"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"

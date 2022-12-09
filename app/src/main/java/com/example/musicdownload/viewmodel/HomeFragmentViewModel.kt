@@ -19,6 +19,7 @@ class HomeFragmentViewModel constructor(private val musicRepository: MusicReposi
     var responseListenedToplistenedHome = MutableLiveData<List<Music>>()
     var responseListenedTopDownLoadHome = MutableLiveData<List<Music>>()
     var responseListenedMusicByGenres = MutableLiveData<List<Music>>()
+    var responseListenedSearchMusic = MutableLiveData<List<Music>>()
     var responseGenre = MutableLiveData<List<Genre>>()
     var errorMessage = MutableLiveData<String>()
 
@@ -108,6 +109,22 @@ class HomeFragmentViewModel constructor(private val musicRepository: MusicReposi
                 response: Response<ResponseListened>
             ) {
                 responseListenedMusicByGenres.postValue(response.body()!!.data)
+            }
+
+            override fun onFailure(call: Call<ResponseListened>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+    }
+
+    fun searchByString(name: String) {
+        val response = musicRepository.searchMusic(name)
+        response.enqueue(object : Callback<ResponseListened> {
+            override fun onResponse(
+                call: Call<ResponseListened>,
+                response: Response<ResponseListened>
+            ) {
+                responseListenedSearchMusic.postValue(response.body()!!.data)
             }
 
             override fun onFailure(call: Call<ResponseListened>, t: Throwable) {

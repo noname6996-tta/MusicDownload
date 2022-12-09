@@ -30,6 +30,9 @@ interface RetrofitService {
     @GET("http://marstechstudio.com/msd/scmusic/bygenre?offset=0&country=za&")
     fun getMusicByGenres(@Query("query") genresName: String):Call<ResponseListened>
 
+    @GET("http://marstechstudio.com/msd/scmusic/search?")
+    fun searchByString(@Query("query") genresName: String):Call<ResponseListened>
+
     companion object {
         var retrofitService: RetrofitService? = null
 

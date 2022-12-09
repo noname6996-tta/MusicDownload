@@ -2,7 +2,11 @@ package com.example.musicdownload.view.activity
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.navigateUp
@@ -216,6 +221,13 @@ class MainActivity : AppCompatActivity() {
         } else if (PlayActivity.musicService == null) {
             binding.layoutPlayHomeBottom.visibility = View.GONE
         }
+        if (!checkForInternet(this)){
+            navController.navigate(R.id.downloadManagerFragment,null, navOptions {
+                popUpTo(R.id.homeFragment) {
+                    inclusive = true
+                }
+            })
+        }
     }
 
     private fun playMusic() {
@@ -355,7 +367,7 @@ class MainActivity : AppCompatActivity() {
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
                 for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].id == playList.id && musicplaylist[item].name == music.name) {
+                    if (musicplaylist[item].idPlayList == playList.id && musicplaylist[item].name == music.name) {
                         count++
                     }
                 }
@@ -418,6 +430,45 @@ class MainActivity : AppCompatActivity() {
             }
             val alert = builder.create()
             alert.show()
+        }
+    }
+
+    private fun checkForInternet(context: Context): Boolean {
+        // register activity with the connectivity manager service
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        // if the android version is equal to M
+        // or greater we need to use the
+        // NetworkCapabilities to check what type of
+        // network has the internet connection
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            // Returns a Network object corresponding to
+            // the currently active default data network.
+            val network = connectivityManager.activeNetwork ?: return false
+
+            // Representation of the capabilities of an active network.
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return when {
+                // Indicates this network uses a Wi-Fi transport,
+                // or WiFi has network connectivity
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+
+                // Indicates this network uses a Cellular transport. or
+                // Cellular has network connectivity
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+
+                // else return false
+                else -> false
+            }
+        } else {
+            // if the android version is below M
+            @Suppress("DEPRECATION") val networkInfo =
+                connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
         }
     }
 

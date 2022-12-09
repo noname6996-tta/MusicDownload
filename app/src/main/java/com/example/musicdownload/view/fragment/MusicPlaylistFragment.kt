@@ -368,9 +368,10 @@ class MusicPlaylistFragment : BaseFragment() {
             playListViewModel.deletePlaylist(playList)
             Toast.makeText(
                 context,
-                "Change name playList: ${playList.name} Success",
+                "Playlist deleted",
                 Toast.LENGTH_SHORT
             ).show()
+            findNavController().popBackStack()
         }
         builder.setNegativeButton("No") { _, _ ->
 

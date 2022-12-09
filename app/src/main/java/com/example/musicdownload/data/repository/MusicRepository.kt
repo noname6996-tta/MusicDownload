@@ -10,4 +10,5 @@ class MusicRepository constructor(private val retrofitService: RetrofitService) 
     fun getTopDownloadHome() = retrofitService.getTopDownload()
     fun getGenres() = retrofitService.getGenres()
     fun getMusicByGenres(name:String) = retrofitService.getMusicByGenres(name)
+    fun searchMusic(search : String) = retrofitService.searchByString(search)
 }

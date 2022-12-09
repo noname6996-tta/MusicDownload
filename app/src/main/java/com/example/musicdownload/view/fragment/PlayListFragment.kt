@@ -96,7 +96,6 @@ class PlayListFragment : BaseFragment() {
         playListName.setText(playList.name)
         dialog.findViewById<TextView>(R.id.tvUpdatePlayList).setOnClickListener {
             updatePlayList(playList, playListName.text.toString().trim())
-            binding.tvNamePlaylist.text = playListName.text.toString().trim()
             dialog.dismiss()
         }
         dialog.findViewById<TextView>(R.id.tvCancelUpdatePlayList).setOnClickListener {

@@ -73,10 +73,11 @@ class HomeFragment : BaseFragment() {
         binding.btnReload.setOnClickListener {
             setCheckInternet()
         }
-        binding.btnGoToDownloadedSong.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToDownloadManagerFragment()
-            findNavController().navigate(action)
-        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setCheckInternet()
     }
 
 

@@ -108,7 +108,7 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="6dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/vn_flag"
+                android:src="@drawable/img"
                 app:layout_constraintBottom_toBottomOf="@+id/view8Region"
                 app:layout_constraintStart_toStartOf="@+id/view8Region"
                 app:layout_constraintTop_toTopOf="@+id/view8Region" />

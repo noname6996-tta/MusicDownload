@@ -46,7 +46,6 @@ class HomeTopListenedAdapter() :
 
     override fun onBindViewHolder(holder: HomeFragmentTopListenedViewHolder, position: Int) {
         val music = musicsFilter[position]
-        HomeFragment.positionMusic = position
         holder.binding.tvTopListenedSingerSong.text = music.artistName
         holder.binding.tvTopListenedNameSong.text = music.name
         holder.binding.imgMoreTopListened.setOnClickListener {
@@ -76,9 +75,7 @@ class HomeTopListenedAdapter() :
                 } else {
                     val list: MutableList<Music> = ArrayList<Music>()
                     for (store in musicsFilter) {
-                        if (store.name.toLowerCase()
-                                .contains(srcSearch.lowercase(Locale.getDefault()))
-                        ) {
+                        if (store.name.toLowerCase().contains(srcSearch.lowercase(Locale.getDefault()))) {
                             list.add(store)
                         }
                     }

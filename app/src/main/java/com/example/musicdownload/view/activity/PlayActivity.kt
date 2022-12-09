@@ -540,11 +540,9 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 // check xem co trong playlist nao chưa
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-                bottomSheetDialogSong.dismiss()
             } else {
                 musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
-                bottomSheetDialogSong.dismiss()
             }
         }
         getDataStoreEx()
@@ -714,7 +712,6 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                         count++
                     }
                 }
-                Log.e("count", count.toString())
                 if (count > 0) {
 //                    Toast.makeText(
 //                        this,
