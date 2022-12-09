@@ -222,15 +222,15 @@ class FileAdapter(context: Context, var actionListener: ActionListener) :
                 bottomSheetDialogSong.dismiss()
             }
 
-            val btnPause = bottomSheetDialogSong.findViewById<View>(R.id.viewPauseDownloadSong)
-            btnPause?.setOnClickListener {
-                holder.actionButton.setImageResource(R.drawable.ic_baseline_play_circle_outline_24)
-                holder.actionButton.setOnClickListener { view: View? ->
-                    holder.actionButton.isEnabled = false
-                    actionListener.onResumeDownload(downloadData.download!!.id)
-                }
-                bottomSheetDialogSong.dismiss()
-            }
+//            val btnPause = bottomSheetDialogSong.findViewById<View>(R.id.viewPauseDownloadSong)
+//            btnPause?.setOnClickListener {
+//                holder.actionButton.setImageResource(R.drawable.ic_baseline_play_circle_outline_24)
+//                holder.actionButton.setOnClickListener { view: View? ->
+//                    holder.actionButton.isEnabled = false
+//                    actionListener.onResumeDownload(downloadData.download!!.id)
+//                }
+//                bottomSheetDialogSong.dismiss()
+//            }
         }
     }
 

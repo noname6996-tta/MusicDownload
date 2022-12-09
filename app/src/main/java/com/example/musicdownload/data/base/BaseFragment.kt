@@ -329,18 +329,9 @@ open class BaseFragment : Fragment() {
                     }
                 }
                 if (count > 0) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Song ${music.name} already in this Playlist",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 } else {
                     musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-                    Toast.makeText(
-                        requireContext(),
-                        "Add PlayList: ${music.name} Success",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             })
     }

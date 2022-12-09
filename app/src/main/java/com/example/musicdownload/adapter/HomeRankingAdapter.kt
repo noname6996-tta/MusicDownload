@@ -1,16 +1,13 @@
 package com.example.musicRanking.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musicdownload.R
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.databinding.ItemTopRankingBinding
-import com.example.musicdownload.view.fragment.PlayActivity
 
 
 class HomeRankingAdapter : RecyclerView.Adapter<HomeFragmentRankingViewHolder>() {

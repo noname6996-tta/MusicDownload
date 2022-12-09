@@ -6,11 +6,9 @@ import android.content.Intent
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.musicdownload.R
-import com.example.musicdownload.data.model.exitApplication
 import com.example.musicdownload.data.model.setSongPosition
 import com.example.musicdownload.view.activity.MainActivity
-import com.example.musicdownload.view.fragment.PlayActivity
-import com.example.musicdownload.view.fragment.HomeFragment
+import com.example.musicdownload.view.activity.PlayActivity
 
 class NotificationReceiver:BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

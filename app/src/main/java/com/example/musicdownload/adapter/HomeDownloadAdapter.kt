@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.musicdownload.R
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.databinding.ItemDownloadHomeBinding
-import com.example.musicdownload.view.fragment.PlayActivity
+import com.example.musicdownload.view.activity.PlayActivity
 
 
 class HomeDownloadAdapter : RecyclerView.Adapter<HomeFragmentDownloadViewHolder>() {

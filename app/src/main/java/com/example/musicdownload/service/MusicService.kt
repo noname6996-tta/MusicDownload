@@ -1,6 +1,5 @@
 package com.example.musicdownload.service
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -19,7 +18,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.example.musicdownload.R
 import com.example.musicdownload.data.model.formatDuration
 import com.example.musicdownload.view.activity.MainActivity
-import com.example.musicdownload.view.fragment.PlayActivity
+import com.example.musicdownload.view.activity.PlayActivity
 
 
 class MusicService : Service() {

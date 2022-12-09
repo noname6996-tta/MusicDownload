@@ -30,9 +30,7 @@ import com.example.musicdownload.adapter.BottomSheetPlaylistAdapter
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.data.model.PlayList
-import com.example.musicdownload.data.model.exitApplication
 import com.example.musicdownload.databinding.ActivityMainBinding
-import com.example.musicdownload.view.fragment.PlayActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -354,18 +352,18 @@ class MainActivity : AppCompatActivity() {
                 }
                 Log.e("count", count.toString())
                 if (count > 0) {
-                    Toast.makeText(
-                        this,
-                        "Song ${music.name} already in this Playlist",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        this,
+//                        "Song ${music.name} already in this Playlist",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                 } else {
                     musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-                    Toast.makeText(
-                        this,
-                        "Add PlayList: ${music.name} Success",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        this,
+//                        "Add PlayList: ${music.name} Success",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                 }
             })
     }

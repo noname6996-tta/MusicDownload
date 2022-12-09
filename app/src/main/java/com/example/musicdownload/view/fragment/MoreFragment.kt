@@ -5,32 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.ActivityNavigator
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.musicRanking.adapter.HomeMoreAdapter
-import com.example.musicdownload.R
 import com.example.musicdownload.adapter.HomeMoreGenresAdapter
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.repository.MusicRepository
 import com.example.musicdownload.databinding.FragmentMoreBinding
 import com.example.musicdownload.network.RetrofitService
-import com.example.musicdownload.view.activity.MainActivity
+import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuandq.radiofm.data.base.BaseFragment
 
 class MoreFragment(): BaseFragment() {

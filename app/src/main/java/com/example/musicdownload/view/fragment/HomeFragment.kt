@@ -3,15 +3,11 @@ package com.example.musicdownload.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.SeekBar
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -31,6 +27,7 @@ import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.repository.MusicRepository
 import com.example.musicdownload.databinding.FragmentHomeBinding
 import com.example.musicdownload.network.RetrofitService
+import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog

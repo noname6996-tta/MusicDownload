@@ -1,17 +1,13 @@
 package com.example.musicdownload.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musicdownload.R
 import com.example.musicdownload.data.model.Music
-import com.example.musicdownload.databinding.ItemDownloadHomeBinding
 import com.example.musicdownload.databinding.ItemTopDownloadBinding
-import com.example.musicdownload.view.fragment.PlayActivity
 
 
 class HomeTopDownloadAdapter() : RecyclerView.Adapter<HomeFragmentTopDownloadViewHolder>() {

@@ -17,9 +17,9 @@ import com.example.musicdownload.data.model.Search
 import com.example.musicdownload.data.repository.MusicRepository
 import com.example.musicdownload.databinding.FragmentSearchBinding
 import com.example.musicdownload.network.RetrofitService
+import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
-import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.example.musicdownload.viewmodel.SearchViewModel
 import com.xuandq.radiofm.data.base.BaseFragment
 

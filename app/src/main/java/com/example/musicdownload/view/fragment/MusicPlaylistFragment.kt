@@ -21,13 +21,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.musicdownload.R
 import com.example.musicdownload.adapter.MusicPlaylistAdapter
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.data.model.PlayList
 import com.example.musicdownload.databinding.ListPlaylistLayoutBinding
+import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -182,24 +182,29 @@ class MusicPlaylistFragment : BaseFragment() {
             showBottomSheetUpdatePlaylist(requireContext(), playList)
         }
         musicAdapter.setClickPlayMusic {
-            HomeFragment.listMusicHome = listMusic
+            HomeFragment.listMusicHome.clear()
             PlayActivity.isPlaying = false
-
             val intent = Intent(activity, PlayActivity::class.java)
             intent.putExtra("MainActivitySong", "PlaylistFragment")
             if (checkForInternet(requireContext())) {
+                HomeFragment.listMusicHome = listMusic
                 intent.putExtra("index", it)
                 startActivity(intent)
             } else {
                 getDataStoreEx()
-                for (i in 0..listMusicOffline.size - 1) {
-                    if (listMusic[it].name == listMusicOffline[i].name) {
-                        HomeFragment.listMusicHome.add(listMusicOffline[i])
-                        intent.putExtra("index", it)
-                        startActivity(intent)
-                    } else {
-
+                var count = 0
+                for (j in 0..listMusic.size - 1) {
+                    for (i in 0..listMusicOffline.size - 1) {
+                        if (listMusic[j].name.equals(listMusicOffline[i].name)) {
+                            HomeFragment.listMusicHome.add(listMusicOffline[i])
+                            count ++
+                        } else {
+                        }
                     }
+                }
+                if (count>0){
+                    intent.putExtra("index", 0)
+                    startActivity(intent)
                 }
             }
         }
@@ -214,15 +219,19 @@ class MusicPlaylistFragment : BaseFragment() {
                 startActivity(intent)
             } else {
                 getDataStoreEx()
+                var count = 0
                 for (j in 0..listMusic.size - 1) {
                     for (i in 0..listMusicOffline.size - 1) {
                         if (listMusic[j].name.equals(listMusicOffline[i].name)) {
                             HomeFragment.listMusicHome.add(listMusicOffline[i])
-                            intent.putExtra("index", 0)
-                            startActivity(intent)
+                            count ++
                         } else {
                         }
                     }
+                }
+                if (count>0){
+                    intent.putExtra("index", 0)
+                    startActivity(intent)
                 }
 
             }
