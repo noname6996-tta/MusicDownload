@@ -362,7 +362,7 @@ class DownloadedFragment : BaseFragment() {
                 }
             }
         } catch (e: Exception) {
-
+            Log.e("AAAAA",e.toString())
         }
 
         if (arrayMusicModel.size == 0) {
@@ -376,11 +376,11 @@ class DownloadedFragment : BaseFragment() {
     }
 
     private fun getDDSD() {
-        val file = Environment.getExternalStorageDirectory().getAbsolutePath();
+        val file = Environment.getExternalStorageDirectory().getAbsolutePath()
         File(file).walk().toList().forEach {
             val filemp3 = it.name.toLowerCase(Locale.ROOT).contains(".mp3")
             if (filemp3) {
-                Log.d("aaaaa", "file =${it}")
+                Log.d("fsdfsdfsfd", "file =${it}")
             }
         }
     }
@@ -388,5 +388,12 @@ class DownloadedFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         getDataStoreEx()
+        if (Data.path.size>0){
+            for (i in 0..Data.path.size-1){
+                MediaScannerConnection.scanFile(
+                    requireContext(), arrayOf(Data.path[i]), null, null
+                )
+            }
+        }
     }
 }

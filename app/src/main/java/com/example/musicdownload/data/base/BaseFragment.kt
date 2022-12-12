@@ -156,9 +156,11 @@ open class BaseFragment : Fragment() {
                 // check xem co trong playlist nao chưa
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                Toast.makeText(requireContext(),"Add" + music.name+ " to favorite success",Toast.LENGTH_SHORT).show()
             } else {
                 musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+                Toast.makeText(requireContext(),"Remove" + music.name+ " to favorite success",Toast.LENGTH_SHORT).show()
             }
         }
         getDataStoreEx()
@@ -280,8 +282,7 @@ open class BaseFragment : Fragment() {
         dialog.setContentView(R.layout.layout_add_playlist)
         var playListName = dialog.findViewById<EditText>(R.id.edtNamePlayList)
         dialog.findViewById<TextView>(R.id.tvAddPlayList).setOnClickListener {
-            insertDataToDatabase(playListName.text.toString().trim())
-            dialog.dismiss()
+            insertDataToDatabase(playListName.text.toString().trim(),dialog)
         }
         dialog.findViewById<TextView>(R.id.tvCancelAddPlayList).setOnClickListener {
             dialog.dismiss()
@@ -289,7 +290,7 @@ open class BaseFragment : Fragment() {
         dialog.show()
     }
 
-    private fun insertDataToDatabase(name: String) {
+    private fun insertDataToDatabase(name: String,dialog: Dialog) {
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
@@ -297,6 +298,7 @@ open class BaseFragment : Fragment() {
             // add Data to database
             playListViewModel.addPlayList(playList)
             Toast.makeText(context, "Add PlayList: $name Success", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         } else {
             Toast.makeText(context, "Add PlayList: $name fail", Toast.LENGTH_SHORT).show()
         }
@@ -320,20 +322,19 @@ open class BaseFragment : Fragment() {
             music.image,
             music.audio
         )
-        musicPlayListViewModel.readAllMusicData.observe(this,
-            Observer { musicplaylist ->
-                var count: Int = 0
-                for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].idPlayList == playList.id && musicplaylist[item].name == music.name) {
-                        count++
-                    }
-                }
-                if (count > 0) {
-
-                } else {
-                    musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-                }
-            })
+        var count: Int = 0
+        val list : List<MusicPlaylist> = musicPlayListViewModel.readAllMusicData.value!!
+        for (item: Int in 0..list.size-1) {
+            if (list[item].idPlayList == playList.id && list[item].name == music.name) {
+                count++
+            }
+        }
+        if (count > 0) {
+            Toast.makeText(requireContext(),music.name +"already in this Playlist",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(),"Add "+music.name +"to this Playlist success",Toast.LENGTH_SHORT).show()
+            musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+        }
     }
 
     private fun getDataStoreEx() {

@@ -1,6 +1,7 @@
 package com.example.musicdownload.view.fragment
 
 import android.content.Intent
+import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.example.musicdownload.R
 import com.example.musicdownload.adapter.HomeDownloadAdapter
 import com.example.musicdownload.adapter.HomeGenresAdapter
 import com.example.musicdownload.adapter.HomeTopDownloadAdapter
+import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.repository.MusicRepository
 import com.example.musicdownload.databinding.FragmentHomeBinding

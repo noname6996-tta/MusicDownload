@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -34,13 +36,12 @@ class SearchFragment : BaseFragment() {
         lateinit var binding: FragmentSearchBinding
     }
     private var list = ArrayList<Search>()
-    private var listFilter = ArrayList<Search>()
+    private var a : String = ""
     private lateinit var searchViewModel: SearchViewModel
     lateinit var viewModel: HomeFragmentViewModel
     private val topListenedAdapter = HomeTopListenedAdapter()
     private val recentlySearchAdapter = RecentlySearchAdapter()
     private val retrofitService = RetrofitService.getInstance()
-    private var isFocusedSearch = false;
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,14 +59,16 @@ class SearchFragment : BaseFragment() {
             MyViewModelFactory(MusicRepository(retrofitService))
         )[HomeFragmentViewModel::class.java]
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+        viewModel.responseListenedSearchMusic.observe(viewLifecycleOwner) {
+            topListenedAdapter.setMovieList(it, requireContext())
+        }
+        getMusicSearch(a)
         initUi()
-
     }
 
     private fun initUi() {
         binding.tvCancelSearch.setOnClickListener {
-            var editTextHello = binding.edtSearch.text.toString().trim()
-            insertSearchToDatabase(editTextHello)
+            insertSearchToDatabase(a)
             findNavController().popBackStack()
 
         }
@@ -81,7 +84,6 @@ class SearchFragment : BaseFragment() {
         linearLayoutManager2.orientation = LinearLayoutManager.HORIZONTAL
         binding.recSearchRecently.layoutManager = linearLayoutManager2
         //
-        getMusicSearch(binding.edtSearch.text)
         //
         topListenedAdapter.setClickShowMusic {
             showBottomSheetMusic(it)
@@ -90,13 +92,9 @@ class SearchFragment : BaseFragment() {
             searchViewModel.deleteSearchlist(it)
         }
         recentlySearchAdapter.setClickSearch {
-            binding.edtSearch.setText(it.name)
+//            binding.edtSearch.setText(it.name)
         }
 
-        binding.btnDeleteSearch.setOnClickListener {
-            binding.edtSearch.setText("")
-            requireActivity().hideKeyboard()
-        }
 //        addEvent()
         addTextListener()
     }
@@ -121,8 +119,7 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-
-    private fun addEvent(){
+    fun addTextListener() {
         searchViewModel.readAllMusicData.observe(viewLifecycleOwner, Observer { search ->
             recentlySearchAdapter.setSearchList(search, requireContext())
             list.addAll(search)
@@ -135,53 +132,69 @@ class SearchFragment : BaseFragment() {
             }
 
         })
+//        binding.edtSearch.setOnFocusChangeListener { _, hasFocus ->
+//            isFocusedSearch = hasFocus
+//        }
+//        binding.edtSearch.setOnEditorActionListener { _, i, _ ->
+//            if (i == EditorInfo.IME_ACTION_SEARCH) {
+//                requireActivity().hideKeyboard()
+//                return@setOnEditorActionListener true
+//            }
+//            return@setOnEditorActionListener false
+//        }
 
-        binding.edtSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+//        binding.edtSearch.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+//
+//            override fun afterTextChanged(s: Editable) {
+//                if (isFocusedSearch) {
+//                    binding.btnDeleteSearch.visibility =
+//                        if (s.isEmpty()) View.GONE else View.VISIBLE
+//                }
+//                getMusicSearch(s)
+//            }
+//        })
 
-            override fun afterTextChanged(s: Editable) {
-                topListenedAdapter.getFilter()?.filter(s)
+//        binding.edtSearch.addTextChangedListener(object: TextWatcher{
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//                // Do Nothing
+//                if (isFocusedSearch) {
+//                    binding.btnDeleteSearch.visibility =
+//                        if (s.toString().isEmpty()) View.GONE else View.VISIBLE
+//                }
+//                getMusicSearch(s.toString())
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//
+//            }
+//
+//        })
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                getMusicSearch(query.toString())
+                a = query.trim().toString()
+                return false
             }
-        })
-    }
-
-    fun addTextListener() {
-        binding.edtSearch.setOnFocusChangeListener { _, hasFocus ->
-            isFocusedSearch = hasFocus
-        }
-        binding.edtSearch.setOnEditorActionListener { _, i, _ ->
-            if (i == EditorInfo.IME_ACTION_SEARCH) {
-                requireActivity().hideKeyboard()
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
-
-        binding.edtSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
-                if (isFocusedSearch) {
-                    binding.btnDeleteSearch.visibility =
-                        if (s.isEmpty()) View.GONE else View.VISIBLE
-                }
-                getMusicSearch(s)
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
             }
         })
 
     }
 
     private fun getMusicSearch(search : CharSequence){
-        viewModel.responseListenedSearchMusic.observe(viewLifecycleOwner) {
-            topListenedAdapter.setMovieList(it, requireContext())
-        }
+        requireActivity().hideKeyboard()
         viewModel.errorMessage.observe(viewLifecycleOwner) {}
         viewModel.searchByString(search.toString().trim().lowercase())
         topListenedAdapter.setClickPlayMusic {
-            var editTextHello = binding.edtSearch.text.toString().trim()
-            insertSearchToDatabase(editTextHello)
+            insertSearchToDatabase(a)
             val intent = Intent(activity, PlayActivity::class.java)
             viewModel.responseListenedSearchMusic.observe(viewLifecycleOwner) { listMusic ->
                 HomeFragment.listMusicHome.clear()

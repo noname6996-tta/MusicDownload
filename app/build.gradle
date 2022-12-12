@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace 'com.example.musicdownload'
-    compileSdk 32
+    compileSdk 33
     buildscript {
         repositories {
             google()
@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "com.example.musicdownload"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

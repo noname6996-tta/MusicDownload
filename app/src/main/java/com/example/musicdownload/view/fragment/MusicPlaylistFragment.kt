@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.musicdownload.R
 import com.example.musicdownload.adapter.MusicPlaylistAdapter
 import com.example.musicdownload.data.model.Music
@@ -70,7 +71,8 @@ class MusicPlaylistFragment : BaseFragment() {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recMusicPlaylist.layoutManager = linearLayoutManager
-
+        Glide.with(requireContext()).load(playList.image).error(R.drawable.playlistmusic)
+            .into(binding.imgPlayList)
         binding.tvPlaylistName.text = playList.name
         binding.imageView9.setOnClickListener {
             findNavController().popBackStack()

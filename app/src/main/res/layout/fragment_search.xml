@@ -4,57 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundPrimary">
-
-    <View
-        android:id="@+id/bg_search"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        app:queryBackground="@null"
+        app:iconifiedByDefault="false"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/border_radius_blurwhite"
+        android:background="@drawable/background_radius_corner_topranking"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvCancelSearch"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/ic_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:src="@drawable/ic_baseline_search_24_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/bg_search"
-        app:layout_constraintStart_toStartOf="@+id/bg_search"
-        app:layout_constraintTop_toTopOf="@+id/bg_search" />
-
-    <ImageView
-        android:id="@+id/btn_delete_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:src="@drawable/ic_baseline_cancel_24"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/bg_search"
-        app:layout_constraintEnd_toEndOf="@+id/bg_search"
-        app:layout_constraintTop_toTopOf="@+id/bg_search" />
-
-    <EditText
-        android:id="@+id/edt_search"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
-        android:background="@null"
-        android:hint="@string/searchMusic"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textColorHint="#99000000"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bg_search"
-        app:layout_constraintEnd_toStartOf="@+id/btn_delete_search"
-        app:layout_constraintStart_toEndOf="@+id/ic_search"
-        app:layout_constraintTop_toTopOf="@+id/bg_search" />
-
     <ImageView
         android:id="@+id/tvCancelSearch"
         android:layout_width="wrap_content"
@@ -77,7 +38,7 @@
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bg_search" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recSearchRecently"

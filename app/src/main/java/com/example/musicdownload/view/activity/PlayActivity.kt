@@ -10,6 +10,7 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -56,6 +57,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         var isPlaying: Boolean = false
         var musicService: MusicService? = null
         var repeat: Boolean = false
+         var canPlay = false
     }
     var arrayMusicLocalBase = ArrayList<MusicLocal>()
     var musicPlaylistid: String = "123456789"
@@ -430,7 +432,27 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         } else {
             binding.imgPlayOrPasuePlaying.setImageResource(R.drawable.ic_baseline_play_arrow_24)
         }
+        val handler = Handler()
+        handler.postDelayed({
+            if (!canPlay){
+                showDialogWarn(this)
+            }
+        }, 2000)
 
+    }
+
+     private fun showDialogWarn(context: Context) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_warn)
+        dialog.findViewById<View>(R.id.btnGoToDownloadedSong).setOnClickListener {
+            onBackPressed()
+        }
+        dialog.findViewById<TextView>(R.id.tvNoStay).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     private fun checkForInternet(context: Context): Boolean {
@@ -540,9 +562,11 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 // check xem co trong playlist nao chưa
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                Toast.makeText(this,"Add" + music.name+ " to favorite success",Toast.LENGTH_SHORT).show()
             } else {
                 musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+                Toast.makeText(this,"Remove" + music.name+ " to favorite success",Toast.LENGTH_SHORT).show()
             }
         }
         getDataStoreEx()
@@ -574,7 +598,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             removeSong!!.visibility = View.GONE
             imageviewRemoveDownloadSong!!.visibility = View.GONE
         }
-        viewDownloadSong?.setOnClickListener {
+        viewDownloadSong.setOnClickListener {
             Data.listDownload.add(music)
             FileAdapter.list.add(music)
             var fetch: Fetch
@@ -596,7 +620,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             bottomSheetDialogSong.dismiss()
         }
 
-        viewRemoveDownloadSong?.setOnClickListener {
+        viewRemoveDownloadSong.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setPositiveButton("Yes"){_,_ ->
                 for (i in 0..arrayMusicLocalBase.size - 1) {
@@ -664,8 +688,8 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         dialog.setContentView(R.layout.layout_add_playlist)
         var playListName = dialog.findViewById<EditText>(R.id.edtNamePlayList)
         dialog.findViewById<TextView>(R.id.tvAddPlayList).setOnClickListener {
-            insertDataToDatabase(playListName.text.toString().trim())
-            dialog.dismiss()
+            insertDataToDatabase(playListName.text.toString().trim(),dialog)
+
         }
         dialog.findViewById<TextView>(R.id.tvCancelAddPlayList).setOnClickListener {
             dialog.dismiss()
@@ -673,7 +697,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         dialog.show()
     }
 
-    private fun insertDataToDatabase(name: String) {
+    private fun insertDataToDatabase(name: String,dialog: Dialog) {
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
@@ -681,6 +705,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             // add Data to database
             playListViewModel.addPlayList(playList)
             Toast.makeText(this, "Add PlayList: $name Success", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         } else {
             Toast.makeText(this, "Add PlayList: $name fail", Toast.LENGTH_SHORT).show()
         }
@@ -691,7 +716,6 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
     }
 
     private fun insertMusicToPlaylist(music: Music, playList: PlayList) {
-        var count: Int = 0
         val musicPlayListViewModel = ViewModelProvider(this)[MusicPlayListViewModel::class.java]
         //
         val musicPlaylist = MusicPlaylist(
@@ -705,27 +729,18 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             music.image,
             music.audio
         )
-        musicPlayListViewModel.readAllMusicData.observe(this,
-            Observer { musicplaylist ->
-                for (item: Int in musicplaylist.indices) {
-                    if (musicplaylist[item].idPlayList == playList.id && musicplaylist[item].name == music.name) {
-                        count++
-                    }
-                }
-                if (count > 0) {
-//                    Toast.makeText(
-//                        this,
-//                        "Song ${music.name} already in this Playlist",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-                } else {
-                    musicPlayListViewModel.addMusicPlayList(musicPlaylist)
-//                    Toast.makeText(
-//                        this,
-//                        "Add PlayList: ${music.name} Success",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-                }
-            })
+        var count: Int = 0
+        val list : List<MusicPlaylist> = musicPlayListViewModel.readAllMusicData.value!!
+        for (item: Int in 0..list.size-1) {
+            if (list[item].idPlayList == playList.id && list[item].name == music.name) {
+                count++
+            }
+        }
+        if (count > 0) {
+            Toast.makeText(this,music.name +"already in this Playlist",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this,"Add "+music.name +"to this Playlist success",Toast.LENGTH_SHORT).show()
+            musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+        }
     }
 }

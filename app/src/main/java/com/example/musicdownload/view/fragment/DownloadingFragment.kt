@@ -113,6 +113,14 @@ class DownloadingFragment : Fragment(),ActionListener {
 //                 fileAdapter.addDownload(download!!)
              }
          }.addListener(fetchListener)
+         Log.e("AAAAAA",FileAdapter.list.toString())
+//         if (Data.path.size>0){
+//             for (i in 0..Data.path.size-1){
+//                 MediaScannerConnection.scanFile(
+//                     requireContext(), arrayOf(Data.path[i]), null, null
+//                 )
+//             }
+//         }
     }
 
     override fun onPause() {
@@ -144,6 +152,13 @@ class DownloadingFragment : Fragment(),ActionListener {
                 UNKNOWN_REMAINING_TIME,
                 UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
             )
+            if (Data.path.size>0){
+                for (i in 0..Data.path.size-1){
+                    MediaScannerConnection.scanFile(
+                        requireContext(), arrayOf(Data.path[i]), null, null
+                    )
+                }
+            }
         }
 
 
@@ -154,6 +169,8 @@ class DownloadingFragment : Fragment(),ActionListener {
                 UNKNOWN_REMAINING_TIME,
                 UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
             )
+            Toast.makeText(requireContext(),""+error.toString(),Toast.LENGTH_SHORT).show()
+            Log.e("error",error.toString())
         }
 
         override fun onProgress(

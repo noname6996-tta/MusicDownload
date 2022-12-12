@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.musicdownload.R
 import com.example.musicdownload.data.model.PlayList
 import com.example.musicdownload.databinding.ItemPlaylistBinding
@@ -39,7 +40,8 @@ class PlayListItemAdapter : RecyclerView.Adapter<PlayListViewHolder>() {
     override fun onBindViewHolder(holder: PlayListViewHolder, position: Int) {
         val playList = playLists[position]
         holder.binding.tvNamePlaylist.text = playList.name
-        holder.binding.imgItemPlaylist.setImageResource(R.drawable.playlistmusic)
+        Glide.with(holder.itemView.context).load(playList.image).error(R.drawable.playlistmusic)
+            .into(holder.binding.imgItemPlaylist)
         holder.binding.imgMorePlayList.setOnClickListener {
             onClickPlayList?.let {
                 it(playLists[position])
