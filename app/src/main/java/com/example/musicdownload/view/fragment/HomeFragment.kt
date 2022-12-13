@@ -27,10 +27,13 @@ import com.example.musicdownload.adapter.HomeTopDownloadAdapter
 import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.repository.MusicRepository
+import com.example.musicdownload.data.repository.Repostitory
 import com.example.musicdownload.databinding.FragmentHomeBinding
 import com.example.musicdownload.network.RetrofitService
 import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
+import com.example.musicdownload.viewmodel.MainViewModel
+import com.example.musicdownload.viewmodel.MainViewModelFactory
 import com.example.musicdownload.viewmodel.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xuandq.radiofm.data.base.BaseFragment
@@ -45,6 +48,7 @@ class HomeFragment : BaseFragment() {
 
 
     lateinit var viewModel: HomeFragmentViewModel
+    private lateinit var viewModelMain: MainViewModel
     private val retrofitService = RetrofitService.getInstance()
     private val downloadAdapter = HomeDownloadAdapter()
     private val rankingAdapter = HomeRankingAdapter()
@@ -135,7 +139,8 @@ class HomeFragment : BaseFragment() {
     private fun addData() {
         setRecHomeDownload()
         setRecHomeRanking()
-        setRecTopListened()
+        //setRecTopListened()
+        setRecTopListenedCrotines()
         setTopDownloadHome()
         setGenersloadHome()
 
@@ -163,14 +168,50 @@ class HomeFragment : BaseFragment() {
             showBottomSheetMusic(it)
         }
         topListenedAdapter.setClickPlayMusic {
-            listMusicHome.clear()
-            PlayActivity.isPlaying = false
-            intent.putExtra("index", it)
-            intent.putExtra("MainActivitySong", "HomeFragment")
-            viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) {
-                listMusicHome.addAll(it)
+            if (checkForInternet(requireContext())){
+                listMusicHome.clear()
+                PlayActivity.isPlaying = false
+                intent.putExtra("index", it)
+                intent.putExtra("MainActivitySong", "HomeFragment")
+                viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) {
+                    listMusicHome.addAll(it)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
+        }
+    }
+
+    private fun setRecTopListenedCrotines(){
+        val intent = Intent(activity, PlayActivity::class.java)
+
+        // set adapter
+        binding.recToplistened.adapter = topListenedAdapter
+
+        // set recycleView
+        val linearLayoutManager = LinearLayoutManager(requireContext() )
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        binding.recToplistened.layoutManager = linearLayoutManager
+        //
+        val repository = Repostitory()
+        val viewModelFactory = MainViewModelFactory(repository)
+        viewModelMain = ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
+        viewModelMain.getTopListenedHomeCrotines()
+        viewModelMain.myReponse.observe(viewLifecycleOwner, Observer {
+            topListenedAdapter.setMovieList(it.take(5), requireContext())
+        })
+        topListenedAdapter.setClickShowMusic {
+            showBottomSheetMusic(it)
+        }
+        topListenedAdapter.setClickPlayMusic {
+            if (checkForInternet(requireContext())) {
+                listMusicHome.clear()
+                PlayActivity.isPlaying = false
+                intent.putExtra("index", it)
+                intent.putExtra("MainActivitySong", "HomeFragment")
+                var listMusicHomeTopListened: List<Music> = viewModelMain.myReponse.value!!
+                listMusicHome.addAll(listMusicHomeTopListened)
+                startActivity(intent)
+            }
         }
     }
 

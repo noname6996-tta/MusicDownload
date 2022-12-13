@@ -155,8 +155,7 @@ class MusicService : Service() {
                     imgArt = resource
                     notification.largeIcon = imgArt
                     PlayActivity.binding.viewloadingPlaying.visibility = View.GONE
-                    PlayActivity.binding.layoutPlayingMusic.visibility = View.VISIBLE
-                    PlayActivity.canPlay = true
+                    PlayActivity.binding.layoutPlay.visibility = View.VISIBLE
                     startForeground(13, notification)
                 }
 

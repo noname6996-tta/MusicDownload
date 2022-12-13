@@ -3,16 +3,18 @@ package com.example.musicdownload.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.musicdownload.data.model.Genre
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.RespondGenre
 import com.example.musicdownload.data.model.ResponseListened
 import com.example.musicdownload.data.repository.MusicRepository
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragmentViewModel constructor(private val musicRepository: MusicRepository) :
+class HomeFragmentViewModel (private val musicRepository: MusicRepository) :
     ViewModel() {
     var responseListenedDownLoadHome = MutableLiveData<List<Music>>()
     var responseListenedRankingHome = MutableLiveData<List<Music>>()

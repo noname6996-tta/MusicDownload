@@ -141,8 +141,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, PlayActivity::class.java)
             intent.putExtra("index", PlayActivity.songPosition)
             intent.putExtra("MainActivitySong", "NowPlaying")
-            PlayActivity.binding.viewloadingPlaying.visibility = View.GONE
-            PlayActivity.binding.layoutPlayingMusic.visibility = View.VISIBLE
             startActivity(intent)
         }
     }

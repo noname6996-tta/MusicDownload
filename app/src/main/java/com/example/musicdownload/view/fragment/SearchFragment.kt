@@ -4,16 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -29,14 +24,14 @@ import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
 import com.example.musicdownload.viewmodel.SearchViewModel
 import com.xuandq.radiofm.data.base.BaseFragment
-import java.util.*
 
 class SearchFragment : BaseFragment() {
     companion object {
         lateinit var binding: FragmentSearchBinding
     }
+
     private var list = ArrayList<Search>()
-    private var a : String = ""
+    private var a: String = ""
     private lateinit var searchViewModel: SearchViewModel
     lateinit var viewModel: HomeFragmentViewModel
     private val topListenedAdapter = HomeTopListenedAdapter()
@@ -92,7 +87,7 @@ class SearchFragment : BaseFragment() {
             searchViewModel.deleteSearchlist(it)
         }
         recentlySearchAdapter.setClickSearch {
-//            binding.edtSearch.setText(it.name)
+            binding.searchView.setQuery(it.name, true)
         }
 
 //        addEvent()
@@ -189,21 +184,19 @@ class SearchFragment : BaseFragment() {
 
     }
 
-    private fun getMusicSearch(search : CharSequence){
+    private fun getMusicSearch(search: CharSequence) {
         requireActivity().hideKeyboard()
         viewModel.errorMessage.observe(viewLifecycleOwner) {}
         viewModel.searchByString(search.toString().trim().lowercase())
         topListenedAdapter.setClickPlayMusic {
             insertSearchToDatabase(a)
             val intent = Intent(activity, PlayActivity::class.java)
-            viewModel.responseListenedSearchMusic.observe(viewLifecycleOwner) { listMusic ->
-                HomeFragment.listMusicHome.clear()
-                PlayActivity.isPlaying = false
-                HomeFragment.listMusicHome.addAll(listMusic)
-                intent.putExtra("MainActivitySong", "HomeFragment")
-                intent.putExtra("index", it)
-                startActivity(intent)
-            }
+            HomeFragment.listMusicHome.clear()
+            PlayActivity.isPlaying = false
+            HomeFragment.listMusicHome.addAll(viewModel.responseListenedSearchMusic.value!!)
+            intent.putExtra("MainActivitySong", "HomeFragment")
+            intent.putExtra("index", it)
+            startActivity(intent)
         }
     }
 }

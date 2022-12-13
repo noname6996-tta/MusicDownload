@@ -42,7 +42,7 @@ class BottomSheetPlaylistAdapter : RecyclerView.Adapter<BottomSheetPlaylistAdapt
                 it(playLists[position])
             }
         }
-        Glide.with(holder.itemView.context).load(playList.image).error(R.drawable.demo_img_download)
+        Glide.with(holder.itemView.context).load(playList.image).error(R.drawable.playlistmusic)
             .into(holder.binding.imgBottomSheetSong)
     }
 

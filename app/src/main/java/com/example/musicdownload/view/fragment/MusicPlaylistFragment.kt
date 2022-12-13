@@ -40,6 +40,9 @@ class MusicPlaylistFragment : BaseFragment() {
     private val musicAdapter = MusicPlaylistAdapter()
     private lateinit var musicPlayListViewModel: MusicPlayListViewModel
     private lateinit var playListViewModel: PlayListViewModel
+    lateinit var playList : PlayList
+    var listMusicPlaylist = ArrayList<MusicPlaylist>()
+    val listMusic = ArrayList<Music>()
     private val args: MusicPlaylistFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +63,7 @@ class MusicPlaylistFragment : BaseFragment() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun initUi() {
-        val playList = args.playlist
+        playList = args.playlist
         if (args.favorite) {
             binding.imgMoreMusicPlaylist.visibility = View.GONE
             binding.imgPlayList.visibility = View.GONE
@@ -78,9 +81,73 @@ class MusicPlaylistFragment : BaseFragment() {
             findNavController().popBackStack()
         }
 
+
+
+        musicAdapter.setClickShowMusic {
+            showBottomSheetDeleteSongPlaylist(it, requireContext())
+        }
+
+        binding.imgMoreMusicPlaylist.setOnClickListener {
+            showBottomSheetUpdatePlaylist(requireContext(), playList)
+        }
+        musicAdapter.setClickPlayMusic {
+            PlayActivity.isPlaying = false
+            val intent = Intent(activity, PlayActivity::class.java)
+            intent.putExtra("MainActivitySong", "PlaylistFragment")
+            if (checkForInternet(requireContext())) {
+                HomeFragment.listMusicHome = listMusic
+                intent.putExtra("index", it)
+                startActivity(intent)
+            } else {
+                getDataStoreEx()
+                var count = 0
+                for (j in 0..listMusic.size - 1) {
+                    for (i in 0..listMusicOffline.size - 1) {
+                        if (listMusic[j].name.equals(listMusicOffline[i].name)) {
+                            HomeFragment.listMusicHome.add(listMusicOffline[i])
+                            count ++
+                        } else {
+                        }
+                    }
+                }
+                if (count>0){
+                    intent.putExtra("index", 0)
+                    startActivity(intent)
+                }
+            }
+        }
+        binding.imgPlayListMusic.setOnClickListener {
+            PlayActivity.isPlaying = false
+            val intent = Intent(activity, PlayActivity::class.java)
+            intent.putExtra("MainActivitySong", "PlaylistFragment")
+            if (checkForInternet(requireContext())) {
+                HomeFragment.listMusicHome = listMusic
+                intent.putExtra("index", 0)
+                startActivity(intent)
+            } else {
+                getDataStoreEx()
+                var count = 0
+                for (j in 0..listMusic.size - 1) {
+                    for (i in 0..listMusicOffline.size - 1) {
+                        if (listMusic[j].name.equals(listMusicOffline[i].name)) {
+                            HomeFragment.listMusicHome.add(listMusicOffline[i])
+                            count ++
+                        } else {
+                        }
+                    }
+                }
+                if (count>0){
+                    intent.putExtra("index", 0)
+                    startActivity(intent)
+                }
+
+            }
+        }
+        addData()
+    }
+
+    private fun addData(){
         val id = playList.id
-        var listMusicPlaylist = ArrayList<MusicPlaylist>()
-        val listMusic = ArrayList<Music>()
         musicPlayListViewModel.readAllMusicData.observe(viewLifecycleOwner,
             Observer { musicplaylist ->
                 for (item: Int in musicplaylist.indices) {
@@ -167,6 +234,9 @@ class MusicPlaylistFragment : BaseFragment() {
                         if  (listMusicPlaylist.size==0){
                             binding.tvListSize.setText("No Song in the Playlist")
                             binding.imgPlayListMusic.visibility = View.GONE
+                            val updatePlayList = PlayList(playList.id,playList.name, playList.number,"")
+                            // update Data to database
+                            playListViewModel.updatePlaylist(updatePlayList)
                         } else {
                             binding.tvListSize.text = listMusicPlaylist.size.toString() + " songs"
                             binding.imgPlayListMusic.visibility = View.VISIBLE
@@ -175,69 +245,6 @@ class MusicPlaylistFragment : BaseFragment() {
                     }
                 }
             })
-
-        musicAdapter.setClickShowMusic {
-            showBottomSheetDeleteSongPlaylist(it, requireContext())
-        }
-
-        binding.imgMoreMusicPlaylist.setOnClickListener {
-            showBottomSheetUpdatePlaylist(requireContext(), playList)
-        }
-        musicAdapter.setClickPlayMusic {
-            HomeFragment.listMusicHome.clear()
-            PlayActivity.isPlaying = false
-            val intent = Intent(activity, PlayActivity::class.java)
-            intent.putExtra("MainActivitySong", "PlaylistFragment")
-            if (checkForInternet(requireContext())) {
-                HomeFragment.listMusicHome = listMusic
-                intent.putExtra("index", it)
-                startActivity(intent)
-            } else {
-                getDataStoreEx()
-                var count = 0
-                for (j in 0..listMusic.size - 1) {
-                    for (i in 0..listMusicOffline.size - 1) {
-                        if (listMusic[j].name.equals(listMusicOffline[i].name)) {
-                            HomeFragment.listMusicHome.add(listMusicOffline[i])
-                            count ++
-                        } else {
-                        }
-                    }
-                }
-                if (count>0){
-                    intent.putExtra("index", 0)
-                    startActivity(intent)
-                }
-            }
-        }
-        binding.imgPlayListMusic.setOnClickListener {
-            HomeFragment.listMusicHome.clear()
-            PlayActivity.isPlaying = false
-            val intent = Intent(activity, PlayActivity::class.java)
-            intent.putExtra("MainActivitySong", "PlaylistFragment")
-            if (checkForInternet(requireContext())) {
-                HomeFragment.listMusicHome = listMusic
-                intent.putExtra("index", 0)
-                startActivity(intent)
-            } else {
-                getDataStoreEx()
-                var count = 0
-                for (j in 0..listMusic.size - 1) {
-                    for (i in 0..listMusicOffline.size - 1) {
-                        if (listMusic[j].name.equals(listMusicOffline[i].name)) {
-                            HomeFragment.listMusicHome.add(listMusicOffline[i])
-                            count ++
-                        } else {
-                        }
-                    }
-                }
-                if (count>0){
-                    intent.putExtra("index", 0)
-                    startActivity(intent)
-                }
-
-            }
-        }
     }
 
     private fun getDataStoreEx() {
@@ -392,7 +399,16 @@ class MusicPlaylistFragment : BaseFragment() {
                 "Remove music : ${musicPlaylist.name} Success",
                 Toast.LENGTH_SHORT
             ).show()
-            findNavController().popBackStack()
+            listMusicPlaylist.clear()
+            if  (listMusicPlaylist.size==0){
+                binding.tvListSize.setText("No Song in the Playlist")
+                binding.imgPlayListMusic.visibility = View.GONE
+                Glide.with(requireContext()).load("").error(R.drawable.playlistmusic)
+                    .into(binding.imgPlayList)
+                val updatePlayList = PlayList(playList.id,playList.name, playList.number,"")
+                // update Data to database
+                playListViewModel.updatePlaylist(updatePlayList)
+            }
         }
         builder.setNegativeButton("No") { _, _ ->
 

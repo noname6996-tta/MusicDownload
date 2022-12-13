@@ -11,8 +11,9 @@
         app:iconifiedByDefault="false"
         android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/background_radius_corner_topranking"
+        android:background="@drawable/background_radius_corner_8dp"
         android:layout_height="wrap_content"
+        app:defaultQueryHint="Search song"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvCancelSearch"
         app:layout_constraintTop_toTopOf="parent" />

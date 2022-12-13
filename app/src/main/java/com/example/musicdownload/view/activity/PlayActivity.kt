@@ -10,7 +10,6 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -57,8 +56,9 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         var isPlaying: Boolean = false
         var musicService: MusicService? = null
         var repeat: Boolean = false
-         var canPlay = false
+        var canPlay = false
     }
+
     var arrayMusicLocalBase = ArrayList<MusicLocal>()
     var musicPlaylistid: String = "123456789"
     private var isFavorite: Boolean = false
@@ -100,22 +100,22 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         binding.imgPlayingSuffer.setOnClickListener {
             if (repeat) {
                 if (!sufferOptionNothing) {
-                    sufferOptionNothing= true
+                    sufferOptionNothing = true
                     binding.imgPlayingSuffer.setImageResource(R.drawable.suffertrue)
                 } else {
-                    sufferOptionNothing= false
+                    sufferOptionNothing = false
                     binding.imgPlayingSuffer.setImageResource(R.drawable.randmusic)
                 }
             } else {
                 if (!sufferOption) {
                     sufferOption = true
-                    sufferOptionNothing= true
+                    sufferOptionNothing = true
                     binding.imgPlayingSuffer.setImageResource(R.drawable.suffertrue)
                     var listMusicPlayShuffer: ArrayList<Music> = listMusicPlay
                     listMusicPlayShuffer.shuffle()
                 } else {
                     sufferOption = false
-                    sufferOptionNothing= false
+                    sufferOptionNothing = false
                     binding.imgPlayingSuffer.setImageResource(R.drawable.randmusic)
                 }
             }
@@ -176,43 +176,126 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                     music.audio
                 )
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
+                Toast.makeText(
+                    this,
+                    "Add" + music.name + " to favorite success",
+                    Toast.LENGTH_SHORT
+                ).show()
                 binding.imgPlayFavorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
             } else {
                 musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
+                Toast.makeText(
+                    this,
+                    "Remove" + music.name + " to favorite success",
+                    Toast.LENGTH_SHORT
+                ).show()
                 binding.imgPlayFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             }
         }
     }
 
     private fun nextSong(a: Boolean) {
-        if (a) {
-            setSongPosition(true)
-            setLayout()
-            playMedia()
-            binding.imgNextSong.isEnabled = true
-            binding.imgPreviousSong.isEnabled = true
-        } else {
-            setSongPosition(false)
-            setLayout()
-            playMedia()
-            binding.imgNextSong.isEnabled = true
-            binding.imgPreviousSong.isEnabled = true
+        when (intent.getStringExtra("MainActivitySong")) {
+            "NowPlaying" -> {
+                if (checkForInternet(this)) {
+                    if (a) {
+                        setSongPosition(true)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    } else {
+                        setSongPosition(false)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    }
+                }
+            }
+            "HomeFragment" -> {
+                if (checkForInternet(this)) {
+                    if (a) {
+                        setSongPosition(true)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    } else {
+                        setSongPosition(false)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    }
+                }
+            }
+            "DownloadedFragment" -> {
+                if (checkForInternet(this)) {
+                    if (a) {
+                        setSongPosition(true)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    } else {
+                        setSongPosition(false)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    }
+                }
+            }
+            "PlaylistFragment" -> {
+                if (a) {
+                    setSongPosition(true)
+                    setLayout()
+                    playMedia()
+                    binding.imgNextSong.isEnabled = true
+                    binding.imgPreviousSong.isEnabled = true
+                } else {
+                    setSongPosition(false)
+                    setLayout()
+                    playMedia()
+                    binding.imgNextSong.isEnabled = true
+                    binding.imgPreviousSong.isEnabled = true
+                }
+            }
+            "GenresMusicListFragment" -> {
+                if (checkForInternet(this)) {
+                    if (a) {
+                        setSongPosition(true)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    } else {
+                        setSongPosition(false)
+                        setLayout()
+                        playMedia()
+                        binding.imgNextSong.isEnabled = true
+                        binding.imgPreviousSong.isEnabled = true
+                    }
+                }
+            }
         }
     }
 
 
     private fun setLayout() {
-        checkFavorite(listMusicPlay[songPosition])
         Glide.with(applicationContext).load(listMusicPlay[songPosition].image)
             .error(R.drawable.demo_img_download)
             .into(binding.imgPlaying)
         binding.tvSongNameNowPlaying.text = listMusicPlay[songPosition].name
         binding.tvSingerSongNowPlaying.text = listMusicPlay[songPosition].artistName
+        checkFavorite(listMusicPlay[songPosition])
         if (repeat) binding.imgPlayingRepeat.setImageResource(R.drawable.loop_image_true)
     }
 
     private fun playMedia() {
         try {
+            Log.e("TAG", "playMedia: " + listMusicPlay[songPosition])
             isPlaying = true
             if (musicService!!.mediaPlayer == null) musicService!!.mediaPlayer = MediaPlayer()
             musicService!!.mediaPlayer!!.reset()
@@ -236,6 +319,8 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         songPosition = intent.getIntExtra("index", 0)
         when (intent.getStringExtra("MainActivitySong")) {
             "NowPlaying" -> {
+                PlayActivity.binding.layoutPlay.visibility = View.VISIBLE
+                PlayActivity.binding.viewloadingPlaying.visibility = View.GONE
                 binding.tvTimeStart.text =
                     formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
                 binding.tvTimeEnd.text =
@@ -248,20 +333,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 setLayout()
             }
             "HomeFragment" -> {
-                if (checkForInternet(this)) {
-                    listMusicPlay = HomeFragment.listMusicHome
-                } else {
-                    getDataStoreEx()
-                    for (i in 0..HomeFragment.listMusicHome.size - 1) {
-                        for (j in 0..listMusicOffline.size - 1) {
-                            if (listMusicOffline[j].name.equals(HomeFragment.listMusicHome[i].name)) {
-                                listMusicPlay.add(HomeFragment.listMusicHome[i])
-                            } else {
-
-                            }
-                        }
-                    }
-                }
+                listMusicPlay = HomeFragment.listMusicHome
                 checkFavorite(listMusicPlay[songPosition])
                 if (musicService != null && !isPlaying) playMedia()
             }
@@ -272,19 +344,19 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 if (musicService != null && !isPlaying) playMedia()
             }
             "PlaylistFragment" -> {
-                if (checkForInternet(this)){
+                if (checkForInternet(this)) {
                     listMusicPlay = HomeFragment.listMusicHome
                     checkFavorite(listMusicPlay[songPosition])
                     if (musicService != null && !isPlaying) playMedia()
                 } else {
                     getDataStoreEx()
                     listMusicPlay = HomeFragment.listMusicHome
-                    for (i in 0 until listMusicOffline.size){
-                        while (HomeFragment.listMusicHome[songPosition].name == listMusicOffline[i].name){
-                                checkFavorite(listMusicPlay[songPosition])
-                                if (musicService != null && !isPlaying) playMedia()
-                                break
-                            }
+                    for (i in 0 until listMusicOffline.size) {
+                        while (HomeFragment.listMusicHome[songPosition].name == listMusicOffline[i].name) {
+                            checkFavorite(listMusicPlay[songPosition])
+                            if (musicService != null && !isPlaying) playMedia()
+                            break
+                        }
                         nextSong(true)
                     }
                 }
@@ -363,8 +435,8 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                     listMusicOffline.add(song)
                 }
             }
-        } catch (e  : Exception){
-            Log.e("getDataStoreEx",e.toString())
+        } catch (e: Exception) {
+            Log.e("getDataStoreEx", e.toString())
         }
     }
 
@@ -399,7 +471,29 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
 
     override fun onCompletion(mp: MediaPlayer?) {
         setSongPosition(increment = true)
-        playMedia()
+        when (intent.getStringExtra("MainActivitySong")) {
+            "NowPlaying" -> {
+                if (checkForInternet(this)) {
+                    playMedia()
+                }
+            }
+            "HomeFragment" -> {
+                if (checkForInternet(this)) {
+                    playMedia()
+                }
+            }
+            "DownloadedFragment" -> {
+                playMedia()
+            }
+            "PlaylistFragment" -> {
+                playMedia()
+            }
+            "GenresMusicListFragment" -> {
+                if (checkForInternet(this)) {
+                    playMedia()
+                }
+            }
+        }
         setLayout()
         MainActivity.binding.tvNameSongPlayHome.text =
             listMusicPlay[songPosition].name
@@ -432,16 +526,9 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         } else {
             binding.imgPlayOrPasuePlaying.setImageResource(R.drawable.ic_baseline_play_arrow_24)
         }
-        val handler = Handler()
-        handler.postDelayed({
-            if (!canPlay){
-                showDialogWarn(this)
-            }
-        }, 2000)
-
     }
 
-     private fun showDialogWarn(context: Context) {
+    private fun showDialogWarn(context: Context) {
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -529,14 +616,14 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         var musicPlaylistid: String = "123456789"
         musicPlayListViewModel.readAllMusicData.observe(this,
             Observer { musicplaylist ->
-                var countFa : Int = 0
+                var countFa: Int = 0
                 for (item: Int in 0..musicplaylist.size - 1) {
                     if (musicplaylist[item].name.equals(music.name.toString()) && musicplaylist[item].favorite) {
                         musicPlaylistid = musicplaylist[item].name
                         countFa++
                     }
                 }
-                if (countFa>0){
+                if (countFa > 0) {
                     favorite!!.setImageResource(R.drawable.ic_baseline_favorite_true_24)
                     isFavorite = true
                 } else {
@@ -562,35 +649,45 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                 // check xem co trong playlist nao chưa
                 musicPlayListViewModel.addMusicPlayList(musicPlaylist)
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
-                Toast.makeText(this,"Add" + music.name+ " to favorite success",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Add" + music.name + " to favorite success",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 musicPlayListViewModel.deleteMusicPlaylistWithId(musicPlaylistid.toString().trim())
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
-                Toast.makeText(this,"Remove" + music.name+ " to favorite success",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Remove" + music.name + " to favorite success",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         getDataStoreEx()
         var viewDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewDownloadSong)
         var tvDownload = bottomSheetDialogSong.findViewById<TextView>(R.id.tvDownload)
-        var imageviewDownloadSong = bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewDownloadSong)
-        var viewRemoveDownloadSong = bottomSheetDialogSong.findViewById<View>(R.id.viewRemoveDownloadSong)
+        var imageviewDownloadSong =
+            bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewDownloadSong)
+        var viewRemoveDownloadSong =
+            bottomSheetDialogSong.findViewById<View>(R.id.viewRemoveDownloadSong)
         var removeSong = bottomSheetDialogSong.findViewById<TextView>(R.id.removeSong)
-        var imageviewRemoveDownloadSong = bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewRemoveDownloadSong)
-        var count : Int =0
-        for (i in 0..listMusicOffline.size-1){
-            if (music.name == listMusicOffline[i].name){
-                count ++
+        var imageviewRemoveDownloadSong =
+            bottomSheetDialogSong.findViewById<ImageView>(R.id.imageviewRemoveDownloadSong)
+        var count: Int = 0
+        for (i in 0..listMusicOffline.size - 1) {
+            if (music.name == listMusicOffline[i].name) {
+                count++
             }
         }
-        if (count>0){
+        if (count > 0) {
             viewDownloadSong!!.visibility = View.GONE
             tvDownload!!.visibility = View.GONE
             imageviewDownloadSong!!.visibility = View.GONE
             viewRemoveDownloadSong!!.visibility = View.VISIBLE
             removeSong!!.visibility = View.VISIBLE
             imageviewRemoveDownloadSong!!.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             viewDownloadSong!!.visibility = View.VISIBLE
             tvDownload!!.visibility = View.VISIBLE
             imageviewDownloadSong!!.visibility = View.VISIBLE
@@ -622,7 +719,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
 
         viewRemoveDownloadSong.setOnClickListener {
             val builder = AlertDialog.Builder(this)
-            builder.setPositiveButton("Yes"){_,_ ->
+            builder.setPositiveButton("Yes") { _, _ ->
                 for (i in 0..arrayMusicLocalBase.size - 1) {
                     if (music.name == arrayMusicLocalBase[i].title) {
                         val fdelete: File = File(arrayMusicLocalBase[i].data)
@@ -634,9 +731,9 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
                         bottomSheetDialogSong.dismiss()
                     }
                 }
-                Toast.makeText(this, "Remove song Success",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Remove song Success", Toast.LENGTH_SHORT).show()
             }
-            builder.setNegativeButton("No"){_,_ ->
+            builder.setNegativeButton("No") { _, _ ->
 
             }
             builder.setTitle("Remove song from this phone?")
@@ -688,7 +785,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         dialog.setContentView(R.layout.layout_add_playlist)
         var playListName = dialog.findViewById<EditText>(R.id.edtNamePlayList)
         dialog.findViewById<TextView>(R.id.tvAddPlayList).setOnClickListener {
-            insertDataToDatabase(playListName.text.toString().trim(),dialog)
+            insertDataToDatabase(playListName.text.toString().trim(), dialog)
 
         }
         dialog.findViewById<TextView>(R.id.tvCancelAddPlayList).setOnClickListener {
@@ -697,7 +794,7 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         dialog.show()
     }
 
-    private fun insertDataToDatabase(name: String,dialog: Dialog) {
+    private fun insertDataToDatabase(name: String, dialog: Dialog) {
         if (inputCheck(name)) {
             val playListViewModel = ViewModelProvider(this)[PlayListViewModel::class.java]
             // Create play list
@@ -730,16 +827,20 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             music.audio
         )
         var count: Int = 0
-        val list : List<MusicPlaylist> = musicPlayListViewModel.readAllMusicData.value!!
-        for (item: Int in 0..list.size-1) {
+        val list: List<MusicPlaylist> = musicPlayListViewModel.readAllMusicData.value!!
+        for (item: Int in 0..list.size - 1) {
             if (list[item].idPlayList == playList.id && list[item].name == music.name) {
                 count++
             }
         }
         if (count > 0) {
-            Toast.makeText(this,music.name +"already in this Playlist",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, music.name + "already in this Playlist", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this,"Add "+music.name +"to this Playlist success",Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Add " + music.name + "to this Playlist success",
+                Toast.LENGTH_SHORT
+            ).show()
             musicPlayListViewModel.addMusicPlayList(musicPlaylist)
         }
     }

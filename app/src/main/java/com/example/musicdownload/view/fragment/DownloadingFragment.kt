@@ -113,7 +113,10 @@ class DownloadingFragment : Fragment(),ActionListener {
 //                 fileAdapter.addDownload(download!!)
              }
          }.addListener(fetchListener)
-         Log.e("AAAAAA",FileAdapter.list.toString())
+         if (FileAdapter.list.size>0){
+             binding.recDownloading.adapter = fileAdapter
+             Log.e("AAAAAA",FileAdapter.list.toString())
+         }
 //         if (Data.path.size>0){
 //             for (i in 0..Data.path.size-1){
 //                 MediaScannerConnection.scanFile(
