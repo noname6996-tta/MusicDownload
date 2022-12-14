@@ -67,6 +67,7 @@ class DownloadingFragment : Fragment(),ActionListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fileAdapter = FileAdapter(requireActivity(),this)
         setUpViews()
         val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(requireContext())
             .setDownloadConcurrentLimit(999999)
@@ -76,15 +77,15 @@ class DownloadingFragment : Fragment(),ActionListener {
             .build()
         fetch = Fetch.Impl.getInstance(fetchConfiguration)
         checkStoragePermissions()
+        Log.d("onViewCreated","onViewCreated")
     }
 
     private fun setUpViews() {
-
+        binding.recDownloading.adapter = fileAdapter
         val networkSwitch: SwitchCompat = binding.networkSwitch
-        val recyclerView: RecyclerView = binding.recDownloading
-        val linearLayoutManager = LinearLayoutManager(requireContext() )
+        val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerView.layoutManager = linearLayoutManager
+        binding.recDownloading.layoutManager = linearLayoutManager
         networkSwitch.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 fetch.setGlobalNetworkType(NetworkType.WIFI_ONLY)
@@ -93,8 +94,8 @@ class DownloadingFragment : Fragment(),ActionListener {
             }
         }
         //
-        fileAdapter = FileAdapter(requireContext(),this)
-        recyclerView.adapter = fileAdapter
+
+
     }
 
      override fun onResume() {
@@ -110,12 +111,11 @@ class DownloadingFragment : Fragment(),ActionListener {
                  )
              }
              for (download in list) {
-//                 fileAdapter.addDownload(download!!)
+                 fileAdapter.addDownload(download!!)
              }
          }.addListener(fetchListener)
          if (FileAdapter.list.size>0){
-             binding.recDownloading.adapter = fileAdapter
-             Log.e("AAAAAA",FileAdapter.list.toString())
+             Log.e("DownloadFragment",FileAdapter.list.toString())
          }
 //         if (Data.path.size>0){
 //             for (i in 0..Data.path.size-1){
@@ -128,7 +128,7 @@ class DownloadingFragment : Fragment(),ActionListener {
 
     override fun onPause() {
         super.onPause()
-//        fetch.removeListener(fetchListener)
+        fetch.removeListener(fetchListener)
     }
 
      override fun onDestroy() {
@@ -139,6 +139,7 @@ class DownloadingFragment : Fragment(),ActionListener {
     private val fetchListener: FetchListener = object : AbstractFetchListener() {
         override fun onAdded(download: Download) {
             fileAdapter.addDownload(download)
+            Log.d("addDownload(download)",download.toString())
         }
 
         override fun onQueued(download: Download, waitingOnNetwork: Boolean) {

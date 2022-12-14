@@ -35,7 +35,7 @@ import com.example.musicdownload.databinding.FragmentDownloadedBinding
 import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.xuandq.radiofm.data.base.BaseFragment
+import com.xuandq.radiofm.data.base.DataFragment
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -43,7 +43,7 @@ import java.io.IOException
 import java.util.*
 
 
-class DownloadedFragment : BaseFragment() {
+class DownloadedFragment : DataFragment() {
     private lateinit var binding: FragmentDownloadedBinding
 
     companion object {

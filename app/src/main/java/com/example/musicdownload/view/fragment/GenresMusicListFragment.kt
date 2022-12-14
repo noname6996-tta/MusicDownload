@@ -20,9 +20,9 @@ import com.example.musicdownload.network.RetrofitService
 import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
-import com.xuandq.radiofm.data.base.BaseFragment
+import com.xuandq.radiofm.data.base.DataFragment
 
-class GenresMusicListFragment(): BaseFragment() {
+class GenresMusicListFragment(): DataFragment() {
     lateinit var viewModel: HomeFragmentViewModel
     val topListenedAdapter = HomeTopListenedAdapter()
     val args : GenresMusicListFragmentArgs by navArgs()

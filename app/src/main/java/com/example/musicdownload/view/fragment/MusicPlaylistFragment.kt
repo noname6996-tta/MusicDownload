@@ -32,9 +32,9 @@ import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.xuandq.radiofm.data.base.BaseFragment
+import com.xuandq.radiofm.data.base.DataFragment
 
-class MusicPlaylistFragment : BaseFragment() {
+class MusicPlaylistFragment : DataFragment() {
     private var listMusicOffline = ArrayList<Music>()
     private lateinit var binding: ListPlaylistLayoutBinding
     private val musicAdapter = MusicPlaylistAdapter()

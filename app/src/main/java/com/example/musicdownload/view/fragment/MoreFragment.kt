@@ -19,9 +19,9 @@ import com.example.musicdownload.network.RetrofitService
 import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
-import com.xuandq.radiofm.data.base.BaseFragment
+import com.xuandq.radiofm.data.base.DataFragment
 
-class MoreFragment(): BaseFragment() {
+class MoreFragment(): DataFragment() {
     lateinit var listMusicMore: ArrayList<Music>
     private lateinit var _binding: FragmentMoreBinding
     lateinit var viewModel: HomeFragmentViewModel

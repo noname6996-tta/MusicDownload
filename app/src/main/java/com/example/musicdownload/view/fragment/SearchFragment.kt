@@ -23,9 +23,9 @@ import com.example.musicdownload.view.activity.PlayActivity
 import com.example.musicdownload.viewmodel.HomeFragmentViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
 import com.example.musicdownload.viewmodel.SearchViewModel
-import com.xuandq.radiofm.data.base.BaseFragment
+import com.xuandq.radiofm.data.base.DataFragment
 
-class SearchFragment : BaseFragment() {
+class SearchFragment : DataFragment() {
     companion object {
         lateinit var binding: FragmentSearchBinding
     }

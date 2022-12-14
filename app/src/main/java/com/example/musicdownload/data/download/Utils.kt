@@ -6,6 +6,7 @@ import android.net.Uri
 import android.webkit.MimeTypeMap
 import com.example.musicdownload.R
 import java.text.DecimalFormat
+import java.util.*
 
 object Utils {
     fun getMimeType(context: Context, uri: Uri): String {
@@ -52,5 +53,12 @@ object Utils {
         } else {
             context.getString(R.string.download_speed_bytes, downloadedBytesPerSecond)
         }
+    }
+    fun getProgressDisplayLine(currentBytes: Long, totalBytes: Long): String? {
+        return getBytesToMBString(currentBytes) + "/" + getBytesToMBString(totalBytes)
+    }
+
+    private fun getBytesToMBString(bytes: Long): String {
+        return java.lang.String.format(Locale.ENGLISH, "%.2fMb", bytes / (1024.00 * 1024.00))
     }
 }

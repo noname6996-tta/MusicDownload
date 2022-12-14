@@ -1,5 +1,7 @@
 package com.example.musicdownload.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,12 +11,12 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val repostitory: Repostitory): ViewModel() {
 
-    val myReponse = MutableLiveData<List<Music>>()
+    val TopListenedHome = MutableLiveData<List<Music>>()
 
     fun getTopListenedHomeCrotines(){
         viewModelScope.launch {
             val response = repostitory.getToplistenedCrotines()
-            myReponse.value = response.data
+            TopListenedHome.value = response.data
         }
     }
 }

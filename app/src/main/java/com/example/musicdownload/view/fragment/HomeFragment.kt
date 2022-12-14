@@ -1,7 +1,6 @@
 package com.example.musicdownload.view.fragment
 
 import android.content.Intent
-import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -24,7 +23,6 @@ import com.example.musicdownload.R
 import com.example.musicdownload.adapter.HomeDownloadAdapter
 import com.example.musicdownload.adapter.HomeGenresAdapter
 import com.example.musicdownload.adapter.HomeTopDownloadAdapter
-import com.example.musicdownload.data.download.Data
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.repository.MusicRepository
 import com.example.musicdownload.data.repository.Repostitory
@@ -36,10 +34,10 @@ import com.example.musicdownload.viewmodel.MainViewModel
 import com.example.musicdownload.viewmodel.MainViewModelFactory
 import com.example.musicdownload.viewmodel.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.xuandq.radiofm.data.base.BaseFragment
+import com.xuandq.radiofm.data.base.DataFragment
 import kotlinx.coroutines.Runnable
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : DataFragment() {
     companion object {
         lateinit var listMusicHome: ArrayList<Music>
         var positionMusic : Int = 0
@@ -196,7 +194,7 @@ class HomeFragment : BaseFragment() {
         val viewModelFactory = MainViewModelFactory(repository)
         viewModelMain = ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
         viewModelMain.getTopListenedHomeCrotines()
-        viewModelMain.myReponse.observe(viewLifecycleOwner, Observer {
+        viewModelMain.TopListenedHome.observe(viewLifecycleOwner, Observer {
             topListenedAdapter.setMovieList(it.take(5), requireContext())
         })
         topListenedAdapter.setClickShowMusic {
@@ -208,7 +206,7 @@ class HomeFragment : BaseFragment() {
                 PlayActivity.isPlaying = false
                 intent.putExtra("index", it)
                 intent.putExtra("MainActivitySong", "HomeFragment")
-                var listMusicHomeTopListened: List<Music> = viewModelMain.myReponse.value!!
+                var listMusicHomeTopListened: List<Music> = viewModelMain.TopListenedHome.value!!
                 listMusicHome.addAll(listMusicHomeTopListened)
                 startActivity(intent)
             }

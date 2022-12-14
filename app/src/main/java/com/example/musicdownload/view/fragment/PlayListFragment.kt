@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,15 +17,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musicRanking.adapter.PlayListItemAdapter
 import com.example.musicdownload.R
-import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.data.model.PlayList
 import com.example.musicdownload.databinding.FragmentPlaylistBinding
-import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.xuandq.radiofm.data.base.BaseFragment
+import com.xuandq.radiofm.data.base.DataFragment
 
-class PlayListFragment : BaseFragment() {
+class PlayListFragment : DataFragment() {
     private lateinit var binding: FragmentPlaylistBinding
     lateinit var playListViewModel: PlayListViewModel
     private val adapter = PlayListItemAdapter()

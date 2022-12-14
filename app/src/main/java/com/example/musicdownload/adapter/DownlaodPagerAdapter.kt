@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.musicdownload.view.fragment.DownloadedFragment
 import com.example.musicdownload.view.fragment.DownloadingFragment
+import com.example.musicdownload.view.fragment.DownloadingVersion2Fragment
 
 class DownloadPagerAdapter (fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity){
     override fun getItemCount()=2
@@ -14,7 +15,7 @@ class DownloadPagerAdapter (fragmentActivity: FragmentActivity): FragmentStateAd
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> DownloadedFragment()
-            1 -> DownloadingFragment()
+            1 -> DownloadingVersion2Fragment()
             // tam thoi
             else -> {
                 throw Resources.NotFoundException("Not Found")

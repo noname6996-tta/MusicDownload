@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var navHostFragment : NavHostFragment
     companion object {
         lateinit var binding: ActivityMainBinding
+        var listDownloading = ArrayList<Music>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
