@@ -80,11 +80,11 @@
                     android:layout_width="7dp"
                     android:layout_height="7dp"
                     android:layout_marginEnd="6dp"
+                    android:contentDescription="@string/todo"
                     android:src="@drawable/polygon_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/viewChangeRegon"
                     app:layout_constraintEnd_toEndOf="@+id/viewChangeRegon"
-                    app:layout_constraintTop_toTopOf="@+id/viewChangeRegon"
-                    android:contentDescription="@string/todo" />
+                    app:layout_constraintTop_toTopOf="@+id/viewChangeRegon" />
 
                 <TextView
                     android:id="@+id/tvRegionHome"
@@ -108,11 +108,11 @@
                     android:layout_marginTop="13dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/background_cirle"
+                    android:contentDescription="@string/todo"
                     android:padding="6dp"
                     android:src="@drawable/ic_baseline_search_24"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/todo" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2"
@@ -313,51 +313,76 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutNotConnect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@color/backgroundPrimary"
-            android:visibility="visible"
+            android:layout_width="356dp"
+            android:layout_height="401dp"
+            android:background="@drawable/background_downloading"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/imageView8"
+                android:layout_width="191dp"
+                android:layout_height="113dp"
+                android:layout_marginTop="27dp"
                 android:src="@drawable/not_connect_internet"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/no_connection"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="243dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="@string/do_you_want_to_discover_what_you_have_downloaded"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <View
                 android:id="@+id/btnGoToDownloadedSong"
                 android:layout_width="256dp"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="32dp"
                 android:background="@drawable/btn_go_to_offline"
-                app:layout_constraintBottom_toTopOf="@+id/btnReload"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <TextView
                 android:id="@+id/btnReload"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:text="Retry"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:layout_marginBottom="164dp"
-                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:padding="10dp"
+                android:text="@string/retry"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnGoToDownloadedSong" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

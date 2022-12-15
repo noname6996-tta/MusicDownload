@@ -44,8 +44,6 @@ class HomeFragment : DataFragment() {
         lateinit var binding: FragmentHomeBinding
     }
 
-
-    lateinit var viewModel: HomeFragmentViewModel
     private lateinit var viewModelMain: MainViewModel
     private val retrofitService = RetrofitService.getInstance()
     private val downloadAdapter = HomeDownloadAdapter()
@@ -71,11 +69,17 @@ class HomeFragment : DataFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, MyViewModelFactory(MusicRepository(retrofitService)))[HomeFragmentViewModel::class.java]
+        val repository = Repostitory()
+        val viewModelFactory = MainViewModelFactory(repository)
+        viewModelMain = ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
         listMusicHome = ArrayList()
         setCheckInternet()
         binding.btnReload.setOnClickListener {
             setCheckInternet()
+        }
+        binding.btnGoToDownloadedSong.setOnClickListener {
+            var action = HomeFragmentDirections.actionHomeFragmentToDownloadedHomeFragment()
+            findNavController().navigate(action)
         }
     }
 
@@ -137,14 +141,12 @@ class HomeFragment : DataFragment() {
     private fun addData() {
         setRecHomeDownload()
         setRecHomeRanking()
-        //setRecTopListened()
-        setRecTopListenedCrotines()
+        setRecTopListened()
         setTopDownloadHome()
         setGenersloadHome()
-
     }
 
-    private fun setRecTopListened() {
+    private fun setRecTopListened(){
         val intent = Intent(activity, PlayActivity::class.java)
 
         // set adapter
@@ -155,44 +157,6 @@ class HomeFragment : DataFragment() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recToplistened.layoutManager = linearLayoutManager
         //
-
-        viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) {
-            topListenedAdapter.setMovieList(it.take(5), requireContext())
-        }
-        viewModel.getToplistenedHome()
-        viewModel.errorMessage.observe(viewLifecycleOwner) {}
-
-        topListenedAdapter.setClickShowMusic {
-            showBottomSheetMusic(it)
-        }
-        topListenedAdapter.setClickPlayMusic {
-            if (checkForInternet(requireContext())){
-                listMusicHome.clear()
-                PlayActivity.isPlaying = false
-                intent.putExtra("index", it)
-                intent.putExtra("MainActivitySong", "HomeFragment")
-                viewModel.responseListenedToplistenedHome.observe(viewLifecycleOwner) {
-                    listMusicHome.addAll(it)
-                }
-                startActivity(intent)
-            }
-        }
-    }
-
-    private fun setRecTopListenedCrotines(){
-        val intent = Intent(activity, PlayActivity::class.java)
-
-        // set adapter
-        binding.recToplistened.adapter = topListenedAdapter
-
-        // set recycleView
-        val linearLayoutManager = LinearLayoutManager(requireContext() )
-        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        binding.recToplistened.layoutManager = linearLayoutManager
-        //
-        val repository = Repostitory()
-        val viewModelFactory = MainViewModelFactory(repository)
-        viewModelMain = ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
         viewModelMain.getTopListenedHomeCrotines()
         viewModelMain.TopListenedHome.observe(viewLifecycleOwner, Observer {
             topListenedAdapter.setMovieList(it.take(5), requireContext())
@@ -214,7 +178,6 @@ class HomeFragment : DataFragment() {
     }
 
     private fun setRecHomeDownload() {
-        // set adapter
         val intent = Intent(activity, PlayActivity::class.java)
         binding.viewPager2.adapter = downloadAdapter
         binding.viewPager2.offscreenPageLimit = 2
@@ -223,8 +186,8 @@ class HomeFragment : DataFragment() {
         binding.viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         setUpTransformer()
         // set recycleView
-
-        viewModel.responseListenedDownLoadHome.observe(viewLifecycleOwner) {
+        viewModelMain.getDownloadHome()
+        viewModelMain.DownloadHome.observe(viewLifecycleOwner) {
             downloadAdapter.setMovieList(it, requireContext())
             runnable = Runnable {
                 if (binding.viewPager2.currentItem == it.size - 1) {
@@ -234,8 +197,7 @@ class HomeFragment : DataFragment() {
                 }
             }
         }
-        viewModel.getDownloadHome()
-        viewModel.errorMessage.observe(viewLifecycleOwner) {}
+
         binding.viewPager2.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -248,9 +210,8 @@ class HomeFragment : DataFragment() {
             PlayActivity.isPlaying = false
             intent.putExtra("index", it)
             intent.putExtra("MainActivitySong", "HomeFragment")
-            viewModel.responseListenedDownLoadHome.observe(viewLifecycleOwner) { listMusic ->
-                listMusicHome.addAll(listMusic)
-            }
+            var listMusicHomeDownload: List<Music> = viewModelMain.DownloadHome.value!!
+            listMusicHome.addAll(listMusicHomeDownload)
             startActivity(intent)
         }
     }
@@ -273,23 +234,20 @@ class HomeFragment : DataFragment() {
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.recItemRanking.layoutManager = linearLayoutManager
         // add data to recycle
-        viewModel.responseListenedRankingHome.observe(viewLifecycleOwner) {
+        viewModelMain.RankingHome.observe(viewLifecycleOwner) {
             rankingAdapter.setMovieList(it.take(5), requireContext())
         }
         binding.recItemRanking.adapter = rankingAdapter
         // T
-        viewModel.errorMessage.observe(viewLifecycleOwner) {}
-        viewModel.getRankingHome()
+        viewModelMain.getRanking()
 
         rankingAdapter.setClickPlayMusic {
             listMusicHome.clear()
             PlayActivity.isPlaying = false
             intent.putExtra("index", it)
             intent.putExtra("MainActivitySong", "HomeFragment")
-            viewModel.responseListenedRankingHome.observe(viewLifecycleOwner) { listMusic ->
-                listMusicHome.addAll(listMusic)
-
-            }
+            var listMusicHomeDownload: List<Music> = viewModelMain.RankingHome.value!!
+            listMusicHome.addAll(listMusicHomeDownload)
             startActivity(intent)
         }
     }
@@ -302,11 +260,10 @@ class HomeFragment : DataFragment() {
         binding.recTopDownload.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
         //
-        viewModel.responseListenedTopDownLoadHome.observe(viewLifecycleOwner) {
+        viewModelMain.TopDownload.observe(viewLifecycleOwner) {
             topDownloadAdapter.setMovieList(it.take(10), requireContext())
         }
-        viewModel.errorMessage.observe(viewLifecycleOwner) {}
-        viewModel.getTopDownLoadHome()
+        viewModelMain.getTopDownload()
         topDownloadAdapter.setClickShowMusic {
             showBottomSheetMusic(it)
         }
@@ -315,9 +272,8 @@ class HomeFragment : DataFragment() {
             PlayActivity.isPlaying = false
             intent.putExtra("index", it)
             intent.putExtra("MainActivitySong", "HomeFragment")
-            viewModel.responseListenedTopDownLoadHome.observe(viewLifecycleOwner) { listMusic ->
-                listMusicHome.addAll(listMusic)
-            }
+            var listMusicHomeDownload: List<Music> = viewModelMain.TopDownload.value!!
+            listMusicHome.addAll(listMusicHomeDownload)
             startActivity(intent)
         }
     }
@@ -330,13 +286,12 @@ class HomeFragment : DataFragment() {
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.recGenres.layoutManager = linearLayoutManager
         //
-        viewModel.responseGenre.observe(viewLifecycleOwner, Observer {
+        viewModelMain.GenresList.observe(viewLifecycleOwner, Observer {
             genresAdapter.setGenresList(it.take(5), requireContext())
             binding.shimmerLayout.visibility = GONE
             binding.scrollView2.visibility = VISIBLE
         })
-        viewModel.errorMessage.observe(viewLifecycleOwner) {}
-        viewModel.getGenresHome()
+        viewModelMain.getGenres()
     }
 
     private fun setBottomSheetRegion() {

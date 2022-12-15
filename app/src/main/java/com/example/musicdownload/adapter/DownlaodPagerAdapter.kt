@@ -15,7 +15,7 @@ class DownloadPagerAdapter (fragmentActivity: FragmentActivity): FragmentStateAd
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> DownloadedFragment()
-            1 -> DownloadingVersion2Fragment()
+            1 -> DownloadingFragment()
             // tam thoi
             else -> {
                 throw Resources.NotFoundException("Not Found")

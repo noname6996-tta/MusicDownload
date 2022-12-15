@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musicdownload.R
 import com.example.musicdownload.adapter.BottomSheetPlaylistAdapter
+import com.example.musicdownload.adapter.FileAdapter
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.data.model.MusicPlaylist
 import com.example.musicdownload.data.model.PlayList
@@ -222,13 +223,13 @@ class MainActivity : AppCompatActivity() {
         } else if (PlayActivity.musicService == null) {
             binding.layoutPlayHomeBottom.visibility = View.GONE
         }
-        if (!checkForInternet(this)){
-            navController.navigate(R.id.downloadManagerFragment,null, navOptions {
-                popUpTo(R.id.homeFragment) {
-                    inclusive = true
-                }
-            })
-        }
+//        if (!checkForInternet(this)){
+//            navController.navigate(R.id.downloadManagerFragment,null, navOptions {
+//                popUpTo(R.id.homeFragment) {
+//                    inclusive = true
+//                }
+//            })
+//        }
     }
 
     private fun playMusic() {

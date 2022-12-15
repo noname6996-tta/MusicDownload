@@ -46,7 +46,6 @@ class DownloadingFragment : Fragment(),ActionListener {
     companion object {
         val GROUP_ID = "listGroup".hashCode()
         val FETCH_NAMESPACE = "DownloadListActivity"
-        var arrayMusicDownloading = ArrayList<Music>()
     }
     private val STORAGE_PERMISSION_CODE = 200
     private val UNKNOWN_REMAINING_TIME: Long = -1L
@@ -93,9 +92,6 @@ class DownloadingFragment : Fragment(),ActionListener {
                 fetch.setGlobalNetworkType(NetworkType.ALL)
             }
         }
-        //
-
-
     }
 
      override fun onResume() {
@@ -117,13 +113,11 @@ class DownloadingFragment : Fragment(),ActionListener {
          if (FileAdapter.list.size>0){
              Log.e("DownloadFragment",FileAdapter.list.toString())
          }
-//         if (Data.path.size>0){
-//             for (i in 0..Data.path.size-1){
-//                 MediaScannerConnection.scanFile(
-//                     requireContext(), arrayOf(Data.path[i]), null, null
-//                 )
-//             }
-//         }
+         if (Data.path.size>0){
+             for (i in 0..Data.path.size-1){
+                 MediaScannerConnection.scanFile(requireContext(), arrayOf(Data.path[i]), null, null)
+             }
+         }
     }
 
     override fun onPause() {
@@ -173,7 +167,7 @@ class DownloadingFragment : Fragment(),ActionListener {
                 UNKNOWN_REMAINING_TIME,
                 UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
             )
-            Toast.makeText(requireContext(),""+error.toString(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(),""+error.toString(),Toast.LENGTH_SHORT).show()
             Log.e("error",error.toString())
         }
 

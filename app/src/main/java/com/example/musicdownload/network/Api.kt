@@ -10,20 +10,20 @@ interface Api {
     suspend fun getToplistenedCrotines(): ResponseListened
 
     @GET("msd/scmusic/download?offset=0&country=za")
-    fun getDownloadHome(): ResponseListened
+    suspend fun getDownloadHome(): ResponseListened
 
     @GET("msd/music/popular?offset=0")
-    fun getRanking(): ResponseListened
+    suspend fun getRanking(): ResponseListened
 
     @GET("msd/music/download?offset=0")
-    fun getTopDownload(): ResponseListened
+    suspend fun getTopDownload(): ResponseListened
 
     @GET("msd/scmusic/genre")
-    fun getGenres(): RespondGenre
+    suspend fun getGenres(): RespondGenre
 
     @GET("http://marstechstudio.com/msd/scmusic/bygenre?offset=0&country=za&")
-    fun getMusicByGenres(@Query("query") genresName: String): ResponseListened
+    suspend fun getMusicByGenres(@Query("query") genresName: String): ResponseListened
 
     @GET("http://marstechstudio.com/msd/music/search?")
-    fun searchByString(@Query("query") genresName: String): ResponseListened
+    suspend fun searchByString(@Query("query") genresName: String): ResponseListened
 }

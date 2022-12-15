@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_downloadManagerFragment"
             app:destination="@id/downloadManagerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_downloadedHomeFragment"
+            app:destination="@id/downloadedHomeFragment" />
         <!--        <action-->
 <!--            android:id="@+id/action_homeFragment_to_downloadManagerFragment"-->
 <!--            app:destination="@id/downloadManagerFragment" >-->
@@ -112,4 +115,8 @@
         tools:layout="@layout/fragment_downloaded"
         android:name="com.example.musicdownload.view.fragment.DownloadedFragment"
         android:label="DownloadedFragment" />
+    <fragment
+        android:id="@+id/downloadedHomeFragment"
+        android:name="com.example.musicdownload.view.fragment.DownloadedHomeFragment"
+        android:label="DownloadedHomeFragment" />
 </navigation>

@@ -62,6 +62,7 @@ class FileAdapter(val context: Context, var actionListener: ActionListener) :
     }
 
     override fun onBindViewHolder(holder: DownloadingViewHolder, position: Int) {
+        if (list.size>0){
         holder.binding.actionButton.setOnClickListener(null)
         holder.binding.actionButton.isEnabled = true
         val downloadData: DownloadData = downloads[position]
@@ -71,7 +72,7 @@ class FileAdapter(val context: Context, var actionListener: ActionListener) :
         }
         val uri = Uri.parse(url)
         val status = downloadData.download!!.status
-        Log.e("TAG", "onBindDownloadingViewHolder: " + list[position].name)
+
         holder.binding.titleTextView.text = list[position].name
         holder.binding.tvArtistDownloading.text = list[position].artistName
         Glide.with(context).load(list[position].image)
@@ -204,6 +205,7 @@ class FileAdapter(val context: Context, var actionListener: ActionListener) :
                 bottomSheetDialogSong.dismiss()
             }
         }
+    }
     }
 
     fun addDownload(download: Download) {

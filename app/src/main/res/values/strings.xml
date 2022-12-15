@@ -79,4 +79,6 @@
     <string name="enter_playlist_name">Enter Playlist Name</string>
     <string name="create">Create</string>
     <string name="no_i_want_to_wait">No I want to wait</string>
+    <string name="no_connection">No connection</string>
+    <string name="do_you_want_to_discover_what_you_have_downloaded">Do you want to discover what you have downloaded?</string>
 </resources>
