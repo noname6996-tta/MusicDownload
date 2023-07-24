@@ -3,7 +3,7 @@
 buildscript {
     repositories {
         google()
-        maven { url 'https://jitpack.io/' }
+        maven { url 'https://mvnrepository.com/artifact/com.github.gundy/semver4j' }
     }
     dependencies {
         // Update this line to use 2.5.0-alpha01

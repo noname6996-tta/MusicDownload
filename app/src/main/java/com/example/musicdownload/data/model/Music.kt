@@ -47,11 +47,3 @@ fun setSongPosition(increment: Boolean){
         }
     }
 }
-fun exitApplication(){
-    if(PlayActivity.musicService != null){
-//        PlayActivity.musicService!!.audioManager.abandonAudioFocus(PlayActivity.musicService)
-        PlayActivity.musicService!!.stopForeground(true)
-        PlayActivity.musicService!!.mediaPlayer!!.release()
-        PlayActivity.musicService = null}
-    exitProcess(1)
-}
