@@ -82,7 +82,7 @@ class GenresMusicListFragment(): DataFragment() {
             topListenedAdapter.setMovieList(it, requireContext())
         }
         viewModel.errorMessage.observe(viewLifecycleOwner) {}
-        viewModel.getMusicByGenres(args.genresKeySearch)
+//        viewModel.getMusicByGenres(args.genresKeySearch)
 
         topListenedAdapter.setClickPlayMusic {
             val intent = Intent(activity, PlayActivity::class.java)
