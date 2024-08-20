@@ -157,7 +157,7 @@ class HomeFragment : DataFragment() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recToplistened.layoutManager = linearLayoutManager
         //
-        viewModelMain.getTopListenedHomeCrotines()
+//        viewModelMain.getTopListenedHomeCrotines()
         viewModelMain.TopListenedHome.observe(viewLifecycleOwner, Observer {
             topListenedAdapter.setMovieList(it.take(5), requireContext())
         })
@@ -186,7 +186,7 @@ class HomeFragment : DataFragment() {
         binding.viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         setUpTransformer()
         // set recycleView
-        viewModelMain.getDownloadHome()
+//        viewModelMain.getDownloadHome()
         viewModelMain.DownloadHome.observe(viewLifecycleOwner) {
             downloadAdapter.setMovieList(it, requireContext())
             runnable = Runnable {
@@ -239,7 +239,7 @@ class HomeFragment : DataFragment() {
         }
         binding.recItemRanking.adapter = rankingAdapter
         // T
-        viewModelMain.getRanking()
+//        viewModelMain.getRanking()
 
         rankingAdapter.setClickPlayMusic {
             listMusicHome.clear()
@@ -263,7 +263,7 @@ class HomeFragment : DataFragment() {
         viewModelMain.TopDownload.observe(viewLifecycleOwner) {
             topDownloadAdapter.setMovieList(it.take(10), requireContext())
         }
-        viewModelMain.getTopDownload()
+//        viewModelMain.getTopDownload()
         topDownloadAdapter.setClickShowMusic {
             showBottomSheetMusic(it)
         }
@@ -291,7 +291,7 @@ class HomeFragment : DataFragment() {
             binding.shimmerLayout.visibility = GONE
             binding.scrollView2.visibility = VISIBLE
         })
-        viewModelMain.getGenres()
+//        viewModelMain.getGenres()
     }
 
     private fun setBottomSheetRegion() {

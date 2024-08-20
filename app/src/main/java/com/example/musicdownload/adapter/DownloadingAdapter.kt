@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.downloader.Error
-import com.downloader.OnDownloadListener
-import com.downloader.PRDownloader
-import com.downloader.Status
+//import com.downloader.Error
+//import com.downloader.OnDownloadListener
+//import com.downloader.PRDownloader
+//import com.downloader.Status
 import com.example.musicdownload.R
 import com.example.musicdownload.data.model.Music
 import com.example.musicdownload.databinding.DownloadItemBinding
@@ -50,50 +50,50 @@ class DownloadingAdapter() : RecyclerView.Adapter<DownloadingViewHolder>() {
         holder.binding.progressBar.indeterminateDrawable.setColorFilter(
             Color.CYAN, android.graphics.PorterDuff.Mode.SRC_IN
         )
-        downloadIdOne = PRDownloader.download(music.audioDownload, dirPath, music.name+".mp3")
-            .build()
-            .setOnStartOrResumeListener {
-                holder.binding.progressBar.isIndeterminate = false
-                holder.binding.actionButton.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
-            }
-            .setOnPauseListener { holder.binding.actionButton.setImageResource(R.drawable.ic_baseline_play_circle_outline_24) }
-            .setOnCancelListener {
-
-            }
-            .setOnProgressListener { progress ->
-                val progressPercent = progress!!.currentBytes * 100 / progress!!.totalBytes
-                holder.binding.progressBar.progress = progressPercent.toInt()
-                holder.binding.progressTextView.text = holder.binding.progressBar.progress.toString()
-                holder.binding.progressBar.isIndeterminate = false
-            }
-            .start(object : OnDownloadListener {
-                override fun onDownloadComplete() {
-                    MainActivity.listDownloading.remove(music)
-                    MediaScannerConnection.scanFile(
-                     context, arrayOf(dirPath+music.name+".mp3"), null, null
-                 )
-                }
-
-                override fun onError(error: Error?) {
-                    holder.binding.actionButton.setImageResource(R.drawable.ic_baseline_error_outline_24)
-                    Toast.makeText(
-                        context,
-                         "Fail " + "1",
-                        Toast.LENGTH_SHORT
-                    ).show();
-                }
-
-            })
-        holder.binding.actionButton.setOnClickListener {
-            if (Status.RUNNING == PRDownloader.getStatus(downloadIdOne)) {
-                PRDownloader.pause(downloadIdOne)
-                return@setOnClickListener
-            }
-            if (Status.PAUSED == PRDownloader.getStatus(downloadIdOne)) {
-                PRDownloader.resume(downloadIdOne);
-                return@setOnClickListener
-            }
-        }
+//        downloadIdOne = PRDownloader.download(music.audioDownload, dirPath, music.name+".mp3")
+//            .build()
+//            .setOnStartOrResumeListener {
+//                holder.binding.progressBar.isIndeterminate = false
+//                holder.binding.actionButton.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24)
+//            }
+//            .setOnPauseListener { holder.binding.actionButton.setImageResource(R.drawable.ic_baseline_play_circle_outline_24) }
+//            .setOnCancelListener {
+//
+//            }
+//            .setOnProgressListener { progress ->
+//                val progressPercent = progress!!.currentBytes * 100 / progress!!.totalBytes
+//                holder.binding.progressBar.progress = progressPercent.toInt()
+//                holder.binding.progressTextView.text = holder.binding.progressBar.progress.toString()
+//                holder.binding.progressBar.isIndeterminate = false
+//            }
+//            .start(object : OnDownloadListener {
+//                override fun onDownloadComplete() {
+//                    MainActivity.listDownloading.remove(music)
+//                    MediaScannerConnection.scanFile(
+//                     context, arrayOf(dirPath+music.name+".mp3"), null, null
+//                 )
+//                }
+//
+//                override fun onError(error: Error?) {
+//                    holder.binding.actionButton.setImageResource(R.drawable.ic_baseline_error_outline_24)
+//                    Toast.makeText(
+//                        context,
+//                         "Fail " + "1",
+//                        Toast.LENGTH_SHORT
+//                    ).show();
+//                }
+//
+//            })
+//        holder.binding.actionButton.setOnClickListener {
+//            if (Status.RUNNING == PRDownloader.getStatus(downloadIdOne)) {
+//                PRDownloader.pause(downloadIdOne)
+//                return@setOnClickListener
+//            }
+//            if (Status.PAUSED == PRDownloader.getStatus(downloadIdOne)) {
+//                PRDownloader.resume(downloadIdOne);
+//                return@setOnClickListener
+//            }
+//        }
     }
 
     override fun getItemCount(): Int {

@@ -33,10 +33,10 @@ import com.example.musicdownload.view.activity.MainActivity
 import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import com.tonyodev.fetch2.*
-import com.tonyodev.fetch2core.Downloader.FileDownloaderType
-import com.tonyodev.fetch2core.Func
-import com.tonyodev.fetch2okhttp.OkHttpDownloader
+//import com.tonyodev.fetch2.*
+//import com.tonyodev.fetch2core.Downloader.FileDownloaderType
+//import com.tonyodev.fetch2core.Func
+//import com.tonyodev.fetch2okhttp.OkHttpDownloader
 import java.io.File
 import java.lang.Long.compare
 import java.util.*
@@ -51,7 +51,7 @@ class DownloadingFragment : Fragment(),ActionListener {
     private val UNKNOWN_REMAINING_TIME: Long = -1L
     private val UNKNOWN_DOWNLOADED_BYTES_PER_SECOND: Long = 0L
     private lateinit var fileAdapter: FileAdapter
-    private lateinit var fetch: Fetch
+//    private lateinit var fetch: Fetch
 
     private lateinit var binding: FragmentDownloadingBinding
     override fun onCreateView(
@@ -68,13 +68,13 @@ class DownloadingFragment : Fragment(),ActionListener {
         super.onViewCreated(view, savedInstanceState)
         fileAdapter = FileAdapter(requireActivity(),this)
         setUpViews()
-        val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(requireContext())
-            .setDownloadConcurrentLimit(999999)
-            .enableLogging(true)
-            .setHttpDownloader(OkHttpDownloader(FileDownloaderType.PARALLEL))
-            .setNamespace(FETCH_NAMESPACE)
-            .build()
-        fetch = Fetch.Impl.getInstance(fetchConfiguration)
+//        val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(requireContext())
+//            .setDownloadConcurrentLimit(999999)
+//            .enableLogging(true)
+//            .setHttpDownloader(OkHttpDownloader(FileDownloaderType.PARALLEL))
+//            .setNamespace(FETCH_NAMESPACE)
+//            .build()
+//        fetch = Fetch.Impl.getInstance(fetchConfiguration)
         checkStoragePermissions()
         Log.d("onViewCreated","onViewCreated")
     }
@@ -85,140 +85,140 @@ class DownloadingFragment : Fragment(),ActionListener {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recDownloading.layoutManager = linearLayoutManager
-        networkSwitch.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
-            if (isChecked) {
-                fetch.setGlobalNetworkType(NetworkType.WIFI_ONLY)
-            } else {
-                fetch.setGlobalNetworkType(NetworkType.ALL)
-            }
-        }
+//        networkSwitch.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+//            if (isChecked) {
+//                fetch.setGlobalNetworkType(NetworkType.WIFI_ONLY)
+//            } else {
+//                fetch.setGlobalNetworkType(NetworkType.ALL)
+//            }
+//        }
     }
 
      override fun onResume() {
         super.onResume()
-         fetch.getDownloadsInGroup(GROUP_ID) { downloads: List<Download>? ->
-             val list = ArrayList(downloads)
-             Collections.sort(
-                 list
-             ) { first: Download, second: Download ->
-                 compare(
-                     first.created,
-                     second.created
-                 )
-             }
-             for (download in list) {
-                 fileAdapter.addDownload(download!!)
-             }
-         }.addListener(fetchListener)
-         if (FileAdapter.list.size>0){
-             Log.e("DownloadFragment",FileAdapter.list.toString())
-         }
-         if (Data.path.size>0){
-             for (i in 0..Data.path.size-1){
-                 MediaScannerConnection.scanFile(requireContext(), arrayOf(Data.path[i]), null, null)
-             }
-         }
+//         fetch.getDownloadsInGroup(GROUP_ID) { downloads: List<Download>? ->
+//             val list = ArrayList(downloads)
+//             Collections.sort(
+//                 list
+//             ) { first: Download, second: Download ->
+//                 compare(
+//                     first.created,
+//                     second.created
+//                 )
+//             }
+//             for (download in list) {
+//                 fileAdapter.addDownload(download!!)
+//             }
+//         }.addListener(fetchListener)
+//         if (FileAdapter.list.size>0){
+//             Log.e("DownloadFragment",FileAdapter.list.toString())
+//         }
+//         if (Data.path.size>0){
+//             for (i in 0..Data.path.size-1){
+//                 MediaScannerConnection.scanFile(requireContext(), arrayOf(Data.path[i]), null, null)
+//             }
+//         }
     }
 
     override fun onPause() {
         super.onPause()
-        fetch.removeListener(fetchListener)
+//        fetch.removeListener(fetchListener)
     }
 
      override fun onDestroy() {
         super.onDestroy()
-        fetch.close()
+//        fetch.close()
     }
 
-    private val fetchListener: FetchListener = object : AbstractFetchListener() {
-        override fun onAdded(download: Download) {
-            fileAdapter.addDownload(download)
-            Log.d("addDownload(download)",download.toString())
-        }
-
-        override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-        }
-
-        override fun onCompleted(download: Download) {
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-            if (Data.path.size>0){
-                for (i in 0..Data.path.size-1){
-                    MediaScannerConnection.scanFile(
-                        requireContext(), arrayOf(Data.path[i]), null, null
-                    )
-                }
-            }
-        }
-
-
-        override fun onError(download: Download, error: Error, throwable: Throwable?) {
-            super.onError(download, error, throwable)
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-            Toast.makeText(requireActivity(),""+error.toString(),Toast.LENGTH_SHORT).show()
-            Log.e("error",error.toString())
-        }
-
-        override fun onProgress(
-            download: Download,
-            etaInMilliseconds: Long,
-            downloadedBytesPerSecond: Long
-        ) {
-            fileAdapter.update(download, etaInMilliseconds, downloadedBytesPerSecond)
-        }
-
-        override fun onPaused(download: Download) {
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-        }
-
-        override fun onResumed(download: Download) {
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-        }
-
-        override fun onCancelled(download: Download) {
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-        }
-
-        override fun onRemoved(download: Download) {
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-        }
-
-        override fun onDeleted(download: Download) {
-            fileAdapter.update(
-                download,
-                UNKNOWN_REMAINING_TIME,
-                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
-            )
-        }
-    }
+//    private val fetchListener: FetchListener = object : AbstractFetchListener() {
+//        override fun onAdded(download: Download) {
+//            fileAdapter.addDownload(download)
+//            Log.d("addDownload(download)",download.toString())
+//        }
+//
+//        override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//        }
+//
+//        override fun onCompleted(download: Download) {
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//            if (Data.path.size>0){
+//                for (i in 0..Data.path.size-1){
+//                    MediaScannerConnection.scanFile(
+//                        requireContext(), arrayOf(Data.path[i]), null, null
+//                    )
+//                }
+//            }
+//        }
+//
+//
+//        override fun onError(download: Download, error: Error, throwable: Throwable?) {
+//            super.onError(download, error, throwable)
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//            Toast.makeText(requireActivity(),""+error.toString(),Toast.LENGTH_SHORT).show()
+//            Log.e("error",error.toString())
+//        }
+//
+//        override fun onProgress(
+//            download: Download,
+//            etaInMilliseconds: Long,
+//            downloadedBytesPerSecond: Long
+//        ) {
+//            fileAdapter.update(download, etaInMilliseconds, downloadedBytesPerSecond)
+//        }
+//
+//        override fun onPaused(download: Download) {
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//        }
+//
+//        override fun onResumed(download: Download) {
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//        }
+//
+//        override fun onCancelled(download: Download) {
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//        }
+//
+//        override fun onRemoved(download: Download) {
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//        }
+//
+//        override fun onDeleted(download: Download) {
+//            fileAdapter.update(
+//                download,
+//                UNKNOWN_REMAINING_TIME,
+//                UNKNOWN_DOWNLOADED_BYTES_PER_SECOND
+//            )
+//        }
+//    }
 
     private fun checkStoragePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -238,38 +238,38 @@ class DownloadingFragment : Fragment(),ActionListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == STORAGE_PERMISSION_CODE && grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            enqueueDownloads()
+//            enqueueDownloads()
         } else {
 
         }
     }
 
-    private fun enqueueDownloads() {
-        if (Data.listDownload.isEmpty()){
-
-        } else {
-            val requests: List<Request> = Data.getFetchRequestWithGroupId(
-                GROUP_ID,
-                requireContext()
-            )
-            fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
-        }
-
-    }
+//    private fun enqueueDownloads() {
+//        if (Data.listDownload.isEmpty()){
+//
+//        } else {
+//            val requests: List<Request> = Data.getFetchRequestWithGroupId(
+//                GROUP_ID,
+//                requireContext()
+//            )
+//            fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
+//        }
+//
+//    }
 
     override fun onPauseDownload(id: Int) {
-        fetch.pause(id)
+//        fetch.pause(id)
     }
 
     override fun onResumeDownload(id: Int) {
-        fetch.resume(id)
+//        fetch.resume(id)
     }
 
     override fun onRemoveDownload(id: Int) {
-        fetch.remove(id)
+//        fetch.remove(id)
     }
 
     override fun onRetryDownload(id: Int) {
-        fetch.retry(id)
+//        fetch.retry(id)
     }
 }

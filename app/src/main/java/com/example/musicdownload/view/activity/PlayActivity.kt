@@ -39,12 +39,12 @@ import com.example.musicdownload.viewmodel.MusicPlayListViewModel
 import com.example.musicdownload.viewmodel.MyViewModelFactory
 import com.example.musicdownload.viewmodel.PlayListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.tonyodev.fetch2.Error
-import com.tonyodev.fetch2.Fetch
-import com.tonyodev.fetch2.FetchConfiguration
-import com.tonyodev.fetch2.Request
-import com.tonyodev.fetch2core.Downloader
-import com.tonyodev.fetch2okhttp.OkHttpDownloader
+//import com.tonyodev.fetch2.Error
+//import com.tonyodev.fetch2.Fetch
+//import com.tonyodev.fetch2.FetchConfiguration
+//import com.tonyodev.fetch2.Request
+//import com.tonyodev.fetch2core.Downloader
+//import com.tonyodev.fetch2okhttp.OkHttpDownloader
 import java.io.File
 
 
@@ -56,7 +56,6 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
         var isPlaying: Boolean = false
         var musicService: MusicService? = null
         var repeat: Boolean = false
-        var canPlay = false
     }
 
     var arrayMusicLocalBase = ArrayList<MusicLocal>()
@@ -695,27 +694,27 @@ class PlayActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompl
             removeSong!!.visibility = View.GONE
             imageviewRemoveDownloadSong!!.visibility = View.GONE
         }
-        viewDownloadSong.setOnClickListener {
-            Data.listDownload.add(music)
-            FileAdapter.list.add(music)
-            var fetch: Fetch
-            val fetchConfiguration: FetchConfiguration =
-                FetchConfiguration.Builder(this)
-                    .setDownloadConcurrentLimit(999999)
-                    .enableLogging(true)
-                    .setHttpDownloader(OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
-                    .setNamespace(DownloadingFragment.FETCH_NAMESPACE)
-                    .build()
-            fetch = Fetch.Impl.getInstance(fetchConfiguration)
-
-            val requests: List<Request> = Data.getFetchRequestWithGroupId(
-                DownloadingFragment.GROUP_ID,
-                this
-            )
-            fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
-            Toast.makeText(this, "Downloading", Toast.LENGTH_LONG).show()
-            bottomSheetDialogSong.dismiss()
-        }
+//        viewDownloadSong.setOnClickListener {
+//            Data.listDownload.add(music)
+//            FileAdapter.list.add(music)
+//            var fetch: Fetch
+//            val fetchConfiguration: FetchConfiguration =
+//                FetchConfiguration.Builder(this)
+//                    .setDownloadConcurrentLimit(999999)
+//                    .enableLogging(true)
+//                    .setHttpDownloader(OkHttpDownloader(Downloader.FileDownloaderType.PARALLEL))
+//                    .setNamespace(DownloadingFragment.FETCH_NAMESPACE)
+//                    .build()
+//            fetch = Fetch.Impl.getInstance(fetchConfiguration)
+//
+//            val requests: List<Request> = Data.getFetchRequestWithGroupId(
+//                DownloadingFragment.GROUP_ID,
+//                this
+//            )
+//            fetch.enqueue(requests) { updatedRequests: List<Pair<Request?, Error?>?>? -> }
+//            Toast.makeText(this, "Downloading", Toast.LENGTH_LONG).show()
+//            bottomSheetDialogSong.dismiss()
+//        }
 
         viewRemoveDownloadSong.setOnClickListener {
             val builder = AlertDialog.Builder(this)

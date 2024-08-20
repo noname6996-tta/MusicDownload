@@ -187,7 +187,7 @@ class SearchFragment : DataFragment() {
     private fun getMusicSearch(search: CharSequence) {
         requireActivity().hideKeyboard()
         viewModel.errorMessage.observe(viewLifecycleOwner) {}
-        viewModel.searchByString(search.toString().trim().lowercase())
+//        viewModel.searchByString(search.toString().trim().lowercase())
         topListenedAdapter.setClickPlayMusic {
             insertSearchToDatabase(a)
             val intent = Intent(activity, PlayActivity::class.java)

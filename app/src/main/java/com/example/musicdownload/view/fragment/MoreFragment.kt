@@ -68,7 +68,7 @@ class MoreFragment(): DataFragment() {
         viewModel.responseGenre.observe(viewLifecycleOwner) {
             moreAdapter.setGenresList(it, requireContext())
         }
-        viewModel.getGenresHome()
+//        viewModel.getGenresHome()
         binding.tvTitleMore.text = "More Genres"
     }
 
@@ -88,7 +88,7 @@ class MoreFragment(): DataFragment() {
                     listMusicMore.addAll(it)
                 }
                 viewModel.errorMessage.observe(viewLifecycleOwner){}
-                viewModel.getRankingHome()
+//                viewModel.getRankingHome()
                 binding.tvTitleMore.text = "Top Ranking"
             }
             2 -> {
@@ -97,7 +97,7 @@ class MoreFragment(): DataFragment() {
                     listMusicMore.addAll(it)
                 }
                 viewModel.errorMessage.observe(viewLifecycleOwner){}
-                viewModel.getToplistenedHome()
+//                viewModel.getToplistenedHome()
                 binding.tvTitleMore.text = "Top listened"
             }
             3 -> {
@@ -106,7 +106,7 @@ class MoreFragment(): DataFragment() {
                     listMusicMore.addAll(it)
                 }
                 viewModel.errorMessage.observe(viewLifecycleOwner){}
-                viewModel.getTopDownLoadHome()
+//                viewModel.getTopDownLoadHome()
                 binding.tvTitleMore.text = "Top Download"
             }
             4 ->{
